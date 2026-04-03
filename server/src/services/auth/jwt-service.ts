@@ -2,7 +2,7 @@ import { v4 } from "uuid";
 import jwt from "jsonwebtoken"
 import { config } from "../../config.js";
 
-type SignedJWT = {
+export type SignedJWT = {
     token: string;
     uid: string;
 };

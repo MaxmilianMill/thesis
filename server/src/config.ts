@@ -20,6 +20,6 @@ function getEnvVar(key: string): string {
 // Export a validated config object
 export const config: Config = {
   PORT: parseInt(process.env.PORT || '3000', 10),
-  DATABASE_URL: getEnvVar('DATABASE_URL'),
+  DATABASE_URL: getEnvVar('MONGODB_URI'),
   JWT_SECRET: getEnvVar('JWT_SECRET'),
 };

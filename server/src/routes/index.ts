@@ -1,6 +1,7 @@
 import { Router } from "express";
-import type { ModuleRoute } from "./types/module.route.js";
-import authRouter from "./auth/authRoutes.js";
+import type { ModuleRoute } from "../types/module-route.js";
+import authRouter from "./auth/auth-routes.js";
+import setupRouter from "./setup/setup-routes.js";
 
 const v1Router = Router();
 
@@ -8,6 +9,10 @@ const moduleRoutes: ModuleRoute[] = [
     {
         path: "/auth",
         route: authRouter
+    },
+    {
+        path: "/setup",
+        route: setupRouter
     }
 ];
 
