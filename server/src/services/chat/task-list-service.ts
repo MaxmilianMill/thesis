@@ -8,20 +8,20 @@ import z from "zod";
 import { saveTaskList, generateTaskList } from "../../repository/chat/task-list-repository.js";
 import type { WithStatus } from "../../types/utils/with-status.js";
 
-type TaskListInput = {
+type GenerateTaskListInput = {
     uid: string;
     chatId: string,
     scenario: Scenario;
 };
 
-export class TaskListService 
-    implements IAIGenerator<TaskListInput, WithStatus<"taskList", TaskList>> {
+export class TaskListGenerationService 
+    implements IAIGenerator<GenerateTaskListInput, WithStatus<"taskList", TaskList>> {
 
     public async generate({
         uid,
         chatId,
         scenario
-    }: TaskListInput) {
+    }: GenerateTaskListInput) {
 
         const {userInfo} = await getInfoData(uid);
 

@@ -53,7 +53,7 @@ async function saveTaskList(
         .collection(CHAT_COLLECTION)
         .updateOne(filter, update, options);
 
-    if (response.upsertedCount !== 1) 
+    if (response.modifiedCount !== 1) 
         throw new MongoError("No document found to update.");
 
     return {taskList, status: 201};

@@ -1,9 +1,9 @@
-import type { TaskListService } from "../../services/chat/task-list-service.js";
+import type { TaskListGenerationService } from "../../services/chat/task-list-service.js";
 import type { Request, Response } from "express";
 
 export class TaskListController {
 
-    constructor(private taskListService: TaskListService) {};
+    constructor(private taskListService: TaskListGenerationService) {};
 
     async handleGenerateTaskList(req: Request, res: Response) {
 
