@@ -1,33 +1,38 @@
 import type { Request, Response } from "express";
-import infoService from "../../services/setup/info-service.js";
+import type { InfoService } from "../../services/setup/info-service.js";
 
-class SetupController {
+export class SetupController {
+
+    constructor(private infoService: InfoService) {};
+
     async handleCreateInfo(req: Request, res: Response) {
-
         const {
             data
         } = req.body;
 
-        const response = await infoService.addUserData(data);
+        const response = await this.infoService.addUserData(data);
 
         return res.status(response.status).json({userInfo: response.userInfo});
     };
 
     async handleUpdateInfo(req: Request, res: Response) {
-
         const {
             data, 
             id
         } = req.body; 
 
-        const response = await infoService.updateUserData(data, id);
+        const response = await this.infoService.updateUserData(data, id);
 
-        return res.status(response.status).json({data: response.data});
+        return res.status(response.status).json({userInfo: response.data});
     }
 
     async handleGetInfo(req: Request, res: Response) {
+        const {
+            id
+        } = req.params;
 
+        const response = await this.infoService.getUserData(id as string);
+
+        return res.status(response.status).json({userInfo: response.userInfo})
     }
 };
-
-export default new SetupController();

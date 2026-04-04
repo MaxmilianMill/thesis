@@ -32,15 +32,15 @@ async function updateInfoData(
 };
 
 async function getInfoData(
-    id: string
-): Promise<WithStatus<"userInfo", UserInfo | undefined>> {
+    uid: string
+): Promise<WithStatus<"userInfo", UserInfo>> {
     const db = getDB();
     const response = await db
         .collection(INFO_COLLECTION)
-        .findOne<UserInfo>({_id: new ObjectId(id)})
+        .findOne<UserInfo>({uid: uid})
 
     if (!response)
-        return {userInfo: undefined, status: 500};
+        throw new MongoError("Document does not exist.")
 
     return {userInfo: response, status: 200};
 }

@@ -1,5 +1,3 @@
-class ScenarioService {
-    
-};
+export class ScenarioService {
 
-export default new ScenarioService();
+};

@@ -1,7 +1,7 @@
 import { addInfoData, getInfoData, updateInfoData } from "../../repository/setup/info-repository.js";
 import type { UserInfo } from "../../types/setup/user-info.js";
 
-class InfoService {
+export class InfoService {
 
     async addUserData(data: UserInfo) {
         return await addInfoData(data);
@@ -15,5 +15,3 @@ class InfoService {
         return await getInfoData(id);
     }
 };
-
-export default new InfoService();
