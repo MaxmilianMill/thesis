@@ -3,6 +3,7 @@ import { getDB } from "../../db/config.js";
 import type { Chat } from "../../types/chat/chat.js";
 import { ChatSchema } from "../../types/chat/chat.js";
 import type { WithStatus } from "../../types/utils/with-status.js";
+import { transformChatDoc } from "./utils/transform-chat-doc.js";
 
 export const CHAT_COLLECTION = "chat";
 
@@ -13,8 +14,6 @@ async function updateChat(
 ): Promise<WithStatus<"chat", Chat>> {
 
     const db = getDB();
-
-    console.log(updatedFields);
     
     const filter = {_id: new ObjectId(chatId), uid: uid};
     const update = {$set: {...updatedFields}};
@@ -26,20 +25,9 @@ async function updateChat(
     if (!response) 
         throw new MongoError("No document found.");
 
-    // Transform MongoDB document to match the schema
-    const transformedDoc = {
-        ...response,
-        id: response._id.toString(),
-        _id: undefined,
-    };
+    const transformedData = transformChatDoc<Chat>(response, ChatSchema)
 
-    // Validate and type the document
-    const parseResult = ChatSchema.safeParse(transformedDoc);
-    if (!parseResult.success) {
-        throw new Error(`Invalid chat document: ${parseResult.error.message}`);
-    }
-
-    return { chat: parseResult.data, status: 200 };
+    return { chat: transformedData, status: 200 };
 };
 
 async function addChat(
@@ -61,7 +49,31 @@ async function addChat(
     return {chat, status: 201};
 };
 
+async function getChat(
+    uid: string,
+    chatId: string
+): Promise<WithStatus<"chat", Chat | undefined>> {
+    
+    const db = getDB();
+
+    const query = {_id: new ObjectId(chatId), uid: uid};
+
+    console.log(query);
+
+    const response = await db
+        .collection(CHAT_COLLECTION)
+        .findOne(query);
+
+    if (!response)
+        return {status: 200, chat: undefined};
+
+    const transformedChat = transformChatDoc<Chat>(response, ChatSchema);
+
+    return {status: 200, chat: transformedChat};
+}
+
 export {
     updateChat,
-    addChat
+    addChat,
+    getChat
 };

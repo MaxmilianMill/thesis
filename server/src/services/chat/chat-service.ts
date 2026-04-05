@@ -13,6 +13,13 @@ export class ChatService {
         return await updateChat(uid, chatId, cleanFields);
     };
 
+    async create(
+        uid: string,
+        chat: Omit<Chat, "createdAt">
+    ) {
+        return await addChat(uid, chat);
+    };
+
     private removeNullUndefined<T extends Record<string, any>>(obj: T): Partial<T> {
         const cleaned: Partial<T> = {};
         for (const [key, value] of Object.entries(obj)) {
@@ -22,11 +29,4 @@ export class ChatService {
         }
         return cleaned;
     }
-
-    async create(
-        uid: string,
-        chat: Omit<Chat, "createdAt">
-    ) {
-        return await addChat(uid, chat);
-    };
 };

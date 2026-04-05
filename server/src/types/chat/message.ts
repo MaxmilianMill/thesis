@@ -1,0 +1,14 @@
+import { z } from 'zod';
+import { MistakeSchema } from './mistake.js';
+
+export const MessageSchema = z.object({
+    text: z.string(),
+    audioUrl: z.string().optional(),
+    isUser: z.boolean(),
+    id: z.string(),
+    uid: z.string(),
+    createdAt: z.coerce.date(),
+    mistakes: z.array(MistakeSchema).optional()
+});
+
+export type Message = z.infer<typeof MessageSchema>;

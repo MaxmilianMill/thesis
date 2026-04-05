@@ -7,7 +7,7 @@ export const ChatSchema = z.object({
     completed: z.boolean(),
     score: z.number().optional(),
     uid: z.uuid(),
-    createdAt: z.date(),
+    createdAt: z.coerce.date(),
 });
 
 export type Chat = z.infer<typeof ChatSchema>;
