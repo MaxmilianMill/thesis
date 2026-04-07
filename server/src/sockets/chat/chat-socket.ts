@@ -3,6 +3,7 @@ import type { Server } from "http";
 import { ChatController } from "../../controllers/chat/chat-controller.js";
 import { ChatService } from "../../services/chat/chat-service.js";
 import { MessageService } from "../../services/chat/message-service.js";
+import { InfoService } from "../../services/setup/info-service.js";
 
 export function initializeChatSocket(httpServer: Server) {
     console.log("Initializing Websocket...")
@@ -11,10 +12,12 @@ export function initializeChatSocket(httpServer: Server) {
         // Create dependencies internally
         const chatService = new ChatService();
         const messageService = new MessageService();
+        const infoService = new InfoService();
 
         const chatController = new ChatController(
             chatService,
-            messageService
+            messageService,
+            infoService
         );
 
         const wss = new WebSocketServer({

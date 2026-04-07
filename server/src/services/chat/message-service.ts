@@ -3,12 +3,14 @@ import type { Message } from "../../types/chat/message.js";
 import { generateMessageStream } from "../../repository/chat/message-repository.js";
 import { getInfoData } from "../../repository/setup/info-repository.js";
 import { getChat } from "../../repository/chat/chat-repository.js";
+import type { UserInfo } from "../../types/setup/user-info.js";
+import type { Chat } from "../../types/chat/chat.js";
 
 export class MessageService {
 
     public async answerStream(
-        uid: string,
-        chatId: string,
+        userInfo: UserInfo,
+        chat: Chat,
         onTextChunk: (textChunk: string) => void,
         message?: Message,
         history?: Message[],
@@ -16,11 +18,12 @@ export class MessageService {
 
         let prompt: string; 
 
+        // if there is no attached message, we generate an opener for the conversation
         if (!message) {
-            prompt = await this.buildOpenerPrompt(uid, chatId);
+            prompt = this.buildOpenerPrompt(userInfo, chat);
         } else {
-            prompt = await this.buildPrompt(
-                uid, chatId, message, history
+            prompt = this.buildPrompt(
+                userInfo, chat, message, history
             );
         };
 
@@ -36,23 +39,15 @@ export class MessageService {
         };
     };
 
-    private async buildPrompt(
-        uid: string,
-        chatId: string,
+    private buildPrompt(
+        userInfo: UserInfo,
+        chat: Chat,
         message: Message, 
         history?: Message[]
-    ): Promise<string> {
+    ): string {
 
-        const [
-            userInfo,
-            chat
-        ] = await Promise.all([
-            getInfoData(uid),
-            getChat(uid, chatId)
-        ]);
-
-        const { language, level, interests, name, partner } = userInfo.userInfo;
-        const { taskList } = chat.chat!;
+        const { language, level, interests, name, partner } = userInfo;
+        const { taskList } = chat!;
 
         const currentTask = taskList.find(t => !t.completed) ?? null;
         const completedTasks = taskList.filter(t => t.completed);
@@ -126,21 +121,13 @@ export class MessageService {
             Now respond as the language buddy. Your response will be spoken aloud, so write naturally — no bullet points, no markdown formatting.`;
     };
 
-    private async buildOpenerPrompt(
-        uid: string,
-        chatId: string
-    ): Promise<string> {
+    private buildOpenerPrompt(
+        userInfo: UserInfo,
+        chat: Chat
+    ): string {
 
-        const [
-            userInfo,
-            chat
-        ] = await Promise.all([
-            getInfoData(uid),
-            getChat(uid, chatId)
-        ]);
-
-        const { language, level, interests, name, partner } = userInfo.userInfo;
-        const { taskList } = chat.chat!;
+        const { language, level, interests, name, partner } = userInfo;
+        const { taskList } = chat!;
 
         // For the opener, we only care about setting up the very first task.
         const firstTask = taskList[0];

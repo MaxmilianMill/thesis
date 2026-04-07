@@ -1,4 +1,4 @@
-import { addChat, updateChat } from "../../repository/chat/chat-repository.js";
+import { addChat, getChat, updateChat } from "../../repository/chat/chat-repository.js";
 import type { Chat } from "../../types/chat/chat.js";
 
 export class ChatService {
@@ -18,6 +18,10 @@ export class ChatService {
         chat: Omit<Chat, "createdAt">
     ) {
         return await addChat(uid, chat);
+    };
+
+    async get(uid: string, chatId: string) {
+        return await getChat(uid, chatId);
     };
 
     private removeNullUndefined<T extends Record<string, any>>(obj: T): Partial<T> {

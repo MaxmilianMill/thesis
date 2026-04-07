@@ -2,7 +2,7 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import { catchAsync } from "../../utils/catch-async.js";
 import { TaskListController } from "../../controllers/chat/task-list-controller.js";
-import { TaskListGenerationService } from "../../services/chat/task-list-service.js";
+import { TaskListGenerationService } from "../../services/chat/task-list-generation-service.js";
 
 const taskListRouter = Router();
 

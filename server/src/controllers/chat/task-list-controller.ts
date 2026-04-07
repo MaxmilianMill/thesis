@@ -1,4 +1,4 @@
-import type { TaskListGenerationService } from "../../services/chat/task-list-service.js";
+import type { TaskListGenerationService } from "../../services/chat/task-list-generation-service.js";
 import type { Request, Response } from "express";
 
 export class TaskListController {
