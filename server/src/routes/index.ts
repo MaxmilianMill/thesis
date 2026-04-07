@@ -3,6 +3,7 @@ import type { ModuleRoute } from "../types/module-route.js";
 import authRouter from "./auth/auth-routes.js";
 import setupRouter from "./setup/setup-routes.js";
 import chatRouter from "./chat/index.js";
+import summaryRouter from "./summary/summary-routes.js";
 
 const v1Router = Router();
 
@@ -18,6 +19,10 @@ const moduleRoutes: ModuleRoute[] = [
     {
         path: "/chat",
         route: chatRouter
+    },
+    {
+        path: "/summary",
+        route: summaryRouter
     }
 ];
 

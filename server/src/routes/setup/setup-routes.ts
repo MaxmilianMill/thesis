@@ -24,6 +24,6 @@ setupRouter.get("/info/:id",
     catchAsync((req: Request, res: Response) => 
         setupController.handleGetInfo(req, res)
     )
-)
+);
 
 export default setupRouter;

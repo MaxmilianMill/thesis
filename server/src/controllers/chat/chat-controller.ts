@@ -1,13 +1,10 @@
 import type { ChatService } from "../../services/chat/chat-service.js";
 import type { Request, Response } from "express";
-import WebSocket from "ws";
 import type { MessageService } from "../../services/chat/message-service.js";
 import { WSMessageSchema, type WSMessage } from "./schemas/ws-message.js";
 import type { InfoService } from "../../services/setup/info-service.js";
 import type { FeedbackService } from "../../services/chat/feedback-service.js";
 import type { TaskListUpdaterService } from "../../services/chat/task-list-updater-service.js";
-import type { WSPayload } from "../../sockets/utils/ws-payload.js";
-import type { WSError } from "../../types/errors/ws-error.js";
 import type { ChatSession } from "../../sockets/chat/chat-session.js";
 
 export class ChatController {

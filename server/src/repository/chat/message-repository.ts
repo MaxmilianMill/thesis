@@ -36,7 +36,7 @@ async function saveOrUpdateMessage(
     uid: string,
     chatId: string,
     messageId: string,
-    updatedFields: Partial<Message>
+    updatedFields: Message | Partial<Message>
 ): Promise<WithStatus<"message", Message>> {
     const db = getDB();
 
