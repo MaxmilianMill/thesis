@@ -3,7 +3,7 @@ import { getDB } from "../../db/config.js";
 import type { Chat } from "../../types/chat/chat.js";
 import { ChatSchema } from "../../types/chat/chat.js";
 import type { WithStatus } from "../../types/utils/with-status.js";
-import { transformChatDoc } from "./utils/transform-chat-doc.js";
+import { transformMongoDBDoc } from "./utils/transform-chat-doc.js";
 
 export const CHAT_COLLECTION = "chat";
 
@@ -25,7 +25,7 @@ async function updateChat(
     if (!response) 
         throw new MongoError("No document found.");
 
-    const transformedData = transformChatDoc<Chat>(response, ChatSchema)
+    const transformedData = transformMongoDBDoc<Chat>(response, ChatSchema)
 
     return { chat: transformedData, status: 200 };
 };
@@ -67,7 +67,7 @@ async function getChat(
     if (!response)
         return {status: 200, chat: undefined};
 
-    const transformedChat = transformChatDoc<Chat>(response, ChatSchema);
+    const transformedChat = transformMongoDBDoc<Chat>(response, ChatSchema);
 
     return {status: 200, chat: transformedChat};
 }

@@ -8,6 +8,8 @@ export const MessageSchema = z.object({
     id: z.string(),
     uid: z.string(),
     createdAt: z.coerce.date(),
+    improvedVersion: z.string().optional(),
+    isCorrect: z.boolean().optional(),
     mistakes: z.array(MistakeSchema).optional()
 });
 

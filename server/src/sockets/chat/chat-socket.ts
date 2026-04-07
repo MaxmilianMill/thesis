@@ -1,9 +1,12 @@
-import { WebSocketServer } from "ws";
+import { WebSocketServer, type WebSocket } from "ws";
 import type { Server } from "http";
 import { ChatController } from "../../controllers/chat/chat-controller.js";
 import { ChatService } from "../../services/chat/chat-service.js";
 import { MessageService } from "../../services/chat/message-service.js";
 import { InfoService } from "../../services/setup/info-service.js";
+import { FeedbackService } from "../../services/chat/feedback-service.js";
+import { TaskListUpdaterService } from "../../services/chat/task-list-updater-service.js";
+import { ChatSession } from "./chat-session.js";
 
 export function initializeChatSocket(httpServer: Server) {
     console.log("Initializing Websocket...")
@@ -13,11 +16,15 @@ export function initializeChatSocket(httpServer: Server) {
         const chatService = new ChatService();
         const messageService = new MessageService();
         const infoService = new InfoService();
+        const feedbackService = new FeedbackService();
+        const taskListUpdateService = new TaskListUpdaterService();
 
         const chatController = new ChatController(
             chatService,
             messageService,
-            infoService
+            infoService,
+            feedbackService,
+            taskListUpdateService
         );
 
         const wss = new WebSocketServer({
@@ -27,11 +34,16 @@ export function initializeChatSocket(httpServer: Server) {
 
         console.log(`WebSocket server created on path: /ws/chat`);
 
-        wss.on("connection", (ws, req) => {
+        wss.on("connection", (ws: WebSocket, req) => {
             console.log(`WebSocket connection from ${req.socket.remoteAddress}`);
             console.log("WebSocket connection established");
 
-            chatController.handleMessage(ws);
+            const session = new ChatSession(ws);
+
+            chatController.handleMessage(session).catch((error) => {
+                console.error("Unhandled connection error: ", error);
+                ws.close(1011, "Internal server error")
+            });
         });
 
         wss.on("error", (error) => {
