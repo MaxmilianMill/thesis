@@ -14,7 +14,7 @@ export async function connectDB() {
   
   try {
 
-    mongoClient = new MongoClient(uri);
+    mongoClient = new MongoClient(uri, {autoSelectFamily: false});
     
     await mongoClient.connect();
     

@@ -1,12 +1,59 @@
-import type { GenerateContentConfig } from "@google/genai";
-import type { Message } from "../../types/chat/message.js";
+import { Modality } from "@google/genai";
+import { MODELS } from "../../integrations/ai/config.js";
 import type { UserInfo } from "../../types/setup/user-info.js";
 import type { Chat } from "../../types/chat/chat.js";
+import type { Message } from "../../types/chat/message.js";
 
-export class MessageService {
+export class AISessionService {
 
-    public buildSystemInstruction(userInfo: UserInfo) {
-        const { language, level, interests, name, partner } = userInfo;
+    constructor(public userInfo: UserInfo) {
+        this.userInfo = userInfo;
+    };
+
+    sendTextMessage(
+        ws: WebSocket,
+        chat: Chat,
+        message?: Message,
+        history?: Message[]
+    ) {
+        const turnPrompt = this.buildTurnContext(
+            chat, message, history
+        );
+
+        const textMessage = {
+            realtimeInput: {
+                text: turnPrompt
+            }
+        };
+
+        ws.send(JSON.stringify(textMessage));
+        console.log("Text message sent: ", textMessage);
+    }
+
+    buildSystemInstruction() {
+
+        const systemPrompt = this.buildSystemPrompt();
+
+        const configMessage = {
+            setup: {
+                model: `models/${MODELS.LIVE}`,
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+                generationConfig: {
+                    responseModalities: [Modality.AUDIO],
+                    speechConfig: {
+                        voiceConfig: { prebuiltVoiceConfig: { voiceName: "Aoede" } }
+                    }
+                }
+            }
+        }
+
+        return JSON.stringify(configMessage);
+    }
+
+    private buildSystemPrompt() {
+        const { language, level, interests, name, partner } = this.userInfo;
 
         const interestsList = interests.toString();
 
@@ -35,7 +82,7 @@ export class MessageService {
             6. **Keep responses concise.** Aim for 1–3 sentences unless the scenario calls for more. Avoid monologues.
             7. **Never mention tasks, task lists, or learning objectives directly.** The conversation must feel like a real-life interaction, not a language exercise.
         `;
-    }
+    };
 
     private buildTurnContext(
         chat: Chat,
@@ -88,10 +135,5 @@ export class MessageService {
 
             Now respond as the language buddy. Your response will be spoken aloud, so write naturally — no bullet points, no markdown formatting.`;
     };
-
-    private getConfig(): GenerateContentConfig {
-        return {
-            temperature: 0.7
-        }
-    };
-};
+    
+}

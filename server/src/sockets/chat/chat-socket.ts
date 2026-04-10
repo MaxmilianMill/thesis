@@ -1,31 +1,15 @@
 import { WebSocketServer, type WebSocket } from "ws";
 import type { Server } from "http";
-import { ChatController } from "../../controllers/chat/chat-controller.js";
 import { ChatService } from "../../services/chat/chat-service.js";
-import { MessageService } from "../../services/chat/message-service.js";
 import { InfoService } from "../../services/setup/info-service.js";
-import { FeedbackService } from "../../services/chat/feedback-service.js";
-import { TaskListUpdaterService } from "../../services/chat/task-list-updater-service.js";
-import { ChatSession } from "./chat-session.js";
+import { ChatSession } from "../../sessions/chat-session.js";
+import * as url from "url";
+import { AISessionService } from "../../services/chat/ai-session-service.js";
 
 export function initializeChatSocket(httpServer: Server) {
     console.log("Initializing Websocket...")
 
     try {
-        // Create dependencies internally
-        const chatService = new ChatService();
-        const messageService = new MessageService();
-        const infoService = new InfoService();
-        const feedbackService = new FeedbackService();
-        const taskListUpdateService = new TaskListUpdaterService();
-
-        const chatController = new ChatController(
-            chatService,
-            messageService,
-            infoService,
-            feedbackService,
-            taskListUpdateService
-        );
 
         const wss = new WebSocketServer({
             server: httpServer,
@@ -34,16 +18,49 @@ export function initializeChatSocket(httpServer: Server) {
 
         console.log(`WebSocket server created on path: /ws/chat`);
 
-        wss.on("connection", (ws: WebSocket, req) => {
-            console.log(`WebSocket connection from ${req.socket.remoteAddress}`);
-            console.log("WebSocket connection established");
+        wss.on("connection", async (ws: WebSocket, req) => {
 
-            const session = new ChatSession(ws);
+            try {
 
-            chatController.handleMessage(session).catch((error) => {
-                console.error("Unhandled connection error: ", error);
-                ws.close(1011, "Internal server error")
-            });
+                console.log(`WebSocket connection from ${req.socket.remoteAddress}`);
+                console.log("WebSocket connection established");
+
+                const { query } = url.parse(req.url || "", true);
+                const chatId = query.chatId as string;
+                const uid = query.uid as string;
+
+                if (!chatId || !uid) {
+                    console.error("Missing credentials in WebSocket URL");
+                    ws.close(1008, "Policy Violation: Missing chatId or userId");
+                    return;
+                }
+            
+                const chatService = new ChatService();
+                const infoService = new InfoService();
+
+                const [
+                    userInfo,
+                    chat
+                ] = await Promise.all([
+                    infoService.getUserData(uid),
+                    chatService.get(uid, chatId)
+                ]);
+
+                if (!chat.chat)
+                    throw new Error("Chat does not exist.");
+
+                const aiSessionService = new AISessionService(userInfo.userInfo);
+
+                const session = new ChatSession(
+                    ws,
+                    aiSessionService,
+                    userInfo.userInfo,
+                    chat.chat
+                );
+            } catch (error) {
+                console.error("Failed to initialize session data: ", error);
+                ws.close(1011, "Internal server error during setup");
+            }
         });
 
         wss.on("error", (error) => {

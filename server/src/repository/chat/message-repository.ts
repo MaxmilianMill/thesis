@@ -14,13 +14,20 @@ async function *generateMessageStream(
 ): AsyncGenerator<string> {
     
     const response = await ai.models.generateContentStream({
-        model: MODELS.FLASH,
+        model: "gemini-2.5-flash-preview-tts",
         contents: prompt,
         config
     });
 
     for await (const textChunk of response) {
         if (textChunk.text) yield textChunk.text;
+
+        const audioChunk = textChunk.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+
+        if (audioChunk) {
+            const audioBuffer = Buffer.from(audioChunk, "base64");
+            console.log(audioBuffer.toString().slice(0, 10));
+        };
     };
 };
 
