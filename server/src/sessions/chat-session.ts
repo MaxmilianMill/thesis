@@ -1,6 +1,3 @@
-import type { Task } from "../integrations/ai/schemas/task-list.js";
-import type { Message } from "../types/chat/message.js";
-import type { WSPayload } from "../sockets/utils/ws-payload.js";
 import WebSocket from "ws";
 import { ClientSession } from "./client-session.js";
 import { AISession } from "./ai-session.js";
@@ -37,6 +34,9 @@ export class ChatSession {
 
         // 2. When the AI responds, send it to the Client
         this.ai?.on('ai_msg', (audio, text) => {
+
+            console.log(audio);
+
             this.client.sendAIResponse(audio, text);
         });
 

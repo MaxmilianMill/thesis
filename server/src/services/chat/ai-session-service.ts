@@ -21,8 +21,9 @@ export class AISessionService {
         );
 
         const textMessage = {
-            realtimeInput: {
-                text: turnPrompt
+            clientContent: {
+                turns: [{ role: "user", parts: [{ text: turnPrompt }] }],
+                turnComplete: true
             }
         };
 
@@ -44,8 +45,9 @@ export class AISessionService {
                     responseModalities: [Modality.AUDIO],
                     speechConfig: {
                         voiceConfig: { prebuiltVoiceConfig: { voiceName: "Aoede" } }
-                    }
-                }
+                    },
+                },
+                output_audio_transcription: {}
             }
         }
 

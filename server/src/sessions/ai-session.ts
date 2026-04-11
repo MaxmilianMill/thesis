@@ -33,14 +33,12 @@ export class AISession extends EventEmitter {
 
         this.ws.onmessage = async (event) => {
 
-            console.log("Receiving data...");
             let rawData = event.data;
 
             // Unwrap the Blob into a string
             if (rawData instanceof Blob) {
                 rawData = await rawData.text();
             } else if (Buffer.isBuffer(rawData)) {
-                // Just in case you switch back to the 'ws' npm package later
                 rawData = rawData.toString();
             }
 
@@ -57,9 +55,9 @@ export class AISession extends EventEmitter {
                 if (serverContent.modelTurn?.parts) {
                     for (const part of serverContent.modelTurn.parts) {
                         if (part.inlineData) {
-                        const audioData = part.inlineData.data; // Base64 encoded string
-                        // Process or play audioData
-                        console.log(`Received audio data (base64 len: ${audioData.length})`);
+                            audioChunk = part.inlineData.data; // Base64 encoded string
+                            // Process or play audioData
+                            console.log(`Received audio data (base64 len: ${audioChunk.length})`);
                         }
                     }
                 }
@@ -74,7 +72,8 @@ export class AISession extends EventEmitter {
                     console.log('Gemini:', serverContent.outputTranscription.text);
                 }
 
-                this.emit("ai_msg", audioChunk, textChunk);
+                if (textChunk || audioChunk)
+                    this.emit("ai_msg", audioChunk, textChunk);
             }
         };
 
