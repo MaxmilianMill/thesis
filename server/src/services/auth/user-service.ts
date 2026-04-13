@@ -1,5 +1,5 @@
 import { addUser, getLastUser } from "../../repository/auth/user-repository.js";
-import type { User } from "../../types/auth/user.js";
+import type { User } from "@thesis/types";
 import jwtService from "./jwt-service.js";
 
 class UserService {

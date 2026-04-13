@@ -1,10 +1,10 @@
 import type { GenerateContentConfig } from "@google/genai";
 import { ai, MODELS } from "../../integrations/ai/config.js";
-import { MessageSchema, type Message } from "../../types/chat/message.js";
+import { MessageSchema, type Message } from "@thesis/types";
 import { MongoError, ObjectId } from "mongodb";
 import { getDB } from "../../db/config.js";
 import { transformMongoDBDoc } from "./utils/transform-chat-doc.js";
-import type { WithStatus } from "../../types/utils/with-status.js";
+import type { WithStatus } from "@thesis/types";
 
 const MESSAGE_COLLECTION = "messages";
 

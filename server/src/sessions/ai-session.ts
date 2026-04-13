@@ -1,8 +1,8 @@
 import { EventEmitter } from "events";
-import type { UserInfo } from "../types/setup/user-info.js";
+import type { UserInfo } from "@thesis/types";
 import type { AISessionService } from "../services/chat/ai-session-service.js";
-import type { Chat } from "../types/chat/chat.js";
-import type { Message } from "../types/chat/message.js";
+import type { Chat } from "@thesis/types";
+import type { Message } from "@thesis/types";
 
 const AI_WS_URL = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?key=${process.env.GEMINI_API_KEY}`;
 

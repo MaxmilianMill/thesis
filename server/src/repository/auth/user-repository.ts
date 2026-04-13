@@ -1,6 +1,6 @@
 import { MongoError } from "mongodb";
 import { getDB } from "../../db/config.js";
-import type { User } from "../../types/auth/user.js";
+import type { User } from "@thesis/types";
 
 const USER_COLLECTION = "users";
 

@@ -1,8 +1,8 @@
 import { MongoError, ObjectId } from "mongodb";
 import { getDB } from "../../db/config.js";
-import type { Chat } from "../../types/chat/chat.js";
-import { ChatSchema } from "../../types/chat/chat.js";
-import type { WithStatus } from "../../types/utils/with-status.js";
+import type { Chat } from "@thesis/types";
+import { ChatSchema } from "@thesis/types";
+import type { WithStatus } from "@thesis/types";
 import { transformMongoDBDoc } from "./utils/transform-chat-doc.js";
 
 export const CHAT_COLLECTION = "chat";

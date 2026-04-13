@@ -1,4 +1,3 @@
-import jwtService from "../../services/auth/jwt-service.js";
 import type { Request, Response } from "express";
 import userService from "../../services/auth/user-service.js";
 

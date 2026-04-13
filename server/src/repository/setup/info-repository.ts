@@ -1,7 +1,7 @@
 import { MongoError, ObjectId } from "mongodb";
 import { getDB } from "../../db/config.js";
-import type { UserInfo } from "../../types/setup/user-info.js";
-import type { WithStatus } from "../../types/utils/with-status.js";
+import type { UserInfo } from "@thesis/types";
+import type { WithStatus } from "@thesis/types";
 
 const INFO_COLLECTION = "info";
 

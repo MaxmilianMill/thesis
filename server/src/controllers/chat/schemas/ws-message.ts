@@ -1,5 +1,5 @@
 import z from "zod";
-import { MessageSchema } from "../../../types/chat/message.js";
+import { MessageSchema } from "../../../../../packages/types/src/chat/message.js";
 
 export const WSMessageSchema = z.object({
     uid: z.uuid(),

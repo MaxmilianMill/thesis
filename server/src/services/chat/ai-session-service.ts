@@ -1,8 +1,8 @@
 import { Modality } from "@google/genai";
 import { MODELS } from "../../integrations/ai/config.js";
-import type { UserInfo } from "../../types/setup/user-info.js";
-import type { Chat } from "../../types/chat/chat.js";
-import type { Message } from "../../types/chat/message.js";
+import type { UserInfo } from "@thesis/types";
+import type { Chat } from "@thesis/types";
+import type { Message } from "@thesis/types";
 
 export class AISessionService {
 

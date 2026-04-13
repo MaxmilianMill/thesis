@@ -1,5 +1,5 @@
 import { addChat, getChat, updateChat } from "../../repository/chat/chat-repository.js";
-import type { Chat } from "../../types/chat/chat.js";
+import type { Chat } from "@thesis/types";
 
 export class ChatService {
 

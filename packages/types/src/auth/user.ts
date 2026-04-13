@@ -1,4 +1,7 @@
-import type { SignedJWT } from "../../services/auth/jwt-service.js"
+export type SignedJWT = {
+    token: string;
+    uid: string;
+};
 
 export type User = {
     authToken: SignedJWT;

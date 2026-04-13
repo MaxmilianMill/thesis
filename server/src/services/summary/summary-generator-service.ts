@@ -1,11 +1,11 @@
 import type { GenerateContentConfig } from "@google/genai";
-import type { Message } from "../../types/chat/message.js";
-import type { UserInfo } from "../../types/setup/user-info.js";
+import type { Message } from "@thesis/types";
+import type { UserInfo } from "@thesis/types";
 import z from "zod";
-import { SummaryAIGenerationSchema, type Summary } from "../../types/summary/summary.js";
+import { SummaryAIGenerationSchema, type Summary } from "@thesis/types";
 import { generateSummary, saveOrUpdateSummary } from "../../repository/summary/summary-repository.js";
 import { validateSchema } from "../../utils/validate-schema.js";
-import type { WithStatus } from "../../types/utils/with-status.js";
+import type { WithStatus } from "@thesis/types";
 
 interface IGenerateSummary {
     userInfo: UserInfo;

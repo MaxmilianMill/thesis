@@ -1,6 +1,6 @@
-import type { Scenario } from "../../types/setup/scenario.js";
-import type { UserInfo } from "../../types/setup/user-info.js";
-import type { WithStatus } from "../../types/utils/with-status.js";
+import type { Scenario } from "@thesis/types";
+import type { UserInfo } from "@thesis/types";
+import type { WithStatus } from "@thesis/types";
 
 async function getScenario(
     userInfo: UserInfo

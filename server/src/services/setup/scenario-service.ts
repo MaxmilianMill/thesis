@@ -1,5 +1,5 @@
 import { getScenario } from "../../repository/setup/scenario-repository.js";
-import type { UserInfo } from "../../types/setup/user-info.js";
+import type { UserInfo } from "@thesis/types";
 
 export class ScenarioService {
 

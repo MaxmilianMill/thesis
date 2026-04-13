@@ -1,11 +1,11 @@
 import type { GenerateContentConfig } from "@google/genai";
-import type { Chat } from "../../types/chat/chat.js";
-import type { Message } from "../../types/chat/message.js";
-import type { UserInfo } from "../../types/setup/user-info.js";
+import type { Chat } from "@thesis/types";
+import type { Message } from "@thesis/types";
+import type { UserInfo } from "@thesis/types";
 import { ImprovedVersionSchema } from "./schemas/improved-version.js";
 import z from "zod";
-import type { Language } from "../../types/setup/language.js";
-import type { Level } from "../../types/setup/level.js";
+import type { Language } from "@thesis/types";
+import type { Level } from "@thesis/types";
 import { improveVersion } from "../../repository/chat/feedback-repository.js";
 
 export interface IFeedbackInput {

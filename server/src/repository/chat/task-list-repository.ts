@@ -2,10 +2,9 @@ import { GoogleGenAI, type GenerateContentConfig } from "@google/genai";
 import { ai, MODELS } from "../../integrations/ai/config.js";
 import { ObjectId, MongoError } from "mongodb";
 import { getDB } from "../../db/config.js";
-import type { TaskList } from "../../types/chat/task-list.js";
+import type { TaskList } from "@thesis/types";
 import { CHAT_COLLECTION } from "./chat-repository.js";
-import type { WithStatus } from "../../types/utils/with-status.js";
-import type { Message } from "../../types/chat/message.js";
+import type { WithStatus } from "@thesis/types";
 
 /**
  * Generates a task list for a specific scenario and returns the raw output string.

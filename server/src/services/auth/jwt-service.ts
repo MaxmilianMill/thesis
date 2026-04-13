@@ -1,11 +1,7 @@
 import { v4 } from "uuid";
 import jwt from "jsonwebtoken"
 import { config } from "../../config.js";
-
-export type SignedJWT = {
-    token: string;
-    uid: string;
-};
+import type { SignedJWT } from "@thesis/types";
 
 class JWTService {
 

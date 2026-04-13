@@ -3,7 +3,7 @@ import WebSocket from "ws";
 import { WSMessageSchema, type WSMessage } from "../controllers/chat/schemas/ws-message.js";
 import type { WSPayload } from "../sockets/utils/ws-payload.js";
 import { FeedbackService, type IFeedbackInput } from "../services/chat/feedback-service.js";
-import type { Message } from "../types/chat/message.js";
+import type { Message } from "@thesis/types";
 
 export class ClientSession extends EventEmitter {
     feedbackService: FeedbackService;

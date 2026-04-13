@@ -2,9 +2,9 @@ import WebSocket from "ws";
 import { ClientSession } from "./client-session.js";
 import { AISession } from "./ai-session.js";
 import type { AISessionService } from "../services/chat/ai-session-service.js";
-import type { UserInfo } from "../types/setup/user-info.js";
+import type { UserInfo } from "@thesis/types";
 import type { WSMessage } from "../controllers/chat/schemas/ws-message.js";
-import type { Chat } from "../types/chat/chat.js";
+import type { Chat } from "@thesis/types";
 import type { FeedbackService } from "../services/chat/feedback-service.js";
 
 export class ChatSession {

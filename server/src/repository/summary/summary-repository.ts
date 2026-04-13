@@ -1,10 +1,10 @@
 import type { GenerateContentConfig } from "@google/genai";
 import { ai, MODELS } from "../../integrations/ai/config.js";
-import { SummarySchema, type Summary } from "../../types/summary/summary.js";
+import { SummarySchema, type Summary } from "@thesis/types";
 import { getDB } from "../../db/config.js";
 import { transformMongoDBDoc } from "../chat/utils/transform-chat-doc.js";
 import { MongoError, ObjectId } from "mongodb";
-import type { WithStatus } from "../../types/utils/with-status.js";
+import type { WithStatus } from "@thesis/types";
 
 const SUMMARY_COLLECTION = "summary";
 

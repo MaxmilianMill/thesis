@@ -1,12 +1,12 @@
 import type { GenerateContentConfig } from "@google/genai";
 import type { IAIGenerator } from "../../integrations/ai/ai-generator.js";
-import { TaskListSchema, type TaskList } from "../../types/chat/task-list.js";
+import { TaskListSchema, type TaskList } from "@thesis/types";
 import { getInfoData } from "../../repository/setup/info-repository.js";
-import type { Scenario } from "../../types/setup/scenario.js";
-import type { UserInfo } from "../../types/setup/user-info.js";
+import type { Scenario } from "@thesis/types";
+import type { UserInfo } from "@thesis/types";
 import z from "zod";
 import { saveTaskList, generateTaskList } from "../../repository/chat/task-list-repository.js";
-import type { WithStatus } from "../../types/utils/with-status.js";
+import type { WithStatus } from "@thesis/types";
 
 type GenerateTaskListInput = {
     uid: string;

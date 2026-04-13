@@ -1,6 +1,6 @@
 import type { GenerateContentConfig } from "@google/genai";
-import type { Chat } from "../../types/chat/chat.js";
-import type { Message } from "../../types/chat/message.js";
+import type { Chat } from "@thesis/types";
+import type { Message } from "@thesis/types";
 import z from "zod";
 import { TaskListUpdateSchema } from "./schemas/task-list-update.js";
 import { findCompletedTasks } from "../../repository/chat/task-list-repository.js";
