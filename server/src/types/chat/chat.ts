@@ -1,5 +1,5 @@
 import z from "zod";
-import { TaskListSchema } from "../../integrations/ai/schemas/task-list.js"
+import { TaskListSchema } from "./task-list.js"
 
 export const ChatSchema = z.object({
     id: z.string(),

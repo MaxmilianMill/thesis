@@ -1,6 +1,6 @@
 import type { GenerateContentConfig } from "@google/genai";
 import type { IAIGenerator } from "../../integrations/ai/ai-generator.js";
-import { TaskListSchema, type TaskList } from "../../integrations/ai/schemas/task-list.js";
+import { TaskListSchema, type TaskList } from "../../types/chat/task-list.js";
 import { getInfoData } from "../../repository/setup/info-repository.js";
 import type { Scenario } from "../../types/setup/scenario.js";
 import type { UserInfo } from "../../types/setup/user-info.js";

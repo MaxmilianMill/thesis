@@ -2,7 +2,7 @@ import { GoogleGenAI, type GenerateContentConfig } from "@google/genai";
 import { ai, MODELS } from "../../integrations/ai/config.js";
 import { ObjectId, MongoError } from "mongodb";
 import { getDB } from "../../db/config.js";
-import type { TaskList } from "../../integrations/ai/schemas/task-list.js";
+import type { TaskList } from "../../types/chat/task-list.js";
 import { CHAT_COLLECTION } from "./chat-repository.js";
 import type { WithStatus } from "../../types/utils/with-status.js";
 import type { Message } from "../../types/chat/message.js";
