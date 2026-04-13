@@ -20,6 +20,8 @@ export class AISessionService {
             chat, message, history
         );
 
+        console.log(turnPrompt);
+
         const textMessage = {
             clientContent: {
                 turns: [{ role: "user", parts: [{ text: turnPrompt }] }],
@@ -70,7 +72,7 @@ export class AISessionService {
             - Interests: ${interestsList}
 
             ## Your Behavior Rules
-            1. **Always respond in ${language.name}.** Never switch to any other language, even if the user writes in their native language.
+            1. **Always respond in ${language.name}** Never switch to any other language, even if the user writes in their native language.
             2. **Match the user's level.** For ${level.name} (${level.code.toUpperCase()}):
             ${level.code === "a1" || level.code === "a2"
                 ? "- Use simple vocabulary, short sentences, and common everyday expressions. Avoid complex grammar."
@@ -92,6 +94,8 @@ export class AISessionService {
         history?: Message[]
     ): string {
         const { taskList } = chat!;
+
+        console.log(message);
 
         const currentTask = taskList.find(t => !t.completed) ?? null;
         const completedTasks = taskList.filter(t => t.completed);

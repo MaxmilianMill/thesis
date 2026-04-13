@@ -2,12 +2,16 @@ import { EventEmitter } from "events";
 import WebSocket from "ws";
 import { WSMessageSchema, type WSMessage } from "../controllers/chat/schemas/ws-message.js";
 import type { WSPayload } from "../sockets/utils/ws-payload.js";
+import { FeedbackService, type IFeedbackInput } from "../services/chat/feedback-service.js";
+import type { Message } from "../types/chat/message.js";
 
 export class ClientSession extends EventEmitter {
+    feedbackService: FeedbackService;
 
     constructor(public ws: WebSocket) {
         super();
         this.ws = ws;
+        this.feedbackService = new FeedbackService();
 
         this.attachListeners();
     };
@@ -30,6 +34,19 @@ export class ClientSession extends EventEmitter {
         };
 
         this.ws.send(JSON.stringify(response));
+    };
+
+    async generateFeedback(data: IFeedbackInput) {
+
+        const feedback = await this.feedbackService
+            .generateFeedback(data);
+
+        this.emit("feedback", feedback);
+    };
+
+    sendFeedback(feedback: Message) {
+
+        this.ws.send(JSON.stringify(feedback));
     };
 
     close() {

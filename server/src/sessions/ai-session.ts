@@ -84,8 +84,6 @@ export class AISession extends EventEmitter {
 
         // Update the close listener to print the exact reason
         this.ws.onclose = (event) => {
-            // Note: If using the 'ws' npm package, event might just be the code.
-            // If it's a standard close event, it has event.code and event.reason
             const reason = event.reason ? event.reason.toString() : "No reason provided";
             console.log(`🔌 Gemini connection closed. Code: ${event.code}, Reason: ${reason}`);
             this.emit("disconnected");

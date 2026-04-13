@@ -5,6 +5,7 @@ import type { AISessionService } from "../services/chat/ai-session-service.js";
 import type { UserInfo } from "../types/setup/user-info.js";
 import type { WSMessage } from "../controllers/chat/schemas/ws-message.js";
 import type { Chat } from "../types/chat/chat.js";
+import type { FeedbackService } from "../services/chat/feedback-service.js";
 
 export class ChatSession {
     client: ClientSession;
@@ -13,6 +14,7 @@ export class ChatSession {
     constructor(
         client: WebSocket,
         public aiSessionService: AISessionService,
+        public feedbackService: FeedbackService,
         public userInfo: UserInfo,
         public chat: Chat
     ) {
@@ -24,15 +26,29 @@ export class ChatSession {
 
     initializeListeners() {
         // When the user speaks, send it to the AI
-        this.client.on('user_msg', (data: WSMessage) => {
+        this.client.on('user_msg', async (data: WSMessage) => {
             this.ai?.handleSendTextMessage(
                 this.chat,
                 data.message,
                 data.history
             );
+
+            if (!data.message) return;
+            
+            await this.client.generateFeedback({
+                userInfo: this.userInfo,
+                chat: this.chat,
+                message: data.message,
+                history: data.history
+            });
         });
 
-        // 2. When the AI responds, send it to the Client
+        // When we receive feedback
+        this.client.on("feedback", (feedback) => {
+            this.client.sendFeedback(feedback);
+        });
+
+        // When the AI responds, send it to the Client
         this.ai?.on('ai_msg', (audio, text) => {
 
             console.log(audio);
@@ -40,7 +56,7 @@ export class ChatSession {
             this.client.sendAIResponse(audio, text);
         });
 
-        // 3. Robust Cleanup (If one dies, kill the other)
+        // Robust Cleanup (If one dies, kill the other)
         this.client.on('disconnected', () => {
             console.log("User left. Shutting down AI.");
             this.ai?.close();

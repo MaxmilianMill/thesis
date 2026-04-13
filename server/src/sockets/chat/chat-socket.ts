@@ -5,6 +5,7 @@ import { InfoService } from "../../services/setup/info-service.js";
 import { ChatSession } from "../../sessions/chat-session.js";
 import * as url from "url";
 import { AISessionService } from "../../services/chat/ai-session-service.js";
+import { FeedbackService } from "../../services/chat/feedback-service.js";
 
 export function initializeChatSocket(httpServer: Server) {
     console.log("Initializing Websocket...")
@@ -50,13 +51,16 @@ export function initializeChatSocket(httpServer: Server) {
                     throw new Error("Chat does not exist.");
 
                 const aiSessionService = new AISessionService(userInfo.userInfo);
+                const feedbackService = new FeedbackService();
 
-                const session = new ChatSession(
+                new ChatSession(
                     ws,
                     aiSessionService,
+                    feedbackService,
                     userInfo.userInfo,
                     chat.chat
                 );
+
             } catch (error) {
                 console.error("Failed to initialize session data: ", error);
                 ws.close(1011, "Internal server error during setup");

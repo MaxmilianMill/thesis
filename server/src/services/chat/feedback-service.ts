@@ -8,11 +8,11 @@ import type { Language } from "../../types/setup/language.js";
 import type { Level } from "../../types/setup/level.js";
 import { improveVersion } from "../../repository/chat/feedback-repository.js";
 
-interface IFeedbackInput {
+export interface IFeedbackInput {
     userInfo: UserInfo;
     chat: Chat;
     message: Message;
-    history?: Message[];
+    history?: Message[] | undefined;
 };
 
 export class FeedbackService {
