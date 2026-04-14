@@ -1,7 +1,7 @@
 import { LevelOption } from '@/components/setup/LevelOption';
 
 const LEVELS = [
-  { level: 'A1', description: 'Beginner – I know a few words and basic greetings.' },
+  { level: 'A1', description: 'Beginner – I know a few words and basic greetings.', key: "" },
   { level: 'A2', description: 'Elementary – I can handle simple, routine conversations.' },
   { level: 'B1', description: 'Intermediate – I can discuss familiar topics and express opinions.' },
 ];

@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GetStarted from './pages/start/GetStarted'
 import SetupScreen from './pages/setup/SetupScreen'
 import PartnerCustomizationScreen from './pages/partner/PartnerCustomizationScreen'
+import OverviewScreen from './pages/chat/Overview'
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: "/partner",
     element: <PartnerCustomizationScreen />,
+  },
+  {
+    path: "/study",
+    element: <OverviewScreen />,
   },
 ]);
 

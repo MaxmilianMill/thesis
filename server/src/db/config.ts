@@ -1,4 +1,7 @@
 import { Db, MongoClient } from 'mongodb';
+import * as dotenv from "dotenv";
+
+dotenv.config()
 
 let dbInstance: Db;
 let mongoClient: MongoClient;

@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from '@/hooks/useAuth';
 
 // define a schema for form validation
 const formSchema = z.object({
@@ -25,6 +26,7 @@ const formSchema = z.object({
 export default function GetStartedScreen() {
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
+  const {authenticate} = useAuth();
 
   // initialize react-hook-form
   const { 
@@ -39,9 +41,13 @@ export default function GetStartedScreen() {
   });
 
   // handle form submission and routing
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Starting study with username:", values.username);
-    // you can store the username in localStorage or state management here before navigating
+    
+    const authenticated = await authenticate(values.username);
+
+    if (!authenticated) return;
+    
     navigate('/study');
   }
 
@@ -105,7 +111,7 @@ export default function GetStartedScreen() {
             <CardContent>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="username">How should we call you?</Label>
+                  <Label>How should we call you?</Label>
                   <Input 
                     id="username"
                     placeholder="e.g. Explorer123" 

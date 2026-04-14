@@ -1,0 +1,64 @@
+{
+  "hash": "2537e3dd",
+  "configHash": "b48d6b95",
+  "lockfileHash": "83f9cf05",
+  "browserHash": "ebcd4364",
+  "optimized": {
+    "@hookform/resolvers/zod": {
+      "src": "../../node_modules/@hookform/resolvers/zod/dist/zod.mjs",
+      "file": "@hookform_resolvers_zod.js",
+      "fileHash": "e0f10e70",
+      "needsInterop": false
+    },
+    "react-dom/client": {
+      "src": "../../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "3ba250c9",
+      "needsInterop": true
+    },
+    "react-hook-form": {
+      "src": "../../node_modules/react-hook-form/dist/index.esm.mjs",
+      "file": "react-hook-form.js",
+      "fileHash": "cf6031f8",
+      "needsInterop": false
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "f79560a3",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "602ff087",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "607397bf",
+      "needsInterop": true
+    },
+    "zod": {
+      "src": "../../../node_modules/zod/index.js",
+      "file": "zod.js",
+      "fileHash": "92b6a99c",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-BoAXSpZd": {
+      "file": "chunk-BoAXSpZd.js",
+      "isDynamicEntry": false
+    },
+    "core-xcEuNVmG": {
+      "file": "core-xcEuNVmG.js",
+      "isDynamicEntry": false
+    },
+    "react-dom-BK7GjNDB": {
+      "file": "react-dom-BK7GjNDB.js",
+      "isDynamicEntry": false
+    }
+  }
+}
