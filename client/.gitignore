@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 CLAUDE.md
+plan
+client/plan/Mockup.md
+

@@ -2,6 +2,7 @@ import { ThemeProvider } from './components/providers/theme-provider'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GetStarted from './pages/start/GetStarted'
 import SetupScreen from './pages/setup/SetupScreen'
+import PartnerCustomizationScreen from './pages/partner/PartnerCustomizationScreen'
 
 const router = createBrowserRouter([
   {
@@ -11,6 +12,10 @@ const router = createBrowserRouter([
   {
     path: "/setup",
     element: <SetupScreen />,
+  },
+  {
+    path: "/partner",
+    element: <PartnerCustomizationScreen />,
   },
 ]);
 

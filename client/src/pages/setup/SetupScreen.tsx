@@ -25,7 +25,7 @@ export default function SetupScreen() {
       goNext();
     } else {
       await submitSetup({ level: selectedLevel!, interests: selectedInterests });
-      navigate('/study');
+      navigate('/partner');
     }
   }
 
