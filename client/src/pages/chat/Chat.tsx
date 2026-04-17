@@ -2,6 +2,7 @@ import { ChatInput } from '@/components/chat/Input';
 import { MessageList } from '@/components/chat/MessageList';
 import { PartnerSection } from '@/components/chat/PartnerSection';
 import { TaskList } from '@/components/chat/TaskList';
+import { useMessageController } from '@/hooks/useMessageController';
 import type { Message, TaskList as TaskListType } from '@thesis/types';
 
 const mockMessages: Message[] = [
@@ -61,6 +62,14 @@ const mockTasks: TaskListType = [
 ];
 
 export default function ChatScreen() {
+  const {
+    connectionStatus,
+    sendTextMessage,
+    toggleRecording
+  } = useMessageController();
+
+  console.log(connectionStatus);
+
   return (
     <div className="dark flex min-h-screen flex-col bg-background text-foreground max-w-xl mx-auto">
       <PartnerSection scenarioTitle="Ordering Coffee" />
@@ -68,7 +77,7 @@ export default function ChatScreen() {
       <div className="flex flex-1 items-end">
         <MessageList messages={mockMessages} partnerName="Amy" />
       </div>
-      <ChatInput />
+      <ChatInput sendTextMessage={sendTextMessage} toggleRecording={toggleRecording}/>
     </div>
   );
 };

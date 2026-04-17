@@ -15,7 +15,7 @@ export class ChatService {
 
     async create(
         uid: string,
-        chat: Omit<Chat, "createdAt">
+        chat: Omit<Chat, "createdAt" | "id" | "completed">
     ) {
         return await addChat(uid, chat);
     };

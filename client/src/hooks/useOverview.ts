@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Scenario, Partner, TaskList } from '@thesis/types';
+import type { Scenario, Partner, TaskList, Chat } from '@thesis/types';
 import { fetchOverviewData, generateTasks } from '@/lib/api/overviewApi';
+import { useChatSelectors } from '@/contexts/useChatStore';
+import { createChat } from '@/lib/api/chatApi';
 
 type OverviewState = 'overview' | 'loading' | 'tasks';
 
@@ -11,6 +13,8 @@ export function useOverview() {
   const [scenario, setScenario] = useState<Scenario | null>(null);
   const [partner, setPartner] = useState<Partner | null>(null);
   const [tasks, setTasks] = useState<TaskList | null>(null);
+  const setChat = useChatSelectors.use.setChat();
+
 
   useEffect(() => {
     fetchOverviewData().then(({ scenario, partner }) => {
@@ -27,9 +31,18 @@ export function useOverview() {
     setOverviewState('tasks');
   }
 
-  function handleStartSpeaking() {
-    navigate('/chat');
-  }
+  const handleStartSpeaking = useCallback(async () => {
+    
+    const newChat = await createChat({
+      taskList: tasks,
+      scenario: scenario
+    } as Chat);
+
+    if(!newChat) return;
+
+    setChat(newChat);
+    navigate("/chat");
+  }, [scenario, tasks, setChat, navigate])
 
   return {
     overviewState,

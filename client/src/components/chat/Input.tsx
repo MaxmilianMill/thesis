@@ -4,7 +4,14 @@ import { cn } from '@/lib/utils';
 
 type InputMode = 'audio' | 'text';
 
-export function ChatInput() {
+type ChatInputProps = {
+  sendTextMessage: (text: string) => void;
+  toggleRecording: () => void;
+}
+
+export function ChatInput({
+  sendTextMessage,
+}: ChatInputProps) {
   const [mode, setMode] = useState<InputMode>('audio');
   const [textValue, setTextValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -17,7 +24,8 @@ export function ChatInput() {
 
   const handleSend = () => {
     if (!textValue.trim()) return;
-    // TODO: send message
+    
+    sendTextMessage(textValue.trim());
     setTextValue('');
   };
 

@@ -1,4 +1,6 @@
-import type { TaskList, Partner } from '@thesis/types';
+import type { TaskList, Partner, Chat } from '@thesis/types';
+import { api } from './config';
+import { HttpStatusCode } from 'axios';
 
 const MOCK_TASKS: TaskList = [
   {
@@ -54,4 +56,15 @@ export async function fetchTaskList(): Promise<TaskList> {
 
 export async function fetchPartner(): Promise<Partner> {
   return new Promise((resolve) => setTimeout(() => resolve(MOCK_PARTNER), 200));
+}
+
+export async function createChat(chat: Partial<Chat>): Promise<Chat> {
+  return await api.post("/chat/create", {chat}).then((res) => {
+    if (res.status !== HttpStatusCode.Created) return;
+
+    return res.data.chat;
+  }).catch((error) => {
+    console.error(error.message);
+    return;
+  })
 }

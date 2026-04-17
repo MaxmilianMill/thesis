@@ -47,6 +47,8 @@ export function initializeChatSocket(httpServer: Server) {
                     chatService.get(uid, chatId)
                 ]);
 
+                console.log(chat)
+
                 if (!chat.chat)
                     throw new Error("Chat does not exist.");
 

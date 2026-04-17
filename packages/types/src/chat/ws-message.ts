@@ -1,5 +1,5 @@
-import z from "zod";
-import { MessageSchema } from "@thesis/types";
+import { z } from "zod";
+import { MessageSchema } from "./message.js";
 
 export const WSMessageSchema = z.object({
     uid: z.uuid(),

@@ -32,12 +32,18 @@ async function updateChat(
 
 async function addChat(
     uid: string,
-    partialChat: Omit<Chat, "createdAt">
+    partialChat: Omit<Chat, "createdAt" | "id" | "completed">
 ): Promise<WithStatus<"chat", Chat>> {
 
     const db = getDB();
 
-    const chat: Chat = {...partialChat, createdAt: new Date()};
+    const chat: Chat = {
+        ...partialChat, 
+        createdAt: new Date(), 
+        id: new ObjectId().toString(),
+        completed: false,
+        uid
+    };
 
     const response = await db
         .collection(CHAT_COLLECTION)
