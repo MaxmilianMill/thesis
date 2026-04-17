@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 export const server = http.createServer(app);
 
 const corsOptions = {
-  origin: 'http://localhost:5174', // Replace with your client's exact URL and port
+  origin: 'http://localhost:5173',
   optionsSuccessStatus: 200 
 };
 

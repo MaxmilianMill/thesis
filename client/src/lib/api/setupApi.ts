@@ -1,21 +1,39 @@
 import { HttpStatusCode } from "axios";
 import { api } from "./config";
-import type { UserInfo } from "@thesis/types";
+import type { Level, UserInfo } from "@thesis/types";
 
 export interface SetupData {
-  level: string;
+  level: Level;
   interests: string[];
 }
 
 export async function submitSetup(
-  _data: SetupData
+  data: Partial<UserInfo>
 ): Promise<UserInfo | undefined> {
-  return api.post("/setup/create", {..._data}).then((res) => {
+  return api.post("/setup/create", {data}).then((res) => {
 
     if (res.status !== HttpStatusCode.Created)
       return;
 
     return res.data.userInfo;
+  }).catch((error) => {
+    console.error(error.message);
+    return;
+  })
+}
+
+/** Returns the updatedFields if update was successful */
+export async function updateSetup(
+  data: Partial<UserInfo>,
+  /**Id of the userInfo doc */
+  docId: string
+): Promise<Partial<UserInfo> | undefined> {
+  return api.post("/setup/update", {data, id: docId}).then((res) => {
+
+    if (res.status !== HttpStatusCode.Ok)
+      return; 
+
+    return res.data.data;
   }).catch((error) => {
     console.error(error.message);
     return;

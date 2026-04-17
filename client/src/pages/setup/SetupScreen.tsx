@@ -5,7 +5,7 @@ import { ProgressBar } from '@/components/setup/ProgressBar';
 import { LevelStep } from './steps/LevelStep';
 import { InterestsStep } from './steps/InterestsStep';
 import { useSetup } from '@/hooks/useSetup';
-import { submitSetup } from '@/lib/api/setupApi';
+import type { Level } from '@thesis/types';
 
 export default function SetupScreen() {
   const navigate = useNavigate();
@@ -18,13 +18,14 @@ export default function SetupScreen() {
     toggleInterest,
     canContinue,
     goNext,
+    handleSubmitSetup
   } = useSetup();
 
   async function handleContinue() {
     if (step < totalSteps - 1) {
       goNext();
     } else {
-      await submitSetup({ level: selectedLevel!, interests: selectedInterests });
+      await handleSubmitSetup();
       navigate('/partner');
     }
   }
@@ -36,10 +37,10 @@ export default function SetupScreen() {
         <Card>
           <CardContent className="pt-6">
             {step === 0 && (
-              <LevelStep selectedLevel={selectedLevel} onSelect={setSelectedLevel} />
+              <LevelStep selectedLevel={selectedLevel as Level} onSelect={setSelectedLevel} />
             )}
             {step === 1 && (
-              <InterestsStep selectedInterests={selectedInterests} onToggle={toggleInterest} />
+              <InterestsStep selectedInterests={selectedInterests || []} onToggle={toggleInterest} />
             )}
           </CardContent>
           <CardFooter>

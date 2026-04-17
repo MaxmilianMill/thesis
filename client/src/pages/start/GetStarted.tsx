@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from '@/hooks/useAuth';
+import { useSetupSelectors } from '@/contexts/useSetupStore';
 
 // define a schema for form validation
 const formSchema = z.object({
@@ -27,6 +28,7 @@ export default function GetStartedScreen() {
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
   const {authenticate} = useAuth();
+  const updateDraft = useSetupSelectors.use.updateDraft();
 
   // initialize react-hook-form
   const { 
@@ -48,7 +50,12 @@ export default function GetStartedScreen() {
 
     if (!authenticated) return;
     
-    navigate('/study');
+    updateDraft({
+      name: values.username, 
+      language: {code: "es", name: "spanish"}
+    });
+
+    navigate('/setup');
   }
 
   return (

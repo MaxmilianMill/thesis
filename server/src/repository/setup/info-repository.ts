@@ -14,7 +14,7 @@ async function addInfoData(userInfo: UserInfo): Promise<WithStatus<"userInfo", U
     if (!response.acknowledged)
         throw new MongoError("Unable to add info to db.");
 
-    return {userInfo, status: 201};
+    return {userInfo: {...userInfo, id: response.insertedId.toString()}, status: 201};
 };
 
 async function updateInfoData(

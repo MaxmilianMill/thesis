@@ -4,6 +4,7 @@ import type { Level } from "./level.js";
 import type { Partner } from "./partner.js";
 
 export type UserInfo = {
+    id: string;
     name?: string;
     uid: string;
     language: Language;
