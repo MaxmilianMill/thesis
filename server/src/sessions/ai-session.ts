@@ -48,32 +48,32 @@ export class AISession extends EventEmitter {
             if (response.serverContent) {
 
                 const serverContent = response.serverContent;
-                let audioChunk: string = "";
-                let textChunk: string = "";
 
-                // Receiving Audio
                 if (serverContent.modelTurn?.parts) {
                     for (const part of serverContent.modelTurn.parts) {
                         if (part.inlineData) {
-                            audioChunk = part.inlineData.data; // Base64 encoded string
-                            // Process or play audioData
-                            console.log(`Received audio data (base64 len: ${audioChunk.length})`);
+                            this.emit("ai_msg", { type: "audio", data: part.inlineData.data });
                         }
                     }
                 }
 
-                // Receiving Text Transcriptions
                 if (serverContent.inputTranscription) {
-                    console.log('User:', serverContent.inputTranscription.text);
+                    this.emit("ai_msg", {
+                        type: "user_msg",
+                        data: serverContent.inputTranscription.text
+                    });
                 }
 
                 if (serverContent.outputTranscription) {
-                    textChunk = serverContent.outputTranscription.text;
-                    console.log('Gemini:', serverContent.outputTranscription.text);
+                    this.emit("ai_msg", {
+                        type: "ai_msg",
+                        data: serverContent.outputTranscription.text
+                    });
                 }
 
-                if (textChunk || audioChunk)
-                    this.emit("ai_msg", audioChunk, textChunk);
+                if (serverContent.turnComplete) {
+                    this.emit("turn_complete");
+                }
             }
         };
 
@@ -106,4 +106,16 @@ export class AISession extends EventEmitter {
             history
         );
     };
+
+    handleAudioChunk(base64Audio: string) {
+        this.sessionService.sendAudioMessage(this.ws, base64Audio);
+    }
+
+    handleRecordingStart(chat: Chat, history?: Message[]) {
+        this.sessionService.sendActivityStart(this.ws, chat, history);
+    }
+
+    handleRecordingStop() {
+        this.sessionService.sendActivityEnd(this.ws);
+    }
 }

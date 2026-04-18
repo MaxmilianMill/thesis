@@ -17,7 +17,7 @@ export class AISessionService {
         history?: Message[]
     ) {
         const turnPrompt = this.buildTurnContext(
-            chat, message, history
+            chat, false, history, message
         );
 
         console.log(turnPrompt);
@@ -31,6 +31,47 @@ export class AISessionService {
 
         ws.send(JSON.stringify(textMessage));
         console.log("Text message sent: ", textMessage);
+    }
+
+    sendAudioMessage(
+        ws: WebSocket,
+        base64Audio: string,
+    ) {
+        const audioMessage = {
+            realtimeInput: {
+                mediaChunks: [{
+                    mimeType: "audio/pcm;rate=16000",
+                    data: base64Audio
+                }]
+            },
+        };
+
+        ws.send(JSON.stringify(audioMessage));
+    }
+
+    sendActivityStart(
+        ws: WebSocket,
+        chat: Chat,
+        history?: Message[]
+    ) {
+        const turnPrompt = this.buildTurnContext(chat, true, history);
+
+        ws.send(JSON.stringify({
+            clientContent: {
+                turns: [{ role: "user", parts: [{ text: turnPrompt }] }],
+                turnComplete: true
+            }
+        }));
+
+        ws.send(JSON.stringify({
+            realtimeInput: { activityStart: {} }
+        }));
+    }
+
+    sendActivityEnd(ws: WebSocket) {
+        ws.send(JSON.stringify({
+            realtimeInput: { activityEnd: {} }
+        }));
     }
 
     buildSystemInstruction() {
@@ -49,7 +90,11 @@ export class AISessionService {
                         voiceConfig: { prebuiltVoiceConfig: { voiceName: "Aoede" } }
                     },
                 },
-                output_audio_transcription: {}
+                realtimeInputConfig: {
+                    automaticActivityDetection: { disabled: true }
+                },
+                output_audio_transcription: {},
+                input_audio_transcription: {}
             }
         }
 
@@ -90,8 +135,9 @@ export class AISessionService {
 
     private buildTurnContext(
         chat: Chat,
+        isAudio?: boolean,
+        history?: Message[],
         message?: Message, 
-        history?: Message[]
     ): string {
         const { taskList } = chat!;
 
@@ -137,7 +183,7 @@ export class AISessionService {
             ${recentMistakesSection}
 
             ## Current User Message
-            "${message ? message.text : "You introduce the conversation now."}"
+            "${isAudio ? "The user message is attached as an audio file." : message ? message.text : "You introduce the conversation now."}"
 
             Now respond as the language buddy. Your response will be spoken aloud, so write naturally — no bullet points, no markdown formatting.`;
     };

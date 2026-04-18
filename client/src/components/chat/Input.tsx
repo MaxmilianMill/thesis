@@ -7,10 +7,13 @@ type InputMode = 'audio' | 'text';
 type ChatInputProps = {
   sendTextMessage: (text: string) => void;
   toggleRecording: () => void;
+  isRecording: boolean;
 }
 
 export function ChatInput({
   sendTextMessage,
+  toggleRecording,
+  isRecording
 }: ChatInputProps) {
   const [mode, setMode] = useState<InputMode>('audio');
   const [textValue, setTextValue] = useState('');
@@ -50,12 +53,15 @@ export function ChatInput({
         <span className="text-xs font-medium">Text</span>
       </button>
 
+      {isRecording && <p>Recording...</p>}
+
       {/* Center: mic or text input */}
       <div className="flex flex-1 items-center justify-center">
         {mode === 'audio' ? (
           <button
             className="flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 active:scale-95 transition-all"
             aria-label="Record audio"
+            onClick={toggleRecording}
           >
             <Mic className="size-7" />
           </button>

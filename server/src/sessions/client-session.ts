@@ -1,9 +1,8 @@
 import { EventEmitter } from "events";
 import WebSocket from "ws";
-import { WSMessageSchema, type WSMessage } from "@thesis/types";
-import type { WSPayload } from "../sockets/utils/ws-payload.js";
+import { WSMessageSchema, type Message, type WSMessage } from "@thesis/types";
+import type { WSPayload } from "@thesis/types"
 import { FeedbackService, type IFeedbackInput } from "../services/chat/feedback-service.js";
-import type { Message } from "@thesis/types";
 
 export class ClientSession extends EventEmitter {
     feedbackService: FeedbackService;
@@ -26,14 +25,9 @@ export class ClientSession extends EventEmitter {
         this.ws.on('close', () => this.emit('disconnected'));
     };
 
-    sendAIResponse(audioChunk?: string, textChunk?: string) {
+    sendAIResponse(aiResponse: WSPayload) {
 
-        const response: WSPayload = {
-            type: audioChunk ? "audio" : "text",
-            data: { textChunk, audioChunk }
-        };
-
-        this.ws.send(JSON.stringify(response));
+        this.ws.send(JSON.stringify(aiResponse));
     };
 
     async generateFeedback(data: IFeedbackInput) {
@@ -56,6 +50,7 @@ export class ClientSession extends EventEmitter {
     private parseRawInput(rawData: WebSocket.RawData): WSMessage {
 
         const jsonData = JSON.parse(rawData.toString());
+        console.log("Raw data: ", jsonData)
 
         const validatedMessage = WSMessageSchema.safeParse(jsonData);
         

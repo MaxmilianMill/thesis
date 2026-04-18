@@ -1,16 +1,22 @@
 import { useEffect, useRef, useState } from "react"
 import { useAudioMessageStream } from "./useAudioStream";
-import { useAudioRecorder } from "./useAudioRecorder";
 import type { WSMessage } from "@thesis/types";
-import { useAuthSelectors } from "@/contexts/useAuthStore";
 import { useChatSelectors } from "@/contexts/useChatStore";
+import { AudioStreamer } from "./lib/audio-streamer";
+import { audioContext } from "./lib/utils";
+import VolMeterWorket from "./lib/worklets/vol-meter";
+import { AudioRecorder } from "./lib/audio-recorder";
+// import { useAuthSelectors } from "@/contexts/useAuthStore";
+// import { useChatSelectors } from "@/contexts/useChatStore";
 
 export const useMessageController = () => {
 
     const wsRef = useRef<WebSocket | null>(null);
     const [connectionStatus, setConnectionStatus] = useState<boolean>(false);
-    const user = useAuthSelectors.use.user();
-    const chat = useChatSelectors.use.chat();
+    const audioStreamerRef = useRef<AudioStreamer | null>(null);
+    const [inVolume, setInVolume] = useState<number>(0);
+    const [audioRecorder] = useState(() => new AudioRecorder());
+    const [isRecording, setIsRecording] = useState<boolean>(false);
 
     const {
         initAudio,
@@ -18,28 +24,12 @@ export const useMessageController = () => {
         resetAudioQueue
     } = useAudioMessageStream();
 
-    // send the user audio message to the server
-    const handleOnAudioReady = (base64AudioChunk: string) => {
-
-        if (!wsRef.current) {
-            console.error("Cant send audio chunk. WebSocket is undefined");
-            return;
-        }
-
-        if (wsRef.current.readyState === WebSocket.OPEN) {
-            wsRef.current.send(JSON.stringify({
-                type: "audio",
-                rawAudio: base64AudioChunk
-            } as WSMessage));
-
-            console.log("User message sent!");
-        }
-    }
-
     const {
-        toggleRecording,
-        isRecording
-    } = useAudioRecorder(handleOnAudioReady);
+        appendAIStreamChunk,
+        appendUserStreamChunk,
+        finalizeAITurn,
+        history
+    } = useChatSelectors();
 
     useEffect(() => {
         const ws = new WebSocket(`ws://localhost:3000/ws/chat?uid=${"1e17ebf2-74b1-4468-80d6-d11dcc8196f2"}&chatId=${"69e20e992c9192317f8b7613"}`);
@@ -48,6 +38,22 @@ export const useMessageController = () => {
         ws.onopen = () => {
             console.log("WebSocket connected!");
             setConnectionStatus(true);
+
+            if (!audioStreamerRef.current) {
+                console.log('🔊 Initializing audio streamer...');
+                audioContext({ id: "audio-out" }).then((audioCtx: AudioContext) => {
+                    audioStreamerRef.current = new AudioStreamer(audioCtx);
+                    console.log('🔊 Audio context created, sample rate:', audioCtx.sampleRate);
+                    audioStreamerRef.current
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        .addWorklet<any>("vumeter-out", VolMeterWorket, (ev: any) => {
+                            setInVolume(ev.data.volume);
+                        })
+                        .then(() => {
+                            console.log('✅ Output volume meter worklet added');
+                        });
+                });
+            }
         }
 
         ws.onmessage = (event) => {
@@ -55,13 +61,29 @@ export const useMessageController = () => {
 
             console.log(payload);
 
-            if (payload.type === "audio") {
-                playAudioChunk(payload.data);
-            }
+            switch (payload.type) {
 
-            if (payload.type === "text") {
-                // 
-            }
+                case "audio": 
+                    playAudioChunk(payload.data);
+                    break;
+
+                case "user_msg":
+                    appendUserStreamChunk(payload.data);
+                    break;
+
+                case "ai_msg":
+                    appendAIStreamChunk(payload.data);
+                    break;
+
+                // if turn is complete or something happend on the server side
+                case "done":
+                    resetAudioQueue();
+                    finalizeAITurn();
+                    break;
+
+                default:
+                    console.warn("Unknwon payload type: ", JSON.stringify(payload));
+            }   
         }
 
         ws.onerror = (errorEvent) => {
@@ -79,7 +101,60 @@ export const useMessageController = () => {
                 ws.close();
             }
         };
-    }, [playAudioChunk, resetAudioQueue])
+    }, [playAudioChunk, resetAudioQueue]);
+
+    useEffect(() => {
+        const onInputAudio = (base64Audio: string) => {
+            if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
+
+            wsRef.current.send(JSON.stringify({
+                uid: "1e17ebf2-74b1-4468-80d6-d11dcc8196f2",
+                chatId: "69e20e992c9192317f8b7613",
+                type: "audio",
+                rawAudio: base64Audio
+            } as WSMessage));
+        };
+
+        if (wsRef.current && audioRecorder && isRecording) {
+            audioRecorder.on("data", onInputAudio).on("volume", setInVolume);
+            audioRecorder.start().catch((error) => {
+                console.error('Failed to start audio recorder:', error);
+            });
+        } else {
+            audioRecorder.off("data", onInputAudio).off("volume", setInVolume);
+            audioRecorder.stop();
+        }
+
+        return () => {
+            audioRecorder.off("data", onInputAudio).off("volume", setInVolume);
+        };
+    }, [audioRecorder, isRecording]);
+
+    const toggleRecording = () => {
+        const ws = wsRef.current;
+        if (!ws || ws.readyState !== WebSocket.OPEN) return;
+
+        const nextRecording = !isRecording;
+
+        // initAudio must be called during a user gesture so the AudioContext is allowed to start
+        initAudio();
+
+        if (nextRecording) {
+            ws.send(JSON.stringify({
+                uid: "1e17ebf2-74b1-4468-80d6-d11dcc8196f2",
+                chatId: "69e20e992c9192317f8b7613",
+                type: "recording_start",
+            } as WSMessage));
+        } else {
+            ws.send(JSON.stringify({
+                uid: "1e17ebf2-74b1-4468-80d6-d11dcc8196f2",
+                chatId: "69e20e992c9192317f8b7613",
+                type: "recording_stop",
+            } as WSMessage));
+        }
+
+        setIsRecording(nextRecording);
+    };
 
     const sendTextMessage = (text: string) => {
         if (!text.trim()) return;
@@ -103,6 +178,8 @@ export const useMessageController = () => {
         connectionStatus,
         toggleRecording,
         isRecording,
-        sendTextMessage
+        sendTextMessage,
+        history,
+        inVolume
     }
 }

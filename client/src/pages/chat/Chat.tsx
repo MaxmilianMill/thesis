@@ -63,21 +63,24 @@ const mockTasks: TaskListType = [
 
 export default function ChatScreen() {
   const {
-    connectionStatus,
     sendTextMessage,
-    toggleRecording
+    toggleRecording,
+    isRecording,
+    history
   } = useMessageController();
-
-  console.log(connectionStatus);
 
   return (
     <div className="dark flex min-h-screen flex-col bg-background text-foreground max-w-xl mx-auto">
       <PartnerSection scenarioTitle="Ordering Coffee" />
       <TaskList tasks={mockTasks} />
       <div className="flex flex-1 items-end">
-        <MessageList messages={mockMessages} partnerName="Amy" />
+        <MessageList messages={history} partnerName="Amy" />
       </div>
-      <ChatInput sendTextMessage={sendTextMessage} toggleRecording={toggleRecording}/>
+      <ChatInput 
+        sendTextMessage={sendTextMessage} 
+        toggleRecording={toggleRecording}
+        isRecording={isRecording}
+      />
     </div>
   );
 };

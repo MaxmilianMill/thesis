@@ -5,6 +5,7 @@ import SetupScreen from './pages/setup/SetupScreen'
 import PartnerCustomizationScreen from './pages/partner/PartnerCustomizationScreen'
 import OverviewScreen from './pages/chat/Overview'
 import ChatScreen from './pages/chat/Chat';
+import SummaryScreen from './pages/summary/Summary';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/chat",
     element: <ChatScreen />
+  },
+  {
+    path: "/summary",
+    element: <SummaryScreen />
   }
 ]);
 

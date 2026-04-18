@@ -9,6 +9,7 @@ export { TaskSchema, TaskListSchema } from "./chat/task-list.js";
 export type { Task, TaskList } from "./chat/task-list.js";
 export type { WSMessage } from "./chat/ws-message.js";
 export { WSMessageSchema } from "./chat/ws-message.js";
+export type { WSPayload, WSEventType } from "./chat/ws-payload.js";
 export type { WSError } from "./errors/ws-error.js";
 export type { Interest } from "./setup/interest.js";
 export type { Language } from "./setup/language.js";

@@ -25,22 +25,34 @@ export class ChatSession {
     };
 
     initializeListeners() {
-        // When the user speaks, send it to the AI
         this.client.on('user_msg', async (data: WSMessage) => {
-            this.ai?.handleSendTextMessage(
-                this.chat,
-                data.message,
-                data.history
-            );
+            if (data.type === "recording_start") {
+                this.ai?.handleRecordingStart(this.chat, data.history);
+                return;
+            }
 
-            if (!data.message) return;
-            
-            await this.client.generateFeedback({
-                userInfo: this.userInfo,
-                chat: this.chat,
-                message: data.message,
-                history: data.history
-            });
+            if (data.type === "recording_stop") {
+                this.ai?.handleRecordingStop();
+                return;
+            }
+
+            if (data.type === "audio" && data.rawAudio) {
+                this.ai?.handleAudioChunk(data.rawAudio);
+                return;
+            }
+
+            if (data.type === "text") {
+                this.ai?.handleSendTextMessage(this.chat, data.message, data.history);
+
+                if (!data.message) return;
+
+                await this.client.generateFeedback({
+                    userInfo: this.userInfo,
+                    chat: this.chat,
+                    message: data.message,
+                    history: data.history
+                });
+            }
         });
 
         // When we receive feedback
@@ -48,12 +60,12 @@ export class ChatSession {
             this.client.sendFeedback(feedback);
         });
 
-        // When the AI responds, send it to the Client
-        this.ai?.on('ai_msg', (audio, text) => {
+        this.ai?.on('ai_msg', (aiResponse) => {
+            this.client.sendAIResponse(aiResponse);
+        });
 
-            console.log(audio);
-
-            this.client.sendAIResponse(audio, text);
+        this.ai?.on('turn_complete', () => {
+            this.client.sendAIResponse({ type: "done", data: null });
         });
 
         // Robust Cleanup (If one dies, kill the other)
