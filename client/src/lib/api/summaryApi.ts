@@ -1,4 +1,6 @@
-import type { Summary } from "@thesis/types"
+import type { Message, Summary } from "@thesis/types"
+import { api } from "./config"
+import { HttpStatusCode } from "axios"
 
 const MOCK_SUMMARY: Summary = {
   id: "summary-001",
@@ -53,8 +55,15 @@ const MOCK_MEMORY_UPDATES: string[] = [
   "Strong vocabulary around food and drink — can expand to restaurant and hospitality contexts.",
 ]
 
-export async function generateSummary(_chatId: string): Promise<Summary> {
-  return new Promise((resolve) => setTimeout(() => resolve(MOCK_SUMMARY), 800))
+export async function generateSummary(chatId: string, history: Message[]): Promise<Summary> {
+  return await api.post("/summary/generate", {chatId, history}).then((res) => {
+    if (res.status !== HttpStatusCode.Created) return;
+
+    return res.data as Summary;
+  }).catch((error) => {
+    console.error(error.message);
+    return; 
+  })
 }
 
 export async function getMemoryUpdates(_uid: string): Promise<string[]> {

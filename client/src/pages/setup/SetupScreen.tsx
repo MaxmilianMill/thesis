@@ -3,6 +3,8 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ProgressBar } from '@/components/setup/ProgressBar';
 import { LevelStep } from './steps/LevelStep';
+import { MotherTongueStep } from './steps/MotherTongueStep';
+import { DifficultiesStep } from './steps/DifficultiesStep';
 import { InterestsStep } from './steps/InterestsStep';
 import { useSetup } from '@/hooks/useSetup';
 import type { Level } from '@thesis/types';
@@ -14,11 +16,15 @@ export default function SetupScreen() {
     totalSteps,
     selectedLevel,
     setSelectedLevel,
+    selectedMothertongue,
+    setSelectedMothertongue,
+    selectedDifficulties,
+    toggleDifficulty,
     selectedInterests,
     toggleInterest,
     canContinue,
     goNext,
-    handleSubmitSetup
+    handleSubmitSetup,
   } = useSetup();
 
   async function handleContinue() {
@@ -40,15 +46,23 @@ export default function SetupScreen() {
               <LevelStep selectedLevel={selectedLevel as Level} onSelect={setSelectedLevel} />
             )}
             {step === 1 && (
-              <InterestsStep selectedInterests={selectedInterests || []} onToggle={toggleInterest} />
+              <MotherTongueStep
+                selectedMothertongue={selectedMothertongue ?? null}
+                onSelect={setSelectedMothertongue}
+              />
+            )}
+            {step === 2 && (
+              <DifficultiesStep
+                selectedDifficulties={selectedDifficulties}
+                onToggle={toggleDifficulty}
+              />
+            )}
+            {step === 3 && (
+              <InterestsStep selectedInterests={selectedInterests} onToggle={toggleInterest} />
             )}
           </CardContent>
           <CardFooter>
-            <Button
-              className="w-full"
-              onClick={handleContinue}
-              disabled={!canContinue}
-            >
+            <Button className="w-full" onClick={handleContinue} disabled={!canContinue}>
               Continue
             </Button>
           </CardFooter>

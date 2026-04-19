@@ -27,16 +27,15 @@ async function generateSummary(
 async function saveOrUpdateSummary(
     uid: string,
     chatId: string,
-    updatedFields: Summary | Partial<Summary>,
-    summaryId?: string
+    updatedFields: Summary | Partial<Summary>
 ): Promise<WithStatus<"summary", Summary>> {
     const db = getDB();
 
     const filter = {
-        ...(summaryId ? {_id: new ObjectId(summaryId)} : {}), 
         chatId: chatId, 
         uid: uid
     };
+
     const update = {$set: updatedFields};
 
     const response = await db
@@ -52,7 +51,7 @@ async function saveOrUpdateSummary(
 
     const summary = transformMongoDBDoc<Summary>(response, SummarySchema);
 
-    return {status: summaryId ? 200 : 201, summary};
+    return {status: 201, summary};
 }
 
 export {

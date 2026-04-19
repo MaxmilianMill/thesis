@@ -46,7 +46,7 @@ export default function GetStartedScreen() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Starting study with username:", values.username);
     
-    const authenticated = await authenticate(values.username);
+    const authenticated = await authenticate();
 
     if (!authenticated) return;
     

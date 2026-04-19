@@ -1,9 +1,25 @@
 import { LevelOption } from '@/components/setup/LevelOption';
 import type { Level } from '@thesis/types';
 
-const LEVELS = [
-  { code: "a1", level: 'A1', description: 'Beginner – I know a few words and basic greetings.', key: "" },
-  { code: "a2", level: 'A2', description: 'Elementary – I can handle simple, routine conversations.' },
+const LEVELS: Array<{ code: Level["code"]; label: string; name: Level["name"]; subtitle: string }> = [
+  {
+    code: 'a1',
+    label: 'A1',
+    name: 'beginner',
+    subtitle: 'Puedo presentarme y entender frases muy básicas del día a día.',
+  },
+  {
+    code: 'a2',
+    label: 'A2',
+    name: 'beginner',
+    subtitle: 'Puedo comunicarme en situaciones simples y hablar sobre temas cotidianos.',
+  },
+  {
+    code: 'b1',
+    label: 'B1',
+    name: 'intermediate',
+    subtitle: 'Puedo hablar sobre temas conocidos y describir experiencias y planes.',
+  },
 ];
 
 interface LevelStepProps {
@@ -21,13 +37,14 @@ export function LevelStep({ selectedLevel, onSelect }: LevelStepProps) {
         </p>
       </div>
       <div className="space-y-3">
-        {LEVELS.map(({ code, level, description }) => (
+        {LEVELS.map(({ code, label, name, subtitle }) => (
           <LevelOption
-            key={level}
-            level={level}
-            description={description}
+            key={code}
+            level={label}
+            description={label}
+            subtitle={subtitle}
             isSelected={selectedLevel?.code === code}
-            onSelect={() => onSelect({name: "beginner", code: code as Level["code"]})}
+            onSelect={() => onSelect({ name, code })}
           />
         ))}
       </div>

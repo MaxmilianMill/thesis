@@ -11,7 +11,6 @@ interface IGenerateSummary {
     userInfo: UserInfo;
     chatId: string;
     history: Message[];
-    summaryId?: string;
 };
 
 export class SummaryGenerationService {
@@ -21,7 +20,6 @@ export class SummaryGenerationService {
         const {
             userInfo,
             chatId,
-            summaryId,
             history
         } = data;
 
@@ -43,7 +41,7 @@ export class SummaryGenerationService {
             wordCount
         };
 
-        return await saveOrUpdateSummary(userInfo.uid, chatId, summary, summaryId);
+        return await saveOrUpdateSummary(userInfo.uid, chatId, summary);
     };
 
     private countWords(history: Message[]) {

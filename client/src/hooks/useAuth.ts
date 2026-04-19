@@ -4,10 +4,13 @@ import { authenticate as _authenticate } from "@/lib/api/authApi";
 export const useAuth = () => {
     const setUser = useAuthSelectors.use.setUser();
     const resetUser = useAuthSelectors.use.resetUser();
+    const currentUser = useAuthSelectors.use.user();
 
-    const authenticate = async (username: string) => {
+    const authenticate = async () => {
 
-        const user = await _authenticate(username);
+        if (currentUser) return currentUser;
+
+        const user = await _authenticate();
 
         console.log(user)
 
@@ -29,10 +32,10 @@ export const useAuth = () => {
         localStorage.removeItem("uid");
         
         resetUser();
-    }
+    };
 
     return {
         authenticate,
         logOut
-    }
+    };
 }

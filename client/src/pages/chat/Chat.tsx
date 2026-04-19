@@ -2,6 +2,7 @@ import { ChatInput } from '@/components/chat/Input';
 import { MessageList } from '@/components/chat/MessageList';
 import { PartnerSection } from '@/components/chat/PartnerSection';
 import { TaskList } from '@/components/chat/TaskList';
+import { useChatSelectors } from '@/contexts/useChatStore';
 import { useMessageController } from '@/hooks/useMessageController';
 import type { Message, TaskList as TaskListType } from '@thesis/types';
 
@@ -62,12 +63,18 @@ const mockTasks: TaskListType = [
 ];
 
 export default function ChatScreen() {
+
   const {
     sendTextMessage,
     toggleRecording,
     isRecording,
     history
   } = useMessageController();
+
+  const chat = useChatSelectors.use.chat();
+
+  if (!chat)
+    return <p>Loading chat...</p>
 
   return (
     <div className="dark flex min-h-screen flex-col bg-background text-foreground max-w-xl mx-auto">

@@ -13,6 +13,7 @@ export type { WSPayload, WSEventType } from "./chat/ws-payload.js";
 export type { WSError } from "./errors/ws-error.js";
 export type { Interest } from "./setup/interest.js";
 export type { Language } from "./setup/language.js";
+export type { Mothertongue } from "./setup/mothertongue.js";
 export type { Level } from "./setup/level.js";
 export type { Partner, PartnerVoiceConfig } from "./setup/partner.js";
 export type { Scenario } from "./setup/scenario.js";

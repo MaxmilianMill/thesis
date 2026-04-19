@@ -6,6 +6,7 @@ import PartnerCustomizationScreen from './pages/partner/PartnerCustomizationScre
 import OverviewScreen from './pages/chat/Overview'
 import ChatScreen from './pages/chat/Chat';
 import SummaryScreen from './pages/summary/Summary';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -13,24 +14,29 @@ const router = createBrowserRouter([
     element: <GetStarted />,
   },
   {
-    path: "/setup",
-    element: <SetupScreen />,
-  },
-  {
-    path: "/partner",
-    element: <PartnerCustomizationScreen />,
-  },
-  {
-    path: "/study",
-    element: <OverviewScreen />,
-  },
-  {
-    path: "/chat",
-    element: <ChatScreen />
-  },
-  {
-    path: "/summary",
-    element: <SummaryScreen />
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: "/setup",
+        element: <SetupScreen />,
+      },
+      {
+        path: "/partner",
+        element: <PartnerCustomizationScreen />,
+      },
+      {
+        path: "/study",
+        element: <OverviewScreen />,
+      },
+      {
+        path: "/chat",
+        element: <ChatScreen />
+      },
+      {
+        path: "/summary",
+        element: <SummaryScreen />
+      }
+    ]
   }
 ]);
 
