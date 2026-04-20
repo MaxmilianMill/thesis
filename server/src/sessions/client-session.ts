@@ -2,15 +2,12 @@ import { EventEmitter } from "events";
 import WebSocket from "ws";
 import { WSMessageSchema, type Message, type WSMessage } from "@thesis/types";
 import type { WSPayload } from "@thesis/types"
-import { FeedbackService, type IFeedbackInput } from "../services/chat/feedback-service.js";
 
 export class ClientSession extends EventEmitter {
-    feedbackService: FeedbackService;
 
     constructor(public ws: WebSocket) {
         super();
         this.ws = ws;
-        this.feedbackService = new FeedbackService();
 
         this.attachListeners();
     };
@@ -27,25 +24,27 @@ export class ClientSession extends EventEmitter {
 
     sendAIResponse(aiResponse: WSPayload) {
 
-        this.ws.send(JSON.stringify(aiResponse));
+        this.safeSend(aiResponse);
     };
 
-    async generateFeedback(data: IFeedbackInput) {
+    sendFeedback(feedback: WSPayload) {
 
-        const feedback = await this.feedbackService
-            .generateFeedback(data);
-
-        this.emit("feedback", feedback);
+        this.safeSend(feedback);
     };
 
-    sendFeedback(feedback: Message) {
-
-        this.ws.send(JSON.stringify(feedback));
-    };
+    sendTaskListUpdates(updatedTaskList: WSPayload) {
+        this.safeSend(updatedTaskList);
+    }
 
     close() {
         this.ws.close();
     };
+
+    private safeSend(payload: WSPayload): void {
+        if (this.ws.readyState !== WebSocket.OPEN) return;
+
+        this.ws.send(JSON.stringify(payload));
+    }
 
     private parseRawInput(rawData: WebSocket.RawData): WSMessage {
 

@@ -13,6 +13,7 @@ interface ChatState {
     updateTaskList: (updatedTaskList: TaskList) => void;
     appendAIStreamChunk: (chunk: string) => void;
     appendUserStreamChunk: (chunk: string) => void;
+    addFeedback: (feedback: Message) => void,
     finalizeAITurn: () => void;
 };
 
@@ -76,6 +77,18 @@ const useChatStore = create<ChatState>((set) => ({
             } as UIMessage);
         }
 
+        return { history: newHistory };
+    }),
+    addFeedback: (feedback) => set((state) => {
+        const newHistory = [...state.history];
+        const lastUserIndex = newHistory.findLastIndex(msg => msg.isUser);
+        if (lastUserIndex !== -1) {
+            newHistory[lastUserIndex] = {
+                ...newHistory[lastUserIndex],
+                isCorrect: feedback.isCorrect,
+                improvedVersion: feedback.improvedVersion ?? undefined
+            };
+        }
         return { history: newHistory };
     }),
     finalizeAITurn: () => set((state) => {

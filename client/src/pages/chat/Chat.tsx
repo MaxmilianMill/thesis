@@ -4,25 +4,7 @@ import { PartnerSection } from '@/components/chat/PartnerSection';
 import { TaskList } from '@/components/chat/TaskList';
 import { useChatSelectors } from '@/contexts/useChatStore';
 import { useMessageController } from '@/hooks/useMessageController';
-import type { Message, TaskList as TaskListType } from '@thesis/types';
-
-const mockMessages: Message[] = [
-  {
-    id: '1',
-    uid: 'partner',
-    text: 'Hello Sir, what can I get for you today?',
-    isUser: false,
-    createdAt: new Date(),
-  },
-  {
-    id: '2',
-    uid: 'user',
-    text: 'Hello Madame, I would like to have a large coffee with extra milk please!',
-    isUser: true,
-    isCorrect: true,
-    createdAt: new Date(),
-  },
-];
+import type { TaskList as TaskListType } from '@thesis/types';
 
 const mockTasks: TaskListType = [
   {
@@ -79,7 +61,7 @@ export default function ChatScreen() {
   return (
     <div className="dark flex min-h-screen flex-col bg-background text-foreground max-w-xl mx-auto">
       <PartnerSection scenarioTitle="Ordering Coffee" />
-      <TaskList tasks={mockTasks} />
+      <TaskList tasks={chat.taskList ?? mockTasks} />
       <div className="flex flex-1 items-end">
         <MessageList messages={history} partnerName="Amy" />
       </div>

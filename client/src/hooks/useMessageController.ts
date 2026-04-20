@@ -27,7 +27,9 @@ export const useMessageController = () => {
         appendAIStreamChunk,
         appendUserStreamChunk,
         finalizeAITurn,
-        history
+        history,
+        updateTaskList,
+        addFeedback
     } = useChatSelectors();
 
     const user = useAuthSelectors.use.user();
@@ -85,6 +87,16 @@ export const useMessageController = () => {
                 case "done":
                     resetAudioQueue();
                     finalizeAITurn();
+                    break;
+
+                case "feedback": 
+                    console.log(payload.data);
+                    addFeedback(payload.data);
+                    break;
+
+                case "taskList":
+                    console.log(payload.data);
+                    updateTaskList(payload.data);
                     break;
 
                 default:
@@ -150,6 +162,7 @@ export const useMessageController = () => {
                 uid,
                 chatId,
                 type: "recording_start",
+                text: ""
             } as WSMessage));
         } else {
             ws.send(JSON.stringify({
@@ -176,7 +189,6 @@ export const useMessageController = () => {
                 type: "text",
                 text: text
             } as WSMessage));
-
         }
     };
 

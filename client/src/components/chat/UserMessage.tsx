@@ -14,7 +14,7 @@ export function UserMessage({ message }: Props) {
           <CheckCircle className="size-5 text-success shrink-0 mb-0.5" />
         )}
         <div className="rounded-2xl bg-card px-4 py-3">
-          <p className="text-sm text-foreground leading-relaxed">{message.text}</p>
+          <p className="text-sm text-foreground leading-relaxed">{message.improvedVersion ?? message.text}</p>
         </div>
       </div>
     </div>
