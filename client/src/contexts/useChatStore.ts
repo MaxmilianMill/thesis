@@ -22,7 +22,7 @@ const useChatStore = create<ChatState>((set) => ({
     history: [],
     setChat: (chat) => set({chat}),
     updateChat: (updatedFields) => set((state) => {
-        return {chat: {...state.chat, ...updatedFields}}
+        return {chat: {...state.chat, ...updatedFields} as Chat}
     }),
     updateHistory: (msg) => {
         set((state) => ({
@@ -32,10 +32,13 @@ const useChatStore = create<ChatState>((set) => ({
         }));
     },
     updateTaskList: (updatedTaskList) => set((state) => {
+
+        const completed = updatedTaskList.every((task) => task.completed);
         return {chat: {
             ...state.chat,
-            taskList: updatedTaskList
-        }}
+            taskList: updatedTaskList,
+            completed
+        } as Chat}
     }),
     appendAIStreamChunk: (chunk) => set((state) => {
         const newHistory = [...state.history];

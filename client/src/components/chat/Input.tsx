@@ -8,12 +8,14 @@ type ChatInputProps = {
   sendTextMessage: (text: string) => void;
   toggleRecording: () => void;
   isRecording: boolean;
+  disabled?: boolean;
 }
 
 export function ChatInput({
   sendTextMessage,
   toggleRecording,
-  isRecording
+  isRecording,
+  disabled = false,
 }: ChatInputProps) {
   const [mode, setMode] = useState<InputMode>('audio');
   const [textValue, setTextValue] = useState('');
@@ -41,8 +43,9 @@ export function ChatInput({
       {/* Text switch button */}
       <button
         onClick={() => setMode(mode === 'text' ? 'audio' : 'text')}
+        disabled={disabled}
         className={cn(
-          'flex flex-col items-center gap-1 min-w-[52px] transition-colors',
+          'flex flex-col items-center gap-1 min-w-[52px] transition-colors disabled:opacity-40 disabled:pointer-events-none',
           mode === 'text'
             ? 'text-primary'
             : 'text-muted-foreground hover:text-foreground',
@@ -59,9 +62,10 @@ export function ChatInput({
       <div className="flex flex-1 items-center justify-center">
         {mode === 'audio' ? (
           <button
-            className="flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 active:scale-95 transition-all"
+            className="flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none"
             aria-label="Record audio"
             onClick={toggleRecording}
+            disabled={disabled}
           >
             <Mic className="size-7" />
           </button>
@@ -74,11 +78,12 @@ export function ChatInput({
               onChange={(e) => setTextValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type a message…"
-              className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"
+              disabled={disabled}
+              className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none disabled:opacity-40"
             />
             <button
               onClick={handleSend}
-              disabled={!textValue.trim()}
+              disabled={!textValue.trim() || disabled}
               className="flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground disabled:opacity-40 transition-opacity"
               aria-label="Send message"
             >

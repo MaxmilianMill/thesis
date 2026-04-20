@@ -8,6 +8,7 @@ import { OverviewTab } from "@/components/summary/tabs/OverviewTab"
 import { FeedbackTab } from "@/components/summary/tabs/FeedbackTab"
 import { VocabularyTab } from "@/components/summary/tabs/VocabularyTab"
 import { MemoryTab } from "@/components/summary/tabs/MemoryTab"
+import { SummarySkeleton } from "@/components/summary/SummarySkeleton"
 import { useSummary } from "@/hooks/useSummary"
 
 export default function SummaryScreen() {
@@ -15,8 +16,8 @@ export default function SummaryScreen() {
 
   if (isLoading || !summary) {
     return (
-      <div className="dark min-h-screen bg-background flex items-center justify-center">
-        <span className="text-muted-foreground text-sm">Generating your summary…</span>
+      <div className="dark min-h-screen bg-background">
+        <SummarySkeleton />
       </div>
     )
   }
@@ -41,8 +42,8 @@ export default function SummaryScreen() {
             color="success"
           />
         </div>
-
-        <Tabs defaultValue="overview">
+      
+        <Tabs defaultValue="overview" className="flex w-full flex-col">
           <TabsList className="w-full">
             <TabsTrigger value="overview" className="flex-1">
               Overview

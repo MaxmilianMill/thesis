@@ -6,9 +6,10 @@ import { SummaryAIGenerationSchema, type Summary } from "@thesis/types";
 import { generateSummary, saveOrUpdateSummary } from "../../repository/summary/summary-repository.js";
 import { validateSchema } from "../../utils/validate-schema.js";
 import type { WithStatus } from "@thesis/types";
+import { getInfoData } from "../../repository/setup/info-repository.js";
 
 interface IGenerateSummary {
-    userInfo: UserInfo;
+    uid: string;
     chatId: string;
     history: Message[];
 };
@@ -18,10 +19,12 @@ export class SummaryGenerationService {
     public async generate(data: IGenerateSummary): Promise<WithStatus<"summary", Summary>> {
 
         const {
-            userInfo,
+            uid,
             chatId,
             history
         } = data;
+
+        const {userInfo} = await getInfoData(uid);
 
         const prompt = this.buildPrompt(history, userInfo);
         const config = this.getConfig();
