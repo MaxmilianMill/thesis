@@ -37,20 +37,24 @@ async function addChat(
 
     const db = getDB();
 
-    const chat: Chat = {
+    const chatDoc: Omit<Chat, "id"> = {
         ...partialChat, 
-        createdAt: new Date(), 
-        id: new ObjectId().toString(),
+        createdAt: new Date(),
         completed: false,
         uid
     };
 
     const response = await db
         .collection(CHAT_COLLECTION)
-        .insertOne(chat);
+        .insertOne(chatDoc);
 
     if (!response.acknowledged)
         throw new MongoError("Unable to add document");
+
+    const chat: Chat = {
+        ...chatDoc,
+        id: response.insertedId.toString()
+    };
 
     return {chat, status: 201};
 };

@@ -34,6 +34,9 @@ async function updateInfoData(
 async function getInfoData(
     uid: string
 ): Promise<WithStatus<"userInfo", UserInfo>> {
+
+    console.log(uid);
+    
     const db = getDB();
     const response = await db
         .collection(INFO_COLLECTION)

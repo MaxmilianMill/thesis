@@ -1,3 +1,4 @@
+import type { AuthRequest } from "../../middlewares/auth-handler.js";
 import type { ChatService } from "../../services/chat/chat-service.js";
 import type { Request, Response } from "express";
 
@@ -7,10 +8,11 @@ export class ChatController {
         private chatService: ChatService
     ) {}
 
-    public async handleUpdateChat(req: Request, res: Response) {
+    public async handleUpdateChat(req: AuthRequest, res: Response) {
 
-        const {
-            uid, 
+        const {uid} = req.authToken;
+
+        const { 
             chatId,
             updatedFields
         } = req.body;
@@ -27,9 +29,10 @@ export class ChatController {
         return res.status(status).json({chat});
     };
 
-    public async handleAddChat(req: Request, res: Response) {
+    public async handleAddChat(req: AuthRequest, res: Response) {
+        const {uid} = req.authToken;
+
         const {
-            uid,
             chat
         } = req.body;
 

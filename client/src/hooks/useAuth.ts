@@ -17,9 +17,10 @@ export const useAuth = () => {
         if (!user)
             return;
 
-        // save user in local store 
+        // save user in local store
         localStorage.setItem("token", user.authToken.token);
         localStorage.setItem("uid", user.authToken.uid);
+        localStorage.setItem("user", JSON.stringify(user));
         
         // keep the user in the store
         setUser(user);
@@ -30,7 +31,8 @@ export const useAuth = () => {
     const logOut = async () => {
         localStorage.removeItem("token");
         localStorage.removeItem("uid");
-        
+        localStorage.removeItem("user");
+
         resetUser();
     };
 

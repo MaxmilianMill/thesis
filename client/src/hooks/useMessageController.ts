@@ -2,12 +2,11 @@ import { useEffect, useRef, useState } from "react"
 import { useAudioMessageStream } from "./useAudioStream";
 import type { WSMessage } from "@thesis/types";
 import { useChatSelectors } from "@/contexts/useChatStore";
+import { useAuthSelectors } from "@/contexts/useAuthStore";
 import { AudioStreamer } from "./lib/audio-streamer";
 import { audioContext } from "./lib/utils";
 import VolMeterWorket from "./lib/worklets/vol-meter";
 import { AudioRecorder } from "./lib/audio-recorder";
-// import { useAuthSelectors } from "@/contexts/useAuthStore";
-// import { useChatSelectors } from "@/contexts/useChatStore";
 
 export const useMessageController = () => {
 
@@ -31,8 +30,15 @@ export const useMessageController = () => {
         history
     } = useChatSelectors();
 
+    const user = useAuthSelectors.use.user();
+    const chat = useChatSelectors.use.chat();
+    const uid = user?.authToken.uid;
+    const chatId = chat?.id;
+
     useEffect(() => {
-        const ws = new WebSocket(`ws://localhost:3000/ws/chat?uid=${"1e17ebf2-74b1-4468-80d6-d11dcc8196f2"}&chatId=${"69e20e992c9192317f8b7613"}`);
+        if (!uid || !chatId) return;
+
+        const ws = new WebSocket(`ws://localhost:3000/ws/chat?uid=${uid}&chatId=${chatId}`);
         wsRef.current = ws;
 
         ws.onopen = () => {
@@ -63,7 +69,7 @@ export const useMessageController = () => {
 
             switch (payload.type) {
 
-                case "audio": 
+                case "audio":
                     playAudioChunk(payload.data);
                     break;
 
@@ -83,7 +89,7 @@ export const useMessageController = () => {
 
                 default:
                     console.warn("Unknwon payload type: ", JSON.stringify(payload));
-            }   
+            }
         }
 
         ws.onerror = (errorEvent) => {
@@ -101,15 +107,15 @@ export const useMessageController = () => {
                 ws.close();
             }
         };
-    }, [playAudioChunk, resetAudioQueue]);
+    }, [uid, chatId, playAudioChunk, resetAudioQueue]);
 
     useEffect(() => {
         const onInputAudio = (base64Audio: string) => {
             if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
 
             wsRef.current.send(JSON.stringify({
-                uid: "1e17ebf2-74b1-4468-80d6-d11dcc8196f2",
-                chatId: "69e20e992c9192317f8b7613",
+                uid,
+                chatId,
                 type: "audio",
                 rawAudio: base64Audio
             } as WSMessage));
@@ -128,7 +134,7 @@ export const useMessageController = () => {
         return () => {
             audioRecorder.off("data", onInputAudio).off("volume", setInVolume);
         };
-    }, [audioRecorder, isRecording]);
+    }, [uid, chatId, audioRecorder, isRecording]);
 
     const toggleRecording = () => {
         const ws = wsRef.current;
@@ -141,14 +147,14 @@ export const useMessageController = () => {
 
         if (nextRecording) {
             ws.send(JSON.stringify({
-                uid: "1e17ebf2-74b1-4468-80d6-d11dcc8196f2",
-                chatId: "69e20e992c9192317f8b7613",
+                uid,
+                chatId,
                 type: "recording_start",
             } as WSMessage));
         } else {
             ws.send(JSON.stringify({
-                uid: "1e17ebf2-74b1-4468-80d6-d11dcc8196f2",
-                chatId: "69e20e992c9192317f8b7613",
+                uid,
+                chatId,
                 type: "recording_stop",
             } as WSMessage));
         }
@@ -158,19 +164,19 @@ export const useMessageController = () => {
 
     const sendTextMessage = (text: string) => {
         if (!text.trim()) return;
-        initAudio(); 
+        initAudio();
 
         console.log("Message sent: ", text)
         console.log(wsRef.current?.readyState)
 
         if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
             wsRef.current.send(JSON.stringify({
-                uid: "1e17ebf2-74b1-4468-80d6-d11dcc8196f2",
-                chatId: "69e20e992c9192317f8b7613",
-                type: "text", 
-                text: text 
+                uid,
+                chatId,
+                type: "text",
+                text: text
             } as WSMessage));
-            
+
         }
     };
 

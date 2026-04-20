@@ -2,9 +2,8 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import type { Summary } from "@thesis/types"
 import { generateSummary, getMemoryUpdates } from "@/lib/api/summaryApi"
-
-const CHAT_ID = "69e20e992c9192317f8b7613"
-const UID = "1e17ebf2-74b1-4468-80d6-d11dcc8196f2"
+import { useAuthSelectors } from "@/contexts/useAuthStore"
+import { useChatSelectors } from "@/contexts/useChatStore"
 
 export function useSummary() {
   const navigate = useNavigate()
@@ -12,11 +11,20 @@ export function useSummary() {
   const [memoryUpdates, setMemoryUpdates] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
+  const user = useAuthSelectors.use.user()
+  const chat = useChatSelectors.use.chat()
+  const history = useChatSelectors.use.history()
+
   useEffect(() => {
+    if (!user || !chat) return
+
+    const uid = user.authToken.uid
+    const chatId = chat.id
+
     async function load() {
       const [summaryData, memoryData] = await Promise.all([
-        generateSummary(CHAT_ID),
-        getMemoryUpdates(UID),
+        generateSummary(chatId, history),
+        getMemoryUpdates(uid),
       ])
       setSummary(summaryData)
       setMemoryUpdates(memoryData)
@@ -24,7 +32,7 @@ export function useSummary() {
     }
 
     load()
-  }, [])
+  }, [user, chat])
 
   const navigateToNextSession = () => navigate("/study")
 
