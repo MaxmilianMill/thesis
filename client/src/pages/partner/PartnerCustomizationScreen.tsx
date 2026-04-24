@@ -2,7 +2,6 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button';
 import { AvatarPreview } from '@/components/partner/AvatarPreview';
 import { FeaturePicker } from '@/components/partner/FeaturePicker';
-import { OptionDrawer } from '@/components/partner/OptionDrawer';
 import { VoiceSelect } from '@/components/partner/VoiceSelect';
 import { usePartnerCustomization } from '@/hooks/usePartnerCustomization';
 
@@ -11,11 +10,10 @@ export default function PartnerCustomizationScreen() {
     selections,
     voice,
     setVoice,
-    openDrawer,
+    activeFeature,
+    setActiveFeature,
     isSubmitting,
     selectFeature,
-    openFeatureDrawer,
-    closeDrawer,
     handleContinue,
   } = usePartnerCustomization();
 
@@ -32,10 +30,20 @@ export default function PartnerCustomizationScreen() {
             </p>
           </CardHeader>
 
-          <CardContent className="space-y-6">
-            <AvatarPreview selections={selections} />
-
-            <FeaturePicker selections={selections} onOpen={openFeatureDrawer} />
+          <CardContent className="space-y-4">
+            <div className="flex gap-4 md:gap-6 items-start">
+              <div className="w-28 md:w-40 shrink-0">
+                <AvatarPreview selections={selections} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <FeaturePicker
+                  selections={selections}
+                  activeFeature={activeFeature}
+                  onActivate={setActiveFeature}
+                  onSelect={selectFeature}
+                />
+              </div>
+            </div>
 
             <VoiceSelect value={voice} onChange={setVoice} />
           </CardContent>
@@ -51,13 +59,6 @@ export default function PartnerCustomizationScreen() {
           </CardFooter>
         </Card>
       </div>
-
-      <OptionDrawer
-        feature={openDrawer}
-        selectedId={openDrawer ? selections[openDrawer] : null}
-        onSelect={selectFeature}
-        onClose={closeDrawer}
-      />
     </div>
   );
 }

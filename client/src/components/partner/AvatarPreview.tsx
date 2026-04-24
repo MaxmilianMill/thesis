@@ -1,5 +1,7 @@
-import { FEATURE_OPTIONS } from '@/lib/api/partnerApi';
 import type { FeatureType } from '@/lib/api/partnerApi';
+import dummyAvatar from '@/assets/dummy_avatar.png';
+
+const FEATURE_ORDER: FeatureType[] = ['skin', 'hair', 'eyes', 'nose', 'mouth'];
 
 type Selections = Record<FeatureType, string | null>;
 
@@ -8,20 +10,28 @@ interface AvatarPreviewProps {
 }
 
 export function AvatarPreview({ selections }: AvatarPreviewProps) {
-  const skinOption = selections.skin
-    ? FEATURE_OPTIONS.skin.find((o) => o.id === selections.skin)
-    : null;
-
-  const avatarColor = skinOption?.placeholderColor ?? 'hsl(var(--accent))';
+  const hasAnySelection = FEATURE_ORDER.some((f) => selections[f] !== null);
 
   return (
-    <div className="flex justify-center py-4">
-      <div
-        className="relative w-36 h-36 md:w-44 md:h-44 rounded-full"
-        style={{ backgroundColor: avatarColor }}
-      >
-        {/* each feature layer is overlaid here once real images are available */}
-      </div>
+    <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-accent/20 border-2 border-border">
+      {hasAnySelection ? (
+        FEATURE_ORDER.map((feature) =>
+          selections[feature] !== null ? (
+            <img
+              key={feature}
+              src={dummyAvatar}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : null
+        )
+      ) : (
+        <img
+          src={dummyAvatar}
+          alt="Partner preview"
+          className="w-full h-full object-cover opacity-40"
+        />
+      )}
     </div>
   );
 }

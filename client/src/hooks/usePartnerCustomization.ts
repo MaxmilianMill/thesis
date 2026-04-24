@@ -17,20 +17,12 @@ export function usePartnerCustomization() {
   const navigate = useNavigate();
   const [selections, setSelections] = useState<Selections>(DEFAULT_SELECTIONS);
   const [voice, setVoice] = useState<string>(VOICE_OPTIONS[0].id);
-  const [openDrawer, setOpenDrawer] = useState<FeatureType | null>(null);
+  const [activeFeature, setActiveFeature] = useState<FeatureType | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   function selectFeature(feature: FeatureType, optionId: string) {
     setSelections((prev) => ({ ...prev, [feature]: optionId }));
-    setOpenDrawer(null);
-  }
-
-  function openFeatureDrawer(feature: FeatureType) {
-    setOpenDrawer(feature);
-  }
-
-  function closeDrawer() {
-    setOpenDrawer(null);
+    setActiveFeature(null);
   }
 
   async function handleContinue() {
@@ -61,11 +53,10 @@ export function usePartnerCustomization() {
     selections,
     voice,
     setVoice,
-    openDrawer,
+    activeFeature,
+    setActiveFeature,
     isSubmitting,
     selectFeature,
-    openFeatureDrawer,
-    closeDrawer,
     handleContinue,
   };
 }

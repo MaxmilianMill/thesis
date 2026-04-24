@@ -2,6 +2,14 @@ import type { Partner } from '@thesis/types';
 
 export type FeatureType = 'skin' | 'hair' | 'eyes' | 'nose' | 'mouth';
 
+export const FEATURE_LABELS: Record<FeatureType, string> = {
+  skin: 'Skin Color',
+  hair: 'Hat / Hair',
+  eyes: 'Eyes',
+  nose: 'Nose',
+  mouth: 'Mouth',
+};
+
 export type FeatureOption = {
   id: string;
   label: string;
