@@ -9,6 +9,7 @@ type ChatInputProps = {
   sendTextMessage: (text: string) => void;
   toggleRecording: () => void;
   isRecording: boolean;
+  onHelpPress: () => void;
   disabled?: boolean;
 }
 
@@ -16,6 +17,7 @@ export function ChatInput({
   sendTextMessage,
   toggleRecording,
   isRecording,
+  onHelpPress,
   disabled = false,
 }: ChatInputProps) {
   const [mode, setMode] = useState<InputMode>('audio');
@@ -98,6 +100,7 @@ export function ChatInput({
 
       {/* Help button */}
       <button
+        onClick={onHelpPress}
         className="flex flex-col items-center gap-1 min-w-[52px] text-muted-foreground hover:text-foreground transition-colors"
         aria-label="Help"
       >

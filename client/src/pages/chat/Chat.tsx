@@ -3,9 +3,12 @@ import { ChatInput } from '@/components/chat/Input';
 import { MessageList } from '@/components/chat/MessageList';
 import { PartnerSection } from '@/components/chat/PartnerSection';
 import { TaskList } from '@/components/chat/TaskList';
+import { TutorDrawer } from '@/components/chat/TutorDrawer';
 import { useChatSelectors } from '@/contexts/useChatStore';
+import { useSetupSelectors } from '@/contexts/useSetupStore';
 import { useMessageController } from '@/hooks/useMessageController';
 import { useChatLifecycle } from '@/hooks/useChatLifecycle';
+import { useTutor } from '@/hooks/useTutor';
 import {
   Dialog,
   DialogContent,
@@ -66,7 +69,10 @@ export default function ChatScreen() {
   } = useMessageController();
 
   const chat = useChatSelectors.use.chat();
+  const userInfo = useSetupSelectors.use.userInfo();
   const { isChatFinished, allTasksCompleted } = useChatLifecycle();
+
+  const { isOpen: isTutorOpen, openTutor, closeTutor, entries, isLoading: isTutorLoading, sendQuestion, lastMessage } = useTutor(history, userInfo);
 
   const goToSummary = () => navigate('/summary');
 
@@ -87,7 +93,17 @@ export default function ChatScreen() {
         sendTextMessage={sendTextMessage}
         toggleRecording={toggleRecording}
         isRecording={isRecording}
+        onHelpPress={openTutor}
         disabled={!!isChatFinished}
+      />
+
+      <TutorDrawer
+        open={isTutorOpen}
+        onClose={closeTutor}
+        lastMessage={lastMessage}
+        entries={entries}
+        isLoading={isTutorLoading}
+        onSendQuestion={sendQuestion}
       />
 
       <Dialog open={!!isChatFinished}>

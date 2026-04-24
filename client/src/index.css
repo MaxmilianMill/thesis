@@ -108,6 +108,24 @@
   50% { transform: scaleY(1); }
 }
 
+.tutor-markdown p { margin-bottom: 0.5rem; }
+.tutor-markdown p:last-child { margin-bottom: 0; }
+.tutor-markdown ul { list-style: disc; padding-left: 1.25rem; margin-bottom: 0.5rem; }
+.tutor-markdown ol { list-style: decimal; padding-left: 1.25rem; margin-bottom: 0.5rem; }
+.tutor-markdown li { margin-bottom: 0.25rem; }
+.tutor-markdown h1, .tutor-markdown h2, .tutor-markdown h3 { font-weight: 600; margin-bottom: 0.375rem; }
+.tutor-markdown h1 { font-size: 1rem; }
+.tutor-markdown h2 { font-size: 0.9375rem; }
+.tutor-markdown h3 { font-size: 0.875rem; }
+.tutor-markdown strong { font-weight: 600; }
+.tutor-markdown em { font-style: italic; }
+.tutor-markdown code { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 0.25rem; padding: 0.125rem 0.375rem; font-size: 0.8125rem; }
+.tutor-markdown pre { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 0.5rem; padding: 0.75rem; overflow-x: auto; margin-bottom: 0.5rem; }
+.tutor-markdown pre code { background: none; border: none; padding: 0; }
+.tutor-markdown table { width: 100%; border-collapse: collapse; margin-bottom: 0.5rem; font-size: 0.8125rem; }
+.tutor-markdown th, .tutor-markdown td { border: 1px solid hsl(var(--border)); padding: 0.375rem 0.625rem; text-align: left; }
+.tutor-markdown th { background: hsl(var(--card)); font-weight: 600; }
+
 /* 3. Apply the base utilities */
 @layer base {
   * {

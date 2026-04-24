@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { LevelOption } from '@/components/setup/LevelOption';
+import { Input } from '@/components/ui/input';
 import type { Mothertongue } from '@thesis/types';
 
 const MAIN_LANGUAGES: Mothertongue[] = [
@@ -47,11 +48,20 @@ interface MotherTongueStepProps {
 }
 
 export function MotherTongueStep({ selectedMothertongue, onSelect }: MotherTongueStepProps) {
-  const isOtherSelected = selectedMothertongue
-    ? OTHER_LANGUAGES.some((l) => l.code === selectedMothertongue.code)
-    : false;
+  const isOtherSelected = selectedMothertongue?.code === 'other';
 
-  const [isExpanded, setIsExpanded] = useState(isOtherSelected);
+  const [isOtherExpanded, setIsOtherExpanded] = useState(isOtherSelected);
+  const [otherInput, setOtherInput] = useState(isOtherSelected ? (selectedMothertongue?.name ?? '') : '');
+
+  function handleAddOther() {
+    const trimmed = otherInput.trim();
+    if (!trimmed) return;
+    onSelect({ code: 'other', name: trimmed });
+  }
+
+  function handleOtherKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') handleAddOther();
+  }
 
   return (
     <div className="space-y-6">
@@ -70,7 +80,7 @@ export function MotherTongueStep({ selectedMothertongue, onSelect }: MotherTongu
           />
         ))}
         <button
-          onClick={() => setIsExpanded((prev) => !prev)}
+          onClick={() => setIsOtherExpanded((prev) => !prev)}
           className={cn(
             'flex w-full items-center justify-between rounded-lg border px-4 py-3 text-left text-sm font-medium transition-colors',
             isOtherSelected
@@ -79,26 +89,22 @@ export function MotherTongueStep({ selectedMothertongue, onSelect }: MotherTongu
           )}
         >
           <span>{isOtherSelected ? selectedMothertongue?.name : 'Other'}</span>
-          <svg
-            className={cn('h-4 w-4 transition-transform', isExpanded && 'rotate-180')}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
         </button>
-        {isExpanded && (
-          <div className="max-h-60 overflow-y-auto rounded-lg border border-border space-y-1 p-2">
-            {OTHER_LANGUAGES.map((lang) => (
-              <LevelOption
-                key={lang.code}
-                level={lang.code.toUpperCase()}
-                description={lang.name}
-                isSelected={selectedMothertongue?.code === lang.code}
-                onSelect={() => onSelect(lang)}
-              />
-            ))}
+        {isOtherExpanded && (
+          <div className="flex gap-2">
+            <Input
+              placeholder="Type your language and press Enter..."
+              value={otherInput}
+              onChange={(e) => setOtherInput(e.target.value)}
+              onKeyDown={handleOtherKeyDown}
+              className="bg-card border-border text-foreground placeholder:text-muted-foreground"
+            />
+            <button
+              onClick={handleAddOther}
+              className="rounded-lg border border-primary px-4 py-2 text-sm font-medium text-primary hover:bg-primary/10 transition-colors"
+            >
+              Add
+            </button>
           </div>
         )}
       </div>

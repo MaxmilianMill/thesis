@@ -7,6 +7,8 @@ export { MistakeSchema } from "./chat/mistake.js";
 export type { Mistake } from "./chat/mistake.js";
 export { TaskSchema, TaskListSchema } from "./chat/task-list.js";
 export type { Task, TaskList } from "./chat/task-list.js";
+export { TutorResponseSchema } from "./chat/tutor-response.js";
+export type { TutorResponse } from "./chat/tutor-response.js";
 export type { WSMessage } from "./chat/ws-message.js";
 export { WSMessageSchema } from "./chat/ws-message.js";
 export type { WSPayload, WSEventType } from "./chat/ws-payload.js";
