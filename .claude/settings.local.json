@@ -4,7 +4,8 @@
       "Bash(npx shadcn@latest add drawer)",
       "Bash(npx shadcn@latest add select)",
       "Bash(npx tsc:*)",
-      "Bash(xargs grep *)"
+      "Bash(xargs grep *)",
+      "Bash(xargs wc *)"
     ]
   }
 }

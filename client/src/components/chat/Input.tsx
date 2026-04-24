@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Mic, Grid3X3, HelpCircle, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { RecordingButton } from './RecordingButton';
 
 type InputMode = 'audio' | 'text';
 
@@ -56,19 +57,21 @@ export function ChatInput({
         <span className="text-xs font-medium">Text</span>
       </button>
 
-      {isRecording && <p>Recording...</p>}
-
       {/* Center: mic or text input */}
       <div className="flex flex-1 items-center justify-center">
         {mode === 'audio' ? (
-          <button
-            className="flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none"
-            aria-label="Record audio"
-            onClick={toggleRecording}
-            disabled={disabled}
-          >
-            <Mic className="size-7" />
-          </button>
+          isRecording ? (
+            <RecordingButton onStop={toggleRecording} />
+          ) : (
+            <button
+              className="flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none"
+              aria-label="Record audio"
+              onClick={toggleRecording}
+              disabled={disabled}
+            >
+              <Mic className="size-7" />
+            </button>
+          )
         ) : (
           <div className="flex w-full items-center gap-2 rounded-full bg-input px-4 py-2.5">
             <input

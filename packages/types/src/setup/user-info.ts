@@ -4,6 +4,8 @@ import type { Level } from "./level.js";
 import type { Mothertongue } from "./mothertongue.js";
 import type { Partner } from "./partner.js";
 
+export type Gender = "male" | "female" | "diverse";
+
 export type UserInfo = {
     id: string;
     name?: string;
@@ -14,4 +16,10 @@ export type UserInfo = {
     interests: Interest[];
     difficulties?: string[];
     partner?: Partner;
+    ageRange?: string;
+    gender?: Gender;
+    fieldOfWork?: string;
+    spokenLanguages?: string[];
+    learningGoal?: string;
+    learningTools?: string[];
 };

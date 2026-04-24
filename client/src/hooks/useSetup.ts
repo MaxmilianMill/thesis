@@ -1,11 +1,12 @@
 import { useSetupSelectors } from '@/contexts/useSetupStore';
 import { submitSetup, updateSetup } from '@/lib/api/setupApi';
-import type { Level, Mothertongue, UserInfo } from '@thesis/types';
+import type { Gender, Level, Mothertongue, UserInfo } from '@thesis/types';
 import { useCallback, useState } from 'react';
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 10;
 const MAX_INTERESTS = 5;
 const MAX_DIFFICULTIES = 5;
+const DEFAULT_AGE_RANGE = '26-30';
 
 export function useSetup() {
   const [step, setStep] = useState(0);
@@ -20,6 +21,12 @@ export function useSetup() {
     if (step === 1) return !!draftUserInfo.mothertongue;
     if (step === 2) return (draftUserInfo.difficulties?.length ?? 0) > 0;
     if (step === 3) return (draftUserInfo.interests?.length ?? 0) > 0;
+    if (step === 4) return true;
+    if (step === 5) return !!draftUserInfo.gender;
+    if (step === 6) return true;
+    if (step === 7) return (draftUserInfo.spokenLanguages?.length ?? 0) > 0;
+    if (step === 8) return true;
+    if (step === 9) return (draftUserInfo.learningTools?.length ?? 0) > 0;
     return false;
   })();
 
@@ -55,6 +62,26 @@ export function useSetup() {
     updateDraft({ difficulties: [...current, difficulty] });
   }, [draftUserInfo.difficulties, updateDraft]);
 
+  const toggleSpokenLanguage = useCallback((language: string) => {
+    const current = draftUserInfo.spokenLanguages || [];
+
+    if (current.includes(language)) {
+      updateDraft({ spokenLanguages: current.filter((l) => l !== language) });
+    } else {
+      updateDraft({ spokenLanguages: [...current, language] });
+    }
+  }, [draftUserInfo.spokenLanguages, updateDraft]);
+
+  const toggleLearningTool = useCallback((tool: string) => {
+    const current = draftUserInfo.learningTools || [];
+
+    if (current.includes(tool)) {
+      updateDraft({ learningTools: current.filter((t) => t !== tool) });
+    } else {
+      updateDraft({ learningTools: [...current, tool] });
+    }
+  }, [draftUserInfo.learningTools, updateDraft]);
+
   const handleSubmitSetup = useCallback(async () => {
     const _userInfo = await submitSetup({ ...draftUserInfo });
 
@@ -83,6 +110,18 @@ export function useSetup() {
     toggleDifficulty,
     selectedInterests: draftUserInfo.interests ?? [],
     toggleInterest,
+    selectedAgeRange: draftUserInfo.ageRange ?? DEFAULT_AGE_RANGE,
+    setSelectedAgeRange: (ageRange: string) => updateDraft({ ageRange }),
+    selectedGender: draftUserInfo.gender as Gender | undefined,
+    setSelectedGender: (gender: Gender) => updateDraft({ gender }),
+    fieldOfWork: draftUserInfo.fieldOfWork ?? '',
+    setFieldOfWork: (fieldOfWork: string) => updateDraft({ fieldOfWork }),
+    selectedSpokenLanguages: draftUserInfo.spokenLanguages ?? [],
+    toggleSpokenLanguage,
+    learningGoal: draftUserInfo.learningGoal ?? '',
+    setLearningGoal: (learningGoal: string) => updateDraft({ learningGoal }),
+    selectedLearningTools: draftUserInfo.learningTools ?? [],
+    toggleLearningTool,
     canContinue,
     goNext,
     handleSubmitSetup,

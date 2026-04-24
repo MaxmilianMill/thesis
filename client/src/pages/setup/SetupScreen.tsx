@@ -6,8 +6,14 @@ import { LevelStep } from './steps/LevelStep';
 import { MotherTongueStep } from './steps/MotherTongueStep';
 import { DifficultiesStep } from './steps/DifficultiesStep';
 import { InterestsStep } from './steps/InterestsStep';
+import { AgeStep } from './steps/AgeStep';
+import { GenderStep } from './steps/GenderStep';
+import { FieldOfWorkStep } from './steps/FieldOfWorkStep';
+import { SpokenLanguagesStep } from './steps/SpokenLanguagesStep';
+import { LearningGoalStep } from './steps/LearningGoalStep';
+import { LearningToolsStep } from './steps/LearningToolsStep';
 import { useSetup } from '@/hooks/useSetup';
-import type { Level } from '@thesis/types';
+import type { Gender, Level } from '@thesis/types';
 
 export default function SetupScreen() {
   const navigate = useNavigate();
@@ -22,6 +28,18 @@ export default function SetupScreen() {
     toggleDifficulty,
     selectedInterests,
     toggleInterest,
+    selectedAgeRange,
+    setSelectedAgeRange,
+    selectedGender,
+    setSelectedGender,
+    fieldOfWork,
+    setFieldOfWork,
+    selectedSpokenLanguages,
+    toggleSpokenLanguage,
+    learningGoal,
+    setLearningGoal,
+    selectedLearningTools,
+    toggleLearningTool,
     canContinue,
     goNext,
     handleSubmitSetup,
@@ -59,6 +77,30 @@ export default function SetupScreen() {
             )}
             {step === 3 && (
               <InterestsStep selectedInterests={selectedInterests} onToggle={toggleInterest} />
+            )}
+            {step === 4 && (
+              <AgeStep selectedAgeRange={selectedAgeRange} onSelect={setSelectedAgeRange} />
+            )}
+            {step === 5 && (
+              <GenderStep selectedGender={selectedGender as Gender | undefined} onSelect={setSelectedGender} />
+            )}
+            {step === 6 && (
+              <FieldOfWorkStep value={fieldOfWork} onChange={setFieldOfWork} />
+            )}
+            {step === 7 && (
+              <SpokenLanguagesStep
+                selectedLanguages={selectedSpokenLanguages}
+                onToggle={toggleSpokenLanguage}
+              />
+            )}
+            {step === 8 && (
+              <LearningGoalStep value={learningGoal} onChange={setLearningGoal} />
+            )}
+            {step === 9 && (
+              <LearningToolsStep
+                selectedTools={selectedLearningTools}
+                onToggle={toggleLearningTool}
+              />
             )}
           </CardContent>
           <CardFooter>

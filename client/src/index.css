@@ -103,6 +103,11 @@
   }
 }
 
+@keyframes wave-bar {
+  0%, 100% { transform: scaleY(0.25); }
+  50% { transform: scaleY(1); }
+}
+
 /* 3. Apply the base utilities */
 @layer base {
   * {

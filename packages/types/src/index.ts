@@ -17,7 +17,7 @@ export type { Mothertongue } from "./setup/mothertongue.js";
 export type { Level } from "./setup/level.js";
 export type { Partner, PartnerVoiceConfig } from "./setup/partner.js";
 export type { Scenario } from "./setup/scenario.js";
-export type { UserInfo } from "./setup/user-info.js";
+export type { UserInfo, Gender } from "./setup/user-info.js";
 export { SummarySchema, SummaryAIGenerationSchema } from "./summary/summary.js";
 export type { Summary } from "./summary/summary.js";
 export type { WithStatus } from "./utils/with-status.js";
