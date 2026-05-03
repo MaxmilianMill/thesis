@@ -18,6 +18,7 @@ function loadUserFromStorage(): User | undefined {
         const hoursDiff = (Date.now() - new Date(user.createdAt).getTime()) / (1000 * 60 * 60);
         if (hoursDiff >= SESSION_DURATION_HOURS) {
             ["user", "token", "uid"].forEach((k) => localStorage.removeItem(k));
+            localStorage.setItem("participated", "true");
             return undefined;
         }
         return user;

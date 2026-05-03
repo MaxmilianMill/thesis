@@ -1,14 +1,16 @@
+import type { AuthRequest } from "../../middlewares/auth-handler.js";
 import type { TaskListGenerationService } from "../../services/chat/task-list-generation-service.js";
-import type { Request, Response } from "express";
+import type { Response } from "express";
 
 export class TaskListController {
 
     constructor(private taskListService: TaskListGenerationService) {};
 
-    async handleGenerateTaskList(req: Request, res: Response) {
+    async handleGenerateTaskList(req: AuthRequest, res: Response) {
+
+        const {uid} = req.authToken;
 
         const {
-            uid,
             chatId,
             scenario
         } = req.body;

@@ -66,7 +66,35 @@ async function saveOrUpdateMessage(
     return {status: 200, message};
 };
 
+/**
+ * Returns all messages for a specific chat is descending order.
+ * @param uid 
+ * @param chatId 
+ * @returns 
+ */
+async function getChatMessages(
+    uid: string, chatId: string
+): Promise<WithStatus<"messages", Message[]>>  {
+    const db = getDB();
+
+    const query = {uid, chatId};
+
+    const cursor = db
+        .collection(MESSAGE_COLLECTION)
+        .find(query)
+        .sort({createdAt: "desc"});
+
+    const response = await cursor.toArray();
+
+    const messages = response.map((msg) => {
+        return transformMongoDBDoc<Message>(msg, MessageSchema)
+    });
+
+    return {status: 200, messages: messages}
+}
+
 export {
     generateMessageStream,
-    saveOrUpdateMessage
+    saveOrUpdateMessage,
+    getChatMessages
 };

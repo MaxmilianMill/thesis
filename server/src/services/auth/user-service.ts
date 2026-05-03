@@ -23,12 +23,12 @@ class UserService {
 
         // if no user exist, we start with the control group
         if (!latestUser)
-            return "control";
+            return "control_first";
 
-        if (latestUser.group === "control")
-            return "experiment";
+        if (latestUser.group === "control_first")
+            return "experiment_first";
 
-        return "control";
+        return "control_first";
     };
 };
 

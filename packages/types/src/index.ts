@@ -13,6 +13,8 @@ export type { WSMessage } from "./chat/ws-message.js";
 export { WSMessageSchema } from "./chat/ws-message.js";
 export type { WSPayload, WSEventType } from "./chat/ws-payload.js";
 export type { WSError } from "./errors/ws-error.js";
+export { LinguisticStoreAIGenerationSchema, LinguisticStoreSchema } from "./linguistics/linguistic-store.js";
+export type { LinguisticStore } from "./linguistics/linguistic-store.js";
 export type { Interest } from "./setup/interest.js";
 export type { Language } from "./setup/language.js";
 export type { Mothertongue } from "./setup/mothertongue.js";

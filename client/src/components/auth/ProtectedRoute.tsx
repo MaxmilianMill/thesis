@@ -5,7 +5,10 @@ const ProtectedRoute = () => {
 
     const user = useAuthSelectors.use.user();
 
-    if (!user) return <Navigate to="/" replace />;
+    if (!user) {
+        const hasParticipated = localStorage.getItem("participated") === "true";
+        return <Navigate to={hasParticipated ? "/expired" : "/"} replace />;
+    }
 
     return <Outlet />;
 }

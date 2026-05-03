@@ -10,12 +10,13 @@ export class ChatService {
     ) {
         // Filter out null/undefined values to prevent MongoDB $set errors
         const cleanFields = this.removeNullUndefined(updatedFields);
+        
         return await updateChat(uid, chatId, cleanFields);
     };
 
     async create(
         uid: string,
-        chat: Omit<Chat, "createdAt" | "id" | "completed">
+        chat: Omit<Chat, "createdAt" | "id" | "completed" | "condition">
     ) {
         return await addChat(uid, chat);
     };

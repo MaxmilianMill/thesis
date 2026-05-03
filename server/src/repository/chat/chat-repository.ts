@@ -4,6 +4,7 @@ import type { Chat } from "@thesis/types";
 import { ChatSchema } from "@thesis/types";
 import type { WithStatus } from "@thesis/types";
 import { transformMongoDBDoc } from "./utils/transform-chat-doc.js";
+import { getUserByUid } from "../auth/user-repository.js";
 
 export const CHAT_COLLECTION = "chat";
 
@@ -30,15 +31,33 @@ async function updateChat(
     return { chat: transformedData, status: 200 };
 };
 
+function deriveCondition(
+    group: "control_first" | "experiment_first",
+    existingCount: number
+): "warmup" | "control" | "experiment" {
+    if (existingCount === 0) return "warmup";
+    if (group === "control_first") return existingCount % 2 === 1 ? "control" : "experiment";
+    return existingCount % 2 === 1 ? "experiment" : "control";
+}
+
 async function addChat(
     uid: string,
-    partialChat: Omit<Chat, "createdAt" | "id" | "completed">
+    partialChat: Omit<Chat, "createdAt" | "id" | "completed" | "condition">
 ): Promise<WithStatus<"chat", Chat>> {
 
     const db = getDB();
 
+    const [existingCount, user] = await Promise.all([
+        countChats(uid),
+        getUserByUid(uid)
+    ]);
+
+    const group = user?.group ?? "control_first";
+    const condition = deriveCondition(group, existingCount);
+
     const chatDoc: Omit<Chat, "id"> = {
-        ...partialChat, 
+        ...partialChat,
+        condition,
         createdAt: new Date(),
         completed: false,
         uid
@@ -82,8 +101,14 @@ async function getChat(
     return {status: 200, chat: transformedChat};
 }
 
+async function countChats(uid: string): Promise<number> {
+    const db = getDB();
+    return db.collection(CHAT_COLLECTION).countDocuments({ uid });
+}
+
 export {
     updateChat,
     addChat,
-    getChat
+    getChat,
+    countChats
 };

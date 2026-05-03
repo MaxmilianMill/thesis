@@ -4,6 +4,7 @@ import authRouter from "./auth/auth-routes.js";
 import setupRouter from "./setup/setup-routes.js";
 import chatRouter from "./chat/index.js";
 import summaryRouter from "./summary/summary-routes.js";
+import linguisticStateRouter from "./linguistics/linguistic-state-router.js";
 
 const v1Router = Router();
 
@@ -23,6 +24,10 @@ const moduleRoutes: ModuleRoute[] = [
     {
         path: "/summary",
         route: summaryRouter
+    },
+    {
+        path: "/linguistics",
+        route: linguisticStateRouter
     }
 ];
 

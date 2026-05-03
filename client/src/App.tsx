@@ -6,12 +6,17 @@ import PartnerCustomizationScreen from './pages/partner/PartnerCustomizationScre
 import OverviewScreen from './pages/chat/Overview'
 import ChatScreen from './pages/chat/Chat';
 import SummaryScreen from './pages/summary/Summary';
+import ExpiredScreen from './pages/expired/ExpiredScreen';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <GetStarted />,
+  },
+  {
+    path: "/expired",
+    element: <ExpiredScreen />,
   },
   {
     element: <ProtectedRoute />,

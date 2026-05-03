@@ -37,8 +37,18 @@ async function getLastUser() {
     return result;
 };
 
+async function getUserByUid(uid: string): Promise<User | undefined> {
+    const db = getDB();
+    const result = await db
+        .collection<User>(USER_COLLECTION)
+        .findOne({ "authToken.uid": uid });
+
+    return result ?? undefined;
+}
+
 export {
     addUser,
-    getLastUser
+    getLastUser,
+    getUserByUid
 }
 

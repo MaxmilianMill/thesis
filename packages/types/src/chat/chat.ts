@@ -9,6 +9,7 @@ export const ChatSchema = z.object({
     score: z.number().optional(),
     uid: z.uuid(),
     createdAt: z.coerce.date(),
+    condition: z.enum(["warmup", "control", "experiment"]),
 });
 
 export type Chat = z.infer<typeof ChatSchema> & {scenario: Scenario};
