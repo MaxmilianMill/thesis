@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils';
 import { FEATURE_OPTIONS, FEATURE_LABELS } from '@/lib/api/partnerApi';
 import type { FeatureType } from '@/lib/api/partnerApi';
 import { FeatureOptionCell } from './FeatureOptionCell';
-import dummyAvatar from '@/assets/dummy_avatar.png';
 
 interface FeatureRowProps {
   feature: FeatureType;
@@ -64,7 +63,7 @@ export function FeatureRow({
           )}
         >
           <img
-            src={dummyAvatar}
+            src={`public/partner/${selectedId ?? FEATURE_OPTIONS[feature][0].id}.svg`}
             alt={FEATURE_LABELS[feature]}
             className="w-8 h-8 rounded-full object-cover shrink-0"
           />

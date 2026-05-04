@@ -1,6 +1,5 @@
 import { cn } from '@/lib/utils';
 import type { FeatureOption } from '@/lib/api/partnerApi';
-import dummyAvatar from '@/assets/dummy_avatar.png';
 
 interface FeatureOptionCellProps {
   option: FeatureOption;
@@ -9,6 +8,7 @@ interface FeatureOptionCellProps {
 }
 
 export function FeatureOptionCell({ option, isSelected, onSelect }: FeatureOptionCellProps) {
+
   return (
     <button
       onClick={onSelect}
@@ -20,7 +20,7 @@ export function FeatureOptionCell({ option, isSelected, onSelect }: FeatureOptio
       )}
     >
       <img
-        src={dummyAvatar}
+        src={`public/partner/${option.id}.svg`}
         alt={option.label}
         className="w-full aspect-square rounded-lg object-cover"
       />

@@ -1,5 +1,4 @@
 import type { FeatureType } from '@/lib/api/partnerApi';
-import dummyAvatar from '@/assets/dummy_avatar.png';
 
 const FEATURE_ORDER: FeatureType[] = ['skin', 'hair', 'eyes', 'nose', 'mouth'];
 
@@ -14,23 +13,17 @@ export function AvatarPreview({ selections }: AvatarPreviewProps) {
 
   return (
     <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-accent/20 border-2 border-border">
-      {hasAnySelection ? (
+      {hasAnySelection && (
         FEATURE_ORDER.map((feature) =>
           selections[feature] !== null ? (
             <img
               key={feature}
-              src={dummyAvatar}
+              src={`public/partner/${selections[feature]}.svg`}
               alt=""
               className="absolute inset-0 w-full h-full object-cover"
             />
           ) : null
         )
-      ) : (
-        <img
-          src={dummyAvatar}
-          alt="Partner preview"
-          className="w-full h-full object-cover opacity-40"
-        />
       )}
     </div>
   );
