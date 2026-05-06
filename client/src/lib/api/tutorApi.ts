@@ -3,6 +3,7 @@ import { api } from './config';
 
 interface TutorRequest {
   userInfo: UserInfo;
+  chatId: string;
   question: string;
   history?: Message[];
 }

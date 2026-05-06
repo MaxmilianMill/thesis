@@ -1,11 +1,13 @@
 import type { GenerateContentConfig } from "@google/genai";
 import type { Message, UserInfo } from "@thesis/types";
-import { generateTutorAnswer } from "../../repository/chat/tutor-repository.js";
+import { generateTutorAnswer, saveTutorAnswer } from "../../repository/chat/tutor-repository.js";
 import { TutorResponseSchema, type TutorResponse } from "@thesis/types";
 import { toJSONSchema } from "zod";
+import { log } from "../logger/activity-logger-service.js";
 
 interface IUserQuestion {
     userInfo: UserInfo;
+    chatId: string;
     question: string;
     history?: Message[];
 };
@@ -25,12 +27,32 @@ export class TutorService {
             config
         );
 
-        return this.validate(response);
+        const validatedResponse = this.validate(response);
+
+        const tutorResponse = await saveTutorAnswer({
+            ...validatedResponse,
+            uid: data.userInfo.uid,
+            createdAt: new Date(),
+            chatId: data.chatId,
+            lastMessageId: data.history?.at(-1)?.id || ""
+        });
+
+        log({
+            action: "Tutor answer generated & saved",
+            status: "success",
+            uid: data.userInfo.uid,
+            relatedIds: {
+                chatId: data.chatId,
+                lastMessageId: data.history?.at(-1)?.id || ""
+            }
+        })
+
+        return tutorResponse;
     }
 
     private validate(
         rawText: string
-    ): Omit<TutorResponse, "uid" | "chatId" | "id" | "createdAt"> {
+    ): Omit<TutorResponse, "uid" | "chatId" | "id" | "createdAt" | "lastMessageId"> {
 
         const jsonResponse = JSON.parse(rawText);
         const validatedResponse = TutorResponseSchema.safeParse(jsonResponse);

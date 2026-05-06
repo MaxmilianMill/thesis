@@ -129,7 +129,8 @@ export class ChatSession {
                 const updatedMessage = {
                     ...turnSnapshot.message,
                     // add the final context or the initial text if it was a text message
-                    text: finalTranscript ?? this.currentTurn.message?.text
+                    text: finalTranscript ?? this.currentTurn.message?.text,
+                    createdAt: new Date()
                 } as Message;
                 
                 // 5. Pass the cached history and message to your service

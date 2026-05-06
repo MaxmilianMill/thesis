@@ -72,7 +72,15 @@ export default function ChatScreen() {
   const userInfo = useSetupSelectors.use.userInfo();
   const { isChatFinished, allTasksCompleted } = useChatLifecycle();
 
-  const { isOpen: isTutorOpen, openTutor, closeTutor, entries, isLoading: isTutorLoading, sendQuestion, lastMessage } = useTutor(history, userInfo);
+  const { 
+    isOpen: isTutorOpen, 
+    openTutor, 
+    closeTutor, 
+    entries, 
+    isLoading: isTutorLoading, 
+    sendQuestion, 
+    lastMessage 
+  } = useTutor(history, userInfo, chat?.id);
 
   const goToSummary = () => navigate('/summary');
 

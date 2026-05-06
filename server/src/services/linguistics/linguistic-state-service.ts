@@ -4,15 +4,16 @@ import { getInfoData } from "../../repository/setup/info-repository.js";
 import { generateLinguisticAnalysis, getLinguisticStore, saveOrUpdateLinguisticStore } from "../../repository/linguistics/linguistic-store-repository.js";
 import { getChatMessages } from "../../repository/chat/message-repository.js";
 import z from "zod";
+import { log } from "../logger/activity-logger-service.js";
 
 interface IUpdateStateInput {
     uid: string;
-    chatId: string;
+    chatId?: string;
 };
 
 export class LinguisticStateService {
 
-    async update(data: IUpdateStateInput): Promise<WithStatus<"data", LinguisticStore>> {
+    async update(data: IUpdateStateInput): Promise<WithStatus<"store", LinguisticStore>> {
 
         const {uid, chatId} = data;
         const [
@@ -21,13 +22,14 @@ export class LinguisticStateService {
             linguisticStore
         ] = await Promise.all([
             getInfoData(uid),
-            getChatMessages(uid, chatId),
+            // return an empty array if this is the setup generation
+            getChatMessages(uid, chatId ?? ""),
             getLinguisticStore(uid)
         ]);
 
         const prompt = this.buildPrompt(
-            userInfo.userInfo, 
-            chatMessages.messages,
+            userInfo.userInfo,
+            chatMessages.messages ?? [],
             linguisticStore.store
         );
 
@@ -43,26 +45,43 @@ export class LinguisticStateService {
             throw new Error("Invalid linguistic summary response.");
 
         const savedStore = await saveOrUpdateLinguisticStore(
-            uid, chatId, validatedResponse
+            uid, chatId ?? "", validatedResponse
         );
+
+        log({
+            action: "Updated linguistic store",
+            status: "success",
+            uid,
+            relatedIds: {
+                lastChatId: chatId ?? "setup"
+            }
+        })
+
+        console.log(savedStore.store);
 
         return savedStore;
     }
 
     private buildPrompt(
         userInfo: UserInfo,
-        chatHistory: Message[],
+        chatHistory?: Message[],
         linguisticStore?: LinguisticStore,
     ) {
-        const userMessages = chatHistory.filter(m => m.isUser);
-        const totalMistakes = userMessages.flatMap(m => m.mistakes ?? []);
-        const correctedMessages = userMessages.filter(m => m.improvedVersion);
+        const userMessages = chatHistory?.filter(m => m.isUser);
+        const totalMistakes = userMessages?.flatMap(m => m.mistakes ?? []);
+        const correctedMessages = userMessages?.filter(m => m.improvedVersion);
+        const conversation = chatHistory?.map((msg) => {
+            return {
+                role: msg.isUser ? "user" : "assistant",
+                text: msg.text
+            }
+        }).toString();
 
-        const mistakeBlock = totalMistakes.length > 0
+        const mistakeBlock = totalMistakes && totalMistakes.length > 0
             ? totalMistakes.map(m => `- [${m.type}] ${m.explanation}`).join("\n")
             : "No mistakes recorded.";
 
-        const correctionBlock = correctedMessages.length > 0
+        const correctionBlock = correctedMessages && correctedMessages.length > 0
             ? correctedMessages.map(m => `Original: "${m.text}"\nImproved: "${m.improvedVersion}"`).join("\n\n")
             : "No corrections provided.";
 
@@ -87,6 +106,9 @@ export class LinguisticStateService {
             ${existingFacts}
 
             ## New Conversation Data
+            ### Conversation
+            ${conversation}
+
             ### Mistakes Made
             ${mistakeBlock}
 

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { FeatureType } from '@/lib/api/partnerApi';
 import { FEATURE_OPTIONS, VOICE_OPTIONS, submitPartner } from '@/lib/api/partnerApi';
+import { useSetupSelectors } from '@/contexts/useSetupStore';
 
 type Selections = Record<FeatureType, string | null>;
 
@@ -15,6 +16,7 @@ const DEFAULT_SELECTIONS: Selections = {
 
 export function usePartnerCustomization() {
   const navigate = useNavigate();
+  const updateUserInfo = useSetupSelectors.use.updateUserInfo();
   const [selections, setSelections] = useState<Selections>(DEFAULT_SELECTIONS);
   const [voice, setVoice] = useState<string>(VOICE_OPTIONS[0].id);
   const [activeFeature, setActiveFeature] = useState<FeatureType | null>(null);
@@ -32,17 +34,22 @@ export function usePartnerCustomization() {
       return sel ? (FEATURE_OPTIONS[feature].find((o) => o.id === sel)?.id ?? '') : '';
     };
 
+    const partner = {
+      voiceConfig: { voiceName: selectedVoice.name, languageCode: selectedVoice.languageCode },
+      personalityDescription: '',
+      color: resolveOption('skin'),
+      hair: resolveOption('hair'),
+      eyes: resolveOption('eyes'),
+      nose: resolveOption('nose'),
+      mouth: resolveOption('mouth'),
+    };
+
     setIsSubmitting(true);
     try {
-      await submitPartner({
-        voiceConfig: { voiceName: selectedVoice.name, languageCode: selectedVoice.languageCode },
-        personalityDescription: '',
-        color: resolveOption('skin'),
-        hair: resolveOption('hair'),
-        eyes: resolveOption('eyes'),
-        nose: resolveOption('nose'),
-        mouth: resolveOption('mouth'),
-      });
+      const saved = await submitPartner(partner);
+      if (saved) {
+        updateUserInfo({ partner: saved });
+      }
       navigate('/study');
     } finally {
       setIsSubmitting(false);

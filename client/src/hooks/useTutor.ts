@@ -7,7 +7,7 @@ export type TutorEntry = {
   response?: TutorResponse;
 };
 
-export function useTutor(history: Message[], userInfo: UserInfo | undefined) {
+export function useTutor(history: Message[], userInfo: UserInfo | undefined, chatId: string | undefined) {
   const [isOpen, setIsOpen] = useState(false);
   const [entries, setEntries] = useState<TutorEntry[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +27,7 @@ export function useTutor(history: Message[], userInfo: UserInfo | undefined) {
 
   const sendQuestion = useCallback(
     async (question: string) => {
-      if (!userInfo || !question.trim()) return;
+      if (!userInfo || !question.trim() || !chatId) return;
 
       const newEntry: TutorEntry = { question };
       setEntries((prev) => [...prev, newEntry]);
@@ -36,6 +36,7 @@ export function useTutor(history: Message[], userInfo: UserInfo | undefined) {
       try {
         const response = await generateTutorResponse({
           userInfo,
+          chatId,
           question,
           history: history as Message[],
         });

@@ -14,12 +14,14 @@ export class TutorController {
 
         const {
             userInfo,
+            chatId,
             question,
             history
         } = req.body;
 
         const answer = await this.tutorService.generate({
             userInfo,
+            chatId,
             question,
             history
         });

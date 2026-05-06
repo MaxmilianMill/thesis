@@ -55,7 +55,7 @@ async function saveOrUpdateLinguisticStore(
     uid: string,
     chatId: string,
     updatedFields: Partial<LinguisticStore>
-): Promise<WithStatus<"data", LinguisticStore>> {
+): Promise<WithStatus<"store", LinguisticStore>> {
     const db = getDB();
 
     const query = {uid};
@@ -84,11 +84,11 @@ async function saveOrUpdateLinguisticStore(
     if (!response) 
         throw new Error("Error creating or updating linguistic store.");
 
-    const data = transformMongoDBDoc<LinguisticStore>(
+    const store = transformMongoDBDoc<LinguisticStore>(
         response, LinguisticStoreSchema
     );
 
-    return {status: 200, data};
+    return {status: 200, store};
 }
 
 export {

@@ -1,4 +1,6 @@
 import type { Partner } from '@thesis/types';
+import { HttpStatusCode } from 'axios';
+import { api } from './config';
 
 export type FeatureType = 'skin' | 'hair' | 'eyes' | 'nose' | 'mouth';
 
@@ -62,6 +64,14 @@ export const VOICE_OPTIONS: VoiceOption[] = [
   { id: 'marcus', name: 'Marcus', languageCode: 'en-US' },
 ];
 
-export async function submitPartner(_partner: Partner): Promise<void> {
-  return new Promise((resolve) => setTimeout(() => resolve(), 500));
+export async function submitPartner(partner: Partner): Promise<Partner | undefined> {
+  return api.post('/setup/update', { data: { partner } })
+    .then((res) => {
+      if (res.status !== HttpStatusCode.Ok) return undefined;
+      return partner;
+    })
+    .catch((error) => {
+      console.error(error.message);
+      return undefined;
+    });
 }

@@ -4,14 +4,17 @@ import { SetupController } from "../../controllers/setup/setup-controller.js";
 import { InfoService } from "../../services/setup/info-service.js";
 import { ScenarioService } from "../../services/setup/scenario-service.js";
 import { authHandler, type AuthRequest } from "../../middlewares/auth-handler.js";
+import { LinguisticStateService } from "../../services/linguistics/linguistic-state-service.js";
 
 const setupRouter = Router();
 
 const infoService = new InfoService();
 const scenarioService = new ScenarioService();
+const linguisticStoreService = new LinguisticStateService();
 const setupController = new SetupController(
     infoService,
-    scenarioService
+    scenarioService,
+    linguisticStoreService
 );
 
 // protect all routes

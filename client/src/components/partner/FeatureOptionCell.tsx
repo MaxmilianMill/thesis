@@ -20,7 +20,7 @@ export function FeatureOptionCell({ option, isSelected, onSelect }: FeatureOptio
       )}
     >
       <img
-        src={`public/partner/${option.id}.svg`}
+        src={`/partner/${option.id}.svg`}
         alt={option.label}
         className="w-full aspect-square rounded-lg object-cover"
       />

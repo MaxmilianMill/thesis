@@ -63,7 +63,7 @@ export function FeatureRow({
           )}
         >
           <img
-            src={`public/partner/${selectedId ?? FEATURE_OPTIONS[feature][0].id}.svg`}
+            src={`/partner/${selectedId ?? FEATURE_OPTIONS[feature][0].id}.svg`}
             alt={FEATURE_LABELS[feature]}
             className="w-8 h-8 rounded-full object-cover shrink-0"
           />

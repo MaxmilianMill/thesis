@@ -1,4 +1,4 @@
-import { MongoError, ObjectId } from "mongodb";
+import { MongoError } from "mongodb";
 import { getDB } from "../../db/config.js";
 import type { UserInfo } from "@thesis/types";
 import type { WithStatus } from "@thesis/types";
@@ -18,14 +18,14 @@ async function addInfoData(userInfo: UserInfo): Promise<WithStatus<"userInfo", U
 };
 
 async function updateInfoData(
-    partialData: Partial<UserInfo>, id: string
+    partialData: Partial<UserInfo>, uid: string
 ): Promise<WithStatus<"data", Partial<UserInfo>>> {
     const db = getDB();
     const response = await db
         .collection(INFO_COLLECTION)
-        .updateOne({_id: new ObjectId(id)}, {$set: partialData});
+        .updateOne({uid}, {$set: partialData});
 
-    if (response.matchedCount !== 1) 
+    if (response.matchedCount !== 1)
         throw new MongoError("No document found to update.");
 
     return {data: partialData, status: 200};

@@ -18,7 +18,7 @@ export function AvatarPreview({ selections }: AvatarPreviewProps) {
           selections[feature] !== null ? (
             <img
               key={feature}
-              src={`public/partner/${selections[feature]}.svg`}
+              src={`/partner/${selections[feature]}.svg`}
               alt=""
               className="absolute inset-0 w-full h-full object-cover"
             />
