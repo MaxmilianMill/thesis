@@ -1,10 +1,11 @@
 import type { GenerateContentConfig } from "@google/genai";
-import { LinguisticStoreAIGenerationSchema, type LinguisticStore, type Message, type UserInfo, type WithStatus } from "@thesis/types";
+import { LinguisticStoreAIGenerationSchema, type LinguisticStore, type Message, type TutorResponse, type UserInfo, type WithStatus } from "@thesis/types";
 import { getInfoData } from "../../repository/setup/info-repository.js";
 import { generateLinguisticAnalysis, getLinguisticStore, saveOrUpdateLinguisticStore } from "../../repository/linguistics/linguistic-store-repository.js";
 import { getChatMessages } from "../../repository/chat/message-repository.js";
 import z from "zod";
 import { log } from "../logger/activity-logger-service.js";
+import { getTutorAnswers } from "../../repository/chat/tutor-repository.js";
 
 interface IUpdateStateInput {
     uid: string;
@@ -19,19 +20,24 @@ export class LinguisticStateService {
         const [
             userInfo,
             chatMessages,
-            linguisticStore
+            linguisticStore,
+            tutorResponses
         ] = await Promise.all([
             getInfoData(uid),
             // return an empty array if this is the setup generation
             getChatMessages(uid, chatId ?? ""),
-            getLinguisticStore(uid)
+            getLinguisticStore(uid),
+            getTutorAnswers(uid)
         ]);
 
         const prompt = this.buildPrompt(
             userInfo.userInfo,
             chatMessages.messages ?? [],
-            linguisticStore.store
+            linguisticStore.store,
+            tutorResponses.data
         );
+
+        console.log(prompt);
 
         const config = this.getConfig();
 
@@ -66,6 +72,7 @@ export class LinguisticStateService {
         userInfo: UserInfo,
         chatHistory?: Message[],
         linguisticStore?: LinguisticStore,
+        tutorResponses?: TutorResponse[]
     ) {
         const userMessages = chatHistory?.filter(m => m.isUser);
         const totalMistakes = userMessages?.flatMap(m => m.mistakes ?? []);
@@ -73,9 +80,14 @@ export class LinguisticStateService {
         const conversation = chatHistory?.map((msg) => {
             return {
                 role: msg.isUser ? "user" : "assistant",
-                text: msg.text
+                text: msg.text,
+                // add the relevant questions to the conversation history
+                userQuestion: tutorResponses?.find(
+                    (tr) => tr.lastMessageId === msg.id)
             }
         }).toString();
+
+        console.log(conversation);
 
         const mistakeBlock = totalMistakes && totalMistakes.length > 0
             ? totalMistakes.map(m => `- [${m.type}] ${m.explanation}`).join("\n")

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Scenario, Partner, TaskList, Chat } from '@thesis/types';
+import type { Scenario, TaskList, Chat } from '@thesis/types';
 import { fetchOverviewData, generateTasks } from '@/lib/api/overviewApi';
 import { useChatSelectors } from '@/contexts/useChatStore';
 import { createChat } from '@/lib/api/chatApi';
@@ -12,7 +12,6 @@ export function useOverview() {
   const navigate = useNavigate();
   const [overviewState, setOverviewState] = useState<OverviewState>('overview');
   const [scenario, setScenario] = useState<Scenario | null>(null);
-  const [partner, setPartner] = useState<Partner | null>(null);
   const [tasks, setTasks] = useState<TaskList | null>(null);
   const [preparedChat, setPreparedChat] = useState<Chat | null>(null);
   const setChat = useChatSelectors.use.setChat();
@@ -27,7 +26,6 @@ export function useOverview() {
       if (!data) return;
       setScenario(data.scenario);
       console.log(data.scenario);
-      setPartner(data.partner);
     });
   }, []);
 
@@ -57,7 +55,7 @@ export function useOverview() {
   return {
     overviewState,
     scenario,
-    partner,
+    partner: userInfo?.partner,
     tasks,
     handleGenerateTasks,
     handleStartSpeaking,

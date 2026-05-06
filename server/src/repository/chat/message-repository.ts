@@ -93,8 +93,31 @@ async function getChatMessages(
     return {status: 200, messages: messages}
 }
 
+type StoredMessage = Omit<Message, 'id'> & { chatId: string };
+
+async function saveMessage(
+    message: StoredMessage
+): Promise<WithStatus<"message", Message>> {
+    const db = getDB();
+
+    const result = await db.collection(MESSAGE_COLLECTION).insertOne(message);
+
+    if (!result.insertedId)
+        throw new MongoError("Insert failed.");
+
+    const doc = await db.collection(MESSAGE_COLLECTION).findOne({ _id: result.insertedId });
+
+    if (!doc)
+        return { status: 200, message: {...message, id: result.insertedId.toString()}}
+
+    const saved = transformMongoDBDoc<Message>(doc, MessageSchema);
+
+    return { status: 201, message: saved };
+}
+
 export {
     generateMessageStream,
     saveOrUpdateMessage,
+    saveMessage,
     getChatMessages
 };

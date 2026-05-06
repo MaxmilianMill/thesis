@@ -7,6 +7,7 @@ import type { WSMessage } from "@thesis/types"
 import type { Chat } from "@thesis/types";
 import { FeedbackService } from "../services/chat/feedback-service.js";
 import { TaskListUpdaterService } from "../services/chat/task-list-updater-service.js";
+import { MessageService } from "../services/chat/message-service.js";
 
 interface TurnContext {
     transcript: string;
@@ -20,20 +21,22 @@ export class ChatSession {
     processingMessage: boolean = false;
     private processingMessagePromise: Promise<void> | null = null;
 
-    // track the full transcript to generate the feedback
     private currentTurn: TurnContext = { transcript: "" };
+    private currentAiTranscript: string = "";
     private taskListUpdaterService: TaskListUpdaterService;
 
     constructor(
         client: WebSocket,
         public aiSessionService: AISessionService,
         public feedbackService: FeedbackService,
+        public messageService: MessageService,
         public userInfo: UserInfo,
         public chat: Chat
     ) {
         this.client = new ClientSession(client);
         this.ai = new AISession(aiSessionService, userInfo);
         this.feedbackService = feedbackService;
+        this.messageService = messageService;
         this.taskListUpdaterService = new TaskListUpdaterService();
 
         this.initializeListeners();
@@ -42,7 +45,6 @@ export class ChatSession {
     initializeListeners() {
         this.client.on('user_msg', async (data: WSMessage) => {
             if (data.type === "recording_start") {
-                // start a new turn
                 this.currentTurn = {
                     transcript: "",
                     message: data.message,
@@ -76,13 +78,13 @@ export class ChatSession {
         this.ai?.on('ai_msg', (aiResponse: WSPayload) => {
             this.client.sendAIResponse(aiResponse);
 
-            // cache user transcript to generate feedback
-            if (aiResponse.type === "user_msg") 
+            if (aiResponse.type === "user_msg")
                 this.currentTurn.transcript += aiResponse.data;
 
-            // if its the first ai message, the user transcription is present
-            // we then start the feedback generation and task list updates
-            if(aiResponse.type === "ai_msg" && !this.processingMessage) {
+            if (aiResponse.type === "ai_msg")
+                this.currentAiTranscript += aiResponse.data;
+
+            if (aiResponse.type === "ai_msg" && !this.processingMessage) {
                 this.processingMessage = true;
                 this.processingMessagePromise = this.processUserMessage();
             }
@@ -90,11 +92,23 @@ export class ChatSession {
 
         this.ai?.on('turn_complete', async () => {
             this.client.sendAIResponse({ type: "done", data: null });
-            
+
+            const aiText = this.currentAiTranscript.trim();
+            this.currentAiTranscript = "";
+
+            if (aiText) {
+                this.messageService.save({
+                    uid: this.userInfo.uid,
+                    chatId: this.chat.id,
+                    isUser: false,
+                    text: aiText,
+                    createdAt: new Date()
+                }).catch(err => console.error("Failed to save AI message:", err));
+            }
+
             this.cleanupState();
         });
 
-        // Robust Cleanup (If one dies, kill the other)
         this.client.on('disconnected', () => {
             console.log("User left. Shutting down AI.");
             this.ai?.close();
@@ -116,7 +130,7 @@ export class ChatSession {
         this.processingMessage = false;
     };
 
-    private async  processUserMessage() {
+    private async processUserMessage() {
         const turnSnapshot = { ...this.currentTurn };
         this.currentTurn = { transcript: "" };
 
@@ -124,22 +138,31 @@ export class ChatSession {
 
         if (finalTranscript.length > 0) {
             try {
-                console.log("Generating feedback with message: ", finalTranscript);
-
-                const updatedMessage = {
-                    ...turnSnapshot.message,
-                    // add the final context or the initial text if it was a text message
-                    text: finalTranscript ?? this.currentTurn.message?.text,
+                const userMessage: Message = {
+                    id: crypto.randomUUID(),
+                    uid: this.userInfo.uid,
+                    isUser: true,
+                    text: finalTranscript,
                     createdAt: new Date()
-                } as Message;
-                
-                // 5. Pass the cached history and message to your service
+                };
+
                 const feedback = await this.feedbackService.generateFeedback({
                     userInfo: this.userInfo,
                     chat: this.chat,
-                    message: updatedMessage,
-                    history: turnSnapshot.history      
+                    message: userMessage,
+                    history: turnSnapshot.history
                 });
+
+                this.messageService.save({
+                    uid: this.userInfo.uid,
+                    chatId: this.chat.id,
+                    isUser: true,
+                    text: userMessage.text,
+                    createdAt: userMessage.createdAt,
+                    isCorrect: feedback.isCorrect,
+                    improvedVersion: feedback.improvedVersion,
+                    mistakes: feedback.mistakes
+                }).catch(err => console.error("Failed to save user message:", err));
 
                 this.client.sendFeedback({
                     type: "feedback",
@@ -147,7 +170,7 @@ export class ChatSession {
                 });
 
                 const updatedTaskList = await this.taskListUpdaterService
-                    .update(updatedMessage, this.chat);
+                    .update(userMessage, this.chat);
 
                 this.client.sendTaskListUpdates({
                     type: "taskList",

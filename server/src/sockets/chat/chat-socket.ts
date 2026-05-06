@@ -6,6 +6,7 @@ import { ChatSession } from "../../sessions/chat-session.js";
 import * as url from "url";
 import { AISessionService } from "../../services/chat/ai-session-service.js";
 import { FeedbackService } from "../../services/chat/feedback-service.js";
+import { MessageService } from "../../services/chat/message-service.js";
 
 export function initializeChatSocket(httpServer: Server) {
     console.log("Initializing Websocket...")
@@ -54,11 +55,13 @@ export function initializeChatSocket(httpServer: Server) {
 
                 const aiSessionService = new AISessionService(userInfo.userInfo);
                 const feedbackService = new FeedbackService();
+                const messageService = new MessageService();
 
                 new ChatSession(
                     ws,
                     aiSessionService,
                     feedbackService,
+                    messageService,
                     userInfo.userInfo,
                     chat.chat
                 );
