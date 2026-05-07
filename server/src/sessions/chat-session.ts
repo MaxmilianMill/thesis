@@ -177,6 +177,9 @@ export class ChatSession {
                     data: updatedTaskList
                 });
 
+                // update in-memory
+                this.chat.taskList = updatedTaskList;
+
             } catch (error) {
                 console.error("Failed to generate feedback:", (error as Error).message);
             }

@@ -3,7 +3,7 @@ import type { Chat } from "@thesis/types";
 import type { Message } from "@thesis/types";
 import z from "zod";
 import { TaskListUpdateSchema } from "./schemas/task-list-update.js";
-import { findCompletedTasks } from "../../repository/chat/task-list-repository.js";
+import { findCompletedTasks, saveTaskList } from "../../repository/chat/task-list-repository.js";
 
 export class TaskListUpdaterService {
     
@@ -17,7 +17,14 @@ export class TaskListUpdaterService {
         );
 
         const updatedTaskIds = this.validate(rawResponse);
-        return this.updateTasksInChat(updatedTaskIds, chat);
+        const updatedTaskList = this.updateTasksInChat(updatedTaskIds, chat);
+
+        // fire and forget to mongo db
+        saveTaskList(chat.uid, chat.id, updatedTaskList).catch((error) => {
+            console.error(error.message)
+        });
+        
+        return updatedTaskList;
     };
 
     private updateTasksInChat(taskIds: number[], chat: Chat) {
