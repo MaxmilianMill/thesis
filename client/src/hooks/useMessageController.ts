@@ -7,11 +7,15 @@ import { AudioStreamer } from "./lib/audio-streamer";
 import { audioContext } from "./lib/utils";
 import VolMeterWorket from "./lib/worklets/vol-meter";
 import { AudioRecorder } from "./lib/audio-recorder";
+import { useChatSocket } from "./useChatSocket";
+
+type IncomingPayload = {
+    type: string;
+    data?: unknown;
+};
 
 export const useMessageController = () => {
 
-    const wsRef = useRef<WebSocket | null>(null);
-    const [connectionStatus, setConnectionStatus] = useState<boolean>(false);
     const audioStreamerRef = useRef<AudioStreamer | null>(null);
     const [inVolume, setInVolume] = useState<number>(0);
     const [audioRecorder] = useState(() => new AudioRecorder());
@@ -37,103 +41,85 @@ export const useMessageController = () => {
     const uid = user?.authToken.uid;
     const chatId = chat?.id;
 
+    const { connectionStatus, send, subscribe } = useChatSocket({ uid, chatId });
+
+    // Initialize the audio streamer once we are connected
     useEffect(() => {
-        if (!uid || !chatId) return;
+        if (!connectionStatus || audioStreamerRef.current) return;
 
-        const ws = new WebSocket(`ws://localhost:3000/ws/chat?uid=${uid}&chatId=${chatId}`);
-        wsRef.current = ws;
-
-        ws.onopen = () => {
-            console.log("WebSocket connected!");
-            setConnectionStatus(true);
-
-            if (!audioStreamerRef.current) {
-                console.log('🔊 Initializing audio streamer...');
-                audioContext({ id: "audio-out" }).then((audioCtx: AudioContext) => {
-                    audioStreamerRef.current = new AudioStreamer(audioCtx);
-                    console.log('🔊 Audio context created, sample rate:', audioCtx.sampleRate);
-                    audioStreamerRef.current
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        .addWorklet<any>("vumeter-out", VolMeterWorket, (ev: any) => {
-                            setInVolume(ev.data.volume);
-                        })
-                        .then(() => {
-                            console.log('✅ Output volume meter worklet added');
-                        });
+        audioContext({ id: "audio-out" }).then((audioCtx: AudioContext) => {
+            audioStreamerRef.current = new AudioStreamer(audioCtx);
+            audioStreamerRef.current
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                .addWorklet<any>("vumeter-out", VolMeterWorket, (ev: any) => {
+                    setInVolume(ev.data.volume);
+                })
+                .then(() => {
+                    console.log("Output volume meter worklet added");
                 });
-            }
-        }
+        });
+    }, [connectionStatus]);
 
-        ws.onmessage = (event) => {
-            const payload = JSON.parse(event.data);
-
-            console.log(payload);
+    // Subscribe to incoming server payloads
+    useEffect(() => {
+        const unsubscribe = subscribe((raw) => {
+            const payload = raw as IncomingPayload;
 
             switch (payload.type) {
-
                 case "audio":
-                    playAudioChunk(payload.data);
+                    playAudioChunk(payload.data as string);
                     break;
 
                 case "user_msg":
-                    appendUserStreamChunk(payload.data);
+                    appendUserStreamChunk(payload.data as string);
                     break;
 
                 case "ai_msg":
-                    appendAIStreamChunk(payload.data);
+                    appendAIStreamChunk(payload.data as string);
                     break;
 
-                // if turn is complete or something happend on the server side
                 case "done":
                     resetAudioQueue();
                     finalizeAITurn();
                     break;
 
-                case "feedback": 
-                    console.log(payload.data);
-                    addFeedback(payload.data);
+                case "feedback":
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    addFeedback(payload.data as any);
                     break;
 
                 case "taskList":
-                    console.log(payload.data);
-                    updateTaskList(payload.data);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    updateTaskList(payload.data as any);
+                    break;
+
+                case "ai_disconnected":
+                    console.warn("AI session disconnected on server.");
+                    break;
+
+                case "error":
+                    console.error("Server reported error:", payload.data);
                     break;
 
                 default:
-                    console.warn("Unknwon payload type: ", JSON.stringify(payload));
+                    console.warn("Unknown payload type: ", JSON.stringify(payload));
             }
-        }
+        });
+        return unsubscribe;
+    }, [subscribe, playAudioChunk, appendUserStreamChunk, appendAIStreamChunk, resetAudioQueue, finalizeAITurn, addFeedback, updateTaskList]);
 
-        ws.onerror = (errorEvent) => {
-            console.error(errorEvent);
-            setConnectionStatus(false);
-        };
-
-        ws.onclose = (closeEvent) => {
-            console.warn(closeEvent);
-            setConnectionStatus(false);
-        }
-
-        return () => {
-            if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
-                ws.close();
-            }
-        };
-    }, [uid, chatId, playAudioChunk, resetAudioQueue]);
-
+    // Audio recorder wiring — drop chunks instead of queuing them when offline
     useEffect(() => {
         const onInputAudio = (base64Audio: string) => {
-            if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
-
-            wsRef.current.send(JSON.stringify({
+            send({
                 uid,
                 chatId,
                 type: "audio",
                 rawAudio: base64Audio
-            } as WSMessage));
+            } as WSMessage, { dropIfOffline: true });
         };
 
-        if (wsRef.current && audioRecorder && isRecording) {
+        if (audioRecorder && isRecording && connectionStatus) {
             audioRecorder.on("data", onInputAudio).on("volume", setInVolume);
             audioRecorder.start().catch((error) => {
                 console.error('Failed to start audio recorder:', error);
@@ -146,11 +132,10 @@ export const useMessageController = () => {
         return () => {
             audioRecorder.off("data", onInputAudio).off("volume", setInVolume);
         };
-    }, [uid, chatId, audioRecorder, isRecording]);
+    }, [uid, chatId, audioRecorder, isRecording, connectionStatus, send]);
 
     const toggleRecording = () => {
-        const ws = wsRef.current;
-        if (!ws || ws.readyState !== WebSocket.OPEN) return;
+        if (!connectionStatus) return;
 
         const nextRecording = !isRecording;
 
@@ -158,18 +143,18 @@ export const useMessageController = () => {
         initAudio();
 
         if (nextRecording) {
-            ws.send(JSON.stringify({
+            send({
                 uid,
                 chatId,
                 type: "recording_start",
                 text: ""
-            } as WSMessage));
+            } as WSMessage);
         } else {
-            ws.send(JSON.stringify({
+            send({
                 uid,
                 chatId,
                 type: "recording_stop",
-            } as WSMessage));
+            } as WSMessage);
         }
 
         setIsRecording(nextRecording);
@@ -179,17 +164,12 @@ export const useMessageController = () => {
         if (!text.trim()) return;
         initAudio();
 
-        console.log("Message sent: ", text)
-        console.log(wsRef.current?.readyState)
-
-        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-            wsRef.current.send(JSON.stringify({
-                uid,
-                chatId,
-                type: "text",
-                text: text
-            } as WSMessage));
-        }
+        send({
+            uid,
+            chatId,
+            type: "text",
+            text: text
+        } as WSMessage);
     };
 
     return {

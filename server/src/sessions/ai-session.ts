@@ -9,6 +9,7 @@ const AI_WS_URL = `wss://generativelanguage.googleapis.com/ws/google.ai.generati
 export class AISession extends EventEmitter {
 
     private ws: WebSocket;
+    private disconnected = false;
 
     constructor(
         public sessionService: AISessionService,
@@ -62,6 +63,8 @@ export class AISession extends EventEmitter {
                         type: "user_msg",
                         data: serverContent.inputTranscription.text
                     });
+
+                    console.log("User transcript: ", serverContent.inputTranscription.text);
                 }
 
                 if (serverContent.outputTranscription) {
@@ -77,16 +80,25 @@ export class AISession extends EventEmitter {
             }
         };
 
+        const emitDisconnectedOnce = () => {
+            if (this.disconnected) return;
+            this.disconnected = true;
+            this.emit("disconnected");
+        };
+
         // Add the error listener
         this.ws.onerror = (error) => {
             console.error("🚨 Gemini WebSocket Error:", error);
+            // An 'error' is not always followed by 'close' — emit here too
+            // so the chat-session listener still tears down the user side.
+            emitDisconnectedOnce();
         };
 
         // Update the close listener to print the exact reason
         this.ws.onclose = (event) => {
             const reason = event.reason ? event.reason.toString() : "No reason provided";
             console.log(`🔌 Gemini connection closed. Code: ${event.code}, Reason: ${reason}`);
-            this.emit("disconnected");
+            emitDisconnectedOnce();
         };
     };
 

@@ -1,11 +1,12 @@
 import type { GenerateContentConfig } from "@google/genai";
-import { LinguisticStoreAIGenerationSchema, type LinguisticStore, type Message, type TutorResponse, type UserInfo, type WithStatus } from "@thesis/types";
+import { LinguisticStoreAIGenerationSchema, LinguisticStoreSchema, type LinguisticStore, type Message, type TutorResponse, type UserInfo, type WithStatus } from "@thesis/types";
 import { getInfoData } from "../../repository/setup/info-repository.js";
 import { generateLinguisticAnalysis, getLinguisticStore, saveOrUpdateLinguisticStore } from "../../repository/linguistics/linguistic-store-repository.js";
 import { getChatMessages } from "../../repository/chat/message-repository.js";
 import z from "zod";
 import { log } from "../logger/activity-logger-service.js";
 import { getTutorAnswers } from "../../repository/chat/tutor-repository.js";
+import { validateSchema } from "../../utils/validate-schema.js";
 
 interface IUpdateStateInput {
     uid: string;
@@ -67,6 +68,13 @@ export class LinguisticStateService {
 
         return savedStore;
     }
+
+    public async get(uid: string) {
+
+        const linguisticStore = await getLinguisticStore(uid);
+
+        return validateSchema(linguisticStore.store, LinguisticStoreSchema);
+    };
 
     private buildPrompt(
         userInfo: UserInfo,

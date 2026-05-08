@@ -8,6 +8,7 @@ interface ChatState {
     chat: Chat | undefined;
     history: UIMessage[];
     setChat: (chat: Chat) => void;
+    resetHistory: () => void;
     updateChat: (updatedFields: Partial<Chat>) => void;
     updateHistory: (msg: Message | Message[]) => void;
     updateTaskList: (updatedTaskList: TaskList) => void;
@@ -21,6 +22,7 @@ const useChatStore = create<ChatState>((set) => ({
     chat: undefined,
     history: [],
     setChat: (chat) => set({chat}),
+    resetHistory: () => set({history: []}),
     updateChat: (updatedFields) => set((state) => {
         return {chat: {...state.chat, ...updatedFields} as Chat}
     }),

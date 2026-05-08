@@ -6,19 +6,19 @@ const LEVELS: Array<{ code: Level["code"]; label: string; name: Level["name"]; s
     code: 'a1',
     label: 'A1',
     name: 'beginner',
-    subtitle: 'Puedo presentarme y entender frases muy básicas del día a día.',
+    subtitle: 'I can introduce myself and understand very basic everyday phrases.',
   },
   {
     code: 'a2',
     label: 'A2',
     name: 'beginner',
-    subtitle: 'Puedo comunicarme en situaciones simples y hablar sobre temas cotidianos.',
+    subtitle: 'I can communicate in simple situations and talk about everyday topics.',
   },
   {
     code: 'b1',
     label: 'B1',
     name: 'intermediate',
-    subtitle: 'Puedo hablar sobre temas conocidos y describir experiencias y planes.',
+    subtitle: 'I can talk about familiar topics and describe experiences and plans.',
   },
 ];
 

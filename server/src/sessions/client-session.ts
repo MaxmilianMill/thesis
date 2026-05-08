@@ -14,9 +14,18 @@ export class ClientSession extends EventEmitter {
 
     attachListeners() {
         this.ws.on("message", (rawData) => {
-            const data = this.parseRawInput(rawData);
+            try {
+                const data = this.parseRawInput(rawData);
+                this.emit("user_msg", data);
+            } catch (err) {
+                console.error("Invalid client message:", (err as Error).message);
+                this.safeSend({ type: "error", data: "invalid_message" });
+            }
+        });
 
-            this.emit("user_msg", data);
+        this.ws.on("error", (err) => {
+            console.error("Client socket error:", err);
+            this.emit("disconnected");
         });
 
         this.ws.on('close', () => this.emit('disconnected'));

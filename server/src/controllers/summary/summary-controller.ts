@@ -17,6 +17,7 @@ export class SummaryController {
 
         const {
             chatId,
+            condition,
             history
         } = req.body;
 
@@ -24,8 +25,9 @@ export class SummaryController {
             uid, chatId, history
         });
 
-        // update the linguistic store
-        this.linguisticStoreService.update({uid, chatId});
+        // update the linguistic store only on the warm up chat
+        if (condition === "warmup") this.linguisticStoreService.update({uid, chatId});
+        
         log({
             uid,
             action: "Generated chat summary",

@@ -43,9 +43,9 @@ export function SpokenLanguagesStep({ selectedLanguages, onToggle }: SpokenLangu
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-foreground">What languages do you speak?</h2>
+        <h2 className="text-2xl font-bold text-foreground">What other languages do you speak?</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Select all languages you know ({selectedLanguages.length} selected)
+          Select all languages you know apart from your mothertongue ({selectedLanguages.length} selected)
         </p>
       </div>
       <div className="flex flex-wrap gap-2">

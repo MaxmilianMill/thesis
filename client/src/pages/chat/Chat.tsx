@@ -65,7 +65,8 @@ export default function ChatScreen() {
     sendTextMessage,
     toggleRecording,
     isRecording,
-    history
+    history,
+    connectionStatus
   } = useMessageController();
 
   const chat = useChatSelectors.use.chat();
@@ -103,6 +104,7 @@ export default function ChatScreen() {
         isRecording={isRecording}
         onHelpPress={openTutor}
         disabled={!!isChatFinished}
+        isConnected={connectionStatus}
       />
 
       <TutorDrawer

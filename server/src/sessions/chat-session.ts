@@ -117,6 +117,9 @@ export class ChatSession {
 
         this.ai?.on('disconnected', async () => {
             console.log("AI connection dropped. Disconnecting user.");
+            // Notify the client first so it can show a friendly message and
+            // trigger reconnect logic instead of seeing only a raw close.
+            this.client.sendAIResponse({ type: "ai_disconnected", data: null });
             await this.cleanupState();
             this.client.close();
         });

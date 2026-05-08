@@ -140,7 +140,7 @@ export class AISessionService {
         message?: Message, 
     ): string {
         const { taskList } = chat!;
-
+        
         console.log(message);
 
         const currentTask = taskList.find(t => !t.completed) ?? null;
@@ -187,5 +187,4 @@ export class AISessionService {
 
             Now respond as the language buddy. Your response will be spoken aloud, so write naturally — no bullet points, no markdown formatting.`;
     };
-    
 }

@@ -11,6 +11,7 @@ type ChatInputProps = {
   isRecording: boolean;
   onHelpPress: () => void;
   disabled?: boolean;
+  isConnected?: boolean;
 }
 
 export function ChatInput({
@@ -19,7 +20,9 @@ export function ChatInput({
   isRecording,
   onHelpPress,
   disabled = false,
+  isConnected = true,
 }: ChatInputProps) {
+  const inputDisabled = disabled || !isConnected;
   const [mode, setMode] = useState<InputMode>('audio');
   const [textValue, setTextValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -42,11 +45,17 @@ export function ChatInput({
   };
 
   return (
-    <div className="flex items-center gap-3 px-5 py-4 bg-background">
+    <div className="flex flex-col bg-background">
+      {!isConnected && (
+        <div className="px-5 pt-2 text-center text-xs text-muted-foreground">
+          Reconnecting…
+        </div>
+      )}
+      <div className="flex items-center gap-3 px-5 py-4">
       {/* Text switch button */}
       <button
         onClick={() => setMode(mode === 'text' ? 'audio' : 'text')}
-        disabled={disabled}
+        disabled={inputDisabled}
         className={cn(
           'flex flex-col items-center gap-1 min-w-[52px] transition-colors disabled:opacity-40 disabled:pointer-events-none',
           mode === 'text'
@@ -69,7 +78,7 @@ export function ChatInput({
               className="flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none"
               aria-label="Record audio"
               onClick={toggleRecording}
-              disabled={disabled}
+              disabled={inputDisabled}
             >
               <Mic className="size-7" />
             </button>
@@ -83,12 +92,12 @@ export function ChatInput({
               onChange={(e) => setTextValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type a message…"
-              disabled={disabled}
+              disabled={inputDisabled}
               className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none disabled:opacity-40"
             />
             <button
               onClick={handleSend}
-              disabled={!textValue.trim() || disabled}
+              disabled={!textValue.trim() || inputDisabled}
               className="flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground disabled:opacity-40 transition-opacity"
               aria-label="Send message"
             >
@@ -107,6 +116,7 @@ export function ChatInput({
         <HelpCircle className="size-5" />
         <span className="text-xs font-medium">Help</span>
       </button>
+      </div>
     </div>
   );
 }

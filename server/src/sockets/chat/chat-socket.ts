@@ -22,6 +22,18 @@ export function initializeChatSocket(httpServer: Server) {
 
         wss.on("connection", async (ws: WebSocket, req) => {
 
+            // Attach error listener immediately so an error during async setup
+            // does not propagate to the process and crash the server.
+            ws.on("error", (err) => {
+                console.error("Client socket error during setup/lifetime:", err);
+            });
+
+            // Heartbeat: mark this socket alive on each pong
+            (ws as WebSocket & { isAlive?: boolean }).isAlive = true;
+            ws.on("pong", () => {
+                (ws as WebSocket & { isAlive?: boolean }).isAlive = true;
+            });
+
             try {
 
                 console.log(`WebSocket connection from ${req.socket.remoteAddress}`);
@@ -75,6 +87,26 @@ export function initializeChatSocket(httpServer: Server) {
         wss.on("error", (error) => {
             console.error("WebSocket server error:", error);
         });
+
+        // Heartbeat sweeper: every 30s, terminate sockets that didn't pong
+        // since the previous tick. Catches half-open TCP (laptop sleep, NAT timeout).
+        const heartbeatInterval = setInterval(() => {
+            wss.clients.forEach((ws) => {
+                const tracked = ws as WebSocket & { isAlive?: boolean };
+                if (tracked.isAlive === false) {
+                    console.warn("Terminating unresponsive socket");
+                    return ws.terminate();
+                }
+                tracked.isAlive = false;
+                try {
+                    ws.ping();
+                } catch (err) {
+                    console.error("Ping failed:", err);
+                }
+            });
+        }, 30000);
+
+        wss.on("close", () => clearInterval(heartbeatInterval));
 
         console.log("WebSocket initialization completed successfully");
     } catch (error) {

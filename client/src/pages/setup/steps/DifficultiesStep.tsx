@@ -7,15 +7,9 @@ const DIFFICULTIES = [
   'Grammar Rules',
   'Pronunciation',
   'Listening Comprehension',
-  'Reading Speed',
-  'Writing',
   'Gendered Nouns',
   'Sentence Structure',
-  'Idioms & Expressions',
-  'Memory & Retention',
-  'Staying Motivated',
-  'Finding Practice Partners',
-  'Thinking in the Language',
+  'Idioms & Expressions'
 ];
 
 const MAX_DIFFICULTIES = 5;

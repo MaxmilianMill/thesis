@@ -16,6 +16,7 @@ export function useOverview() {
   const [preparedChat, setPreparedChat] = useState<Chat | null>(null);
   const setChat = useChatSelectors.use.setChat();
   const userInfo = useSetupSelectors.use.userInfo();
+  const resetHistory = useChatSelectors.use.resetHistory();
 
   useEffect(() => {
     if (!userInfo) return;
@@ -49,6 +50,8 @@ export function useOverview() {
   const handleStartSpeaking = useCallback(() => {
     if (!preparedChat) return;
     setChat(preparedChat);
+    // reset the message list before we start a new chat
+    resetHistory();
     navigate("/chat");
   }, [preparedChat, setChat, navigate]);
 
