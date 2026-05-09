@@ -18,6 +18,7 @@ export function usePartnerCustomization() {
   const navigate = useNavigate();
   const updateUserInfo = useSetupSelectors.use.updateUserInfo();
   const [selections, setSelections] = useState<Selections>(DEFAULT_SELECTIONS);
+  const [name, setName] = useState<string>('');
   const [voice, setVoice] = useState<string>(VOICE_OPTIONS[0].id);
   const [activeFeature, setActiveFeature] = useState<FeatureType | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,8 +36,9 @@ export function usePartnerCustomization() {
     };
 
     const partner = {
+      name: name.trim(),
       voiceConfig: { voiceName: selectedVoice.name, languageCode: selectedVoice.languageCode },
-      personalityDescription: '',
+      personalityDescription: ``,
       color: resolveOption('skin'),
       hair: resolveOption('hair'),
       eyes: resolveOption('eyes'),
@@ -58,6 +60,8 @@ export function usePartnerCustomization() {
 
   return {
     selections,
+    name,
+    setName,
     voice,
     setVoice,
     activeFeature,

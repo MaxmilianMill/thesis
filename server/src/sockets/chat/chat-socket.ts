@@ -7,6 +7,7 @@ import * as url from "url";
 import { AISessionService } from "../../services/chat/ai-session-service.js";
 import { FeedbackService } from "../../services/chat/feedback-service.js";
 import { MessageService } from "../../services/chat/message-service.js";
+import { LinguisticStateService } from "../../services/linguistics/linguistic-state-service.js";
 
 export function initializeChatSocket(httpServer: Server) {
     console.log("Initializing Websocket...")
@@ -51,13 +52,16 @@ export function initializeChatSocket(httpServer: Server) {
             
                 const chatService = new ChatService();
                 const infoService = new InfoService();
+                const linguisticStateService = new LinguisticStateService();
 
                 const [
                     userInfo,
-                    chat
+                    chat,
+                    linguisticStore
                 ] = await Promise.all([
                     infoService.getUserData(uid),
-                    chatService.get(uid, chatId)
+                    chatService.get(uid, chatId),
+                    linguisticStateService.get(uid).catch(() => null)
                 ]);
 
                 console.log(chat)
@@ -65,7 +69,11 @@ export function initializeChatSocket(httpServer: Server) {
                 if (!chat.chat)
                     throw new Error("Chat does not exist.");
 
-                const aiSessionService = new AISessionService(userInfo.userInfo);
+                const aiSessionService = new AISessionService(
+                    userInfo.userInfo,
+                    chat.chat,
+                    linguisticStore ?? null
+                );
                 const feedbackService = new FeedbackService();
                 const messageService = new MessageService();
 

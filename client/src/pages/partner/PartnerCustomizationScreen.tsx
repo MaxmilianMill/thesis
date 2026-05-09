@@ -1,5 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { AvatarPreview } from '@/components/partner/AvatarPreview';
 import { FeaturePicker } from '@/components/partner/FeaturePicker';
 import { VoiceSelect } from '@/components/partner/VoiceSelect';
@@ -8,6 +10,8 @@ import { usePartnerCustomization } from '@/hooks/usePartnerCustomization';
 export default function PartnerCustomizationScreen() {
   const {
     selections,
+    name,
+    setName,
     voice,
     setVoice,
     activeFeature,
@@ -31,6 +35,17 @@ export default function PartnerCustomizationScreen() {
           </CardHeader>
 
           <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="partner-name">Name</Label>
+              <Input
+                id="partner-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Give your buddy a name"
+                maxLength={40}
+              />
+            </div>
+
             <div className="flex gap-4 md:gap-6 items-start">
               <div className="w-28 md:w-40 shrink-0">
                 <AvatarPreview selections={selections} />
@@ -52,7 +67,7 @@ export default function PartnerCustomizationScreen() {
             <Button
               className="w-full"
               onClick={handleContinue}
-              disabled={isSubmitting}
+              disabled={isSubmitting || !name.trim()}
             >
               Continue
             </Button>

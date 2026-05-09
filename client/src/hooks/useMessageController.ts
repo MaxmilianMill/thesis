@@ -172,11 +172,31 @@ export const useMessageController = () => {
         } as WSMessage);
     };
 
+    const sendHintUsed = (taskId: number) => {
+        send({
+            uid,
+            chatId,
+            type: "hint_used",
+            taskId
+        } as WSMessage);
+    };
+
+    const sendSolutionUsed = (taskId: number) => {
+        send({
+            uid,
+            chatId,
+            type: "solution_used",
+            taskId
+        } as WSMessage);
+    };
+
     return {
         connectionStatus,
         toggleRecording,
         isRecording,
         sendTextMessage,
+        sendHintUsed,
+        sendSolutionUsed,
         history,
         inVolume
     }

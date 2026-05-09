@@ -66,7 +66,9 @@ export default function ChatScreen() {
     toggleRecording,
     isRecording,
     history,
-    connectionStatus
+    connectionStatus,
+    sendHintUsed,
+    sendSolutionUsed
   } = useMessageController();
 
   const chat = useChatSelectors.use.chat();
@@ -93,8 +95,13 @@ export default function ChatScreen() {
       <PartnerSection
         scenarioTitle={chat.scenario?.title ?? 'Chat'}
         onGiveUp={goToSummary}
+        isWarmup={chat.condition === "warmup"}
       />
-      <TaskList tasks={chat.taskList ?? mockTasks} />
+      <TaskList
+        tasks={chat.taskList ?? mockTasks}
+        onHintUsed={sendHintUsed}
+        onSolutionUsed={sendSolutionUsed}
+      />
       <div className="flex flex-1 items-end">
         <MessageList messages={history} partnerName="Amy" />
       </div>

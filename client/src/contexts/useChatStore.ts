@@ -12,6 +12,8 @@ interface ChatState {
     updateChat: (updatedFields: Partial<Chat>) => void;
     updateHistory: (msg: Message | Message[]) => void;
     updateTaskList: (updatedTaskList: TaskList) => void;
+    revealHint: (taskId: number) => void;
+    revealSolution: (taskId: number) => void;
     appendAIStreamChunk: (chunk: string) => void;
     appendUserStreamChunk: (chunk: string) => void;
     addFeedback: (feedback: Message) => void,
@@ -41,6 +43,24 @@ const useChatStore = create<ChatState>((set) => ({
             taskList: updatedTaskList,
             completed
         } as Chat}
+    }),
+    revealHint: (taskId) => set((state) => {
+        if (!state.chat?.taskList) return {};
+        const taskList = state.chat.taskList.map((task) =>
+            task.id === taskId
+                ? { ...task, hint: { ...task.hint, used: true } }
+                : task
+        );
+        return { chat: { ...state.chat, taskList } as Chat };
+    }),
+    revealSolution: (taskId) => set((state) => {
+        if (!state.chat?.taskList) return {};
+        const taskList = state.chat.taskList.map((task) =>
+            task.id === taskId
+                ? { ...task, solution: { ...task.solution, used: true } }
+                : task
+        );
+        return { chat: { ...state.chat, taskList } as Chat };
     }),
     appendAIStreamChunk: (chunk) => set((state) => {
         const newHistory = [...state.history];

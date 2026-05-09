@@ -8,6 +8,7 @@ export type OverviewData = {
 };
 
 const MOCK_PARTNER: Partner = {
+  name: 'Samira',
   voiceConfig: { voiceName: 'Samira', languageCode: 'en-US' },
   personalityDescription: 'Helpful',
   color: 'skin-medium',

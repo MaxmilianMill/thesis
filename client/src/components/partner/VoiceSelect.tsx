@@ -25,7 +25,7 @@ export function VoiceSelect({ value, onChange }: VoiceSelectProps) {
         <SelectContent>
           {VOICE_OPTIONS.map((voice) => (
             <SelectItem key={voice.id} value={voice.id}>
-              {voice.name}
+              {voice.displayName}
             </SelectItem>
           ))}
         </SelectContent>

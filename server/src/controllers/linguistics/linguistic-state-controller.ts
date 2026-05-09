@@ -1,6 +1,7 @@
 import type { AuthRequest } from "../../middlewares/auth-handler.js";
 import type { LinguisticStateService } from "../../services/linguistics/linguistic-state-service.js";
 import type { Response } from "express";
+import { log } from "../../services/logger/activity-logger-service.js";
 
 export class LinguisticStateController {
 
@@ -11,10 +12,20 @@ export class LinguisticStateController {
         const {uid} = req.authToken;
         const {chatId} = req.body;
 
-        const {status, data} = await this.linguisticStateService.update({
+        const {status, store} = await this.linguisticStateService.update({
             uid, chatId
         });
 
-        return res.status(status).json({store: data});
+        log({
+            action: "linguistic_state_generated",
+            status: "success",
+            uid,
+            relatedIds: {
+                chatId: chatId ?? "",
+                storeId: store.id
+            }
+        })
+
+        return res.status(status).json({store: store});
     }
 }

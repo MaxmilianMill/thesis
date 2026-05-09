@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import userService from "../../services/auth/user-service.js";
+import { log } from "../../services/logger/activity-logger-service.js";
 
 class AuthController {
 
@@ -12,6 +13,12 @@ class AuthController {
     async handleCreateUser(req: Request, res: Response) {
         
         const user = await userService.createAnonymousUser();
+
+        log({
+            action: "user_created",
+            status: "success",
+            uid: user.authToken.uid
+        })
         
         return res.status(201).json({user});
     }

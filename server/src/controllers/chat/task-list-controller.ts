@@ -1,6 +1,7 @@
 import type { AuthRequest } from "../../middlewares/auth-handler.js";
 import type { TaskListGenerationService } from "../../services/chat/task-list-generation-service.js";
 import type { Response } from "express";
+import { log } from "../../services/logger/activity-logger-service.js";
 
 export class TaskListController {
 
@@ -20,6 +21,15 @@ export class TaskListController {
             chatId, 
             scenario
         });
+
+        log({
+            action: "task_list_generated",
+            status: "success",
+            uid,
+            relatedIds: {
+                chatId
+            }
+        })
 
         return res.status(status).json({taskList});
     }

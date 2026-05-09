@@ -5,6 +5,7 @@ type PartnerVoiceConfig = {
 }
 
 type Partner = {
+    name: string;
     voiceConfig: PartnerVoiceConfig;
     personalityDescription: string;
     hair: string;

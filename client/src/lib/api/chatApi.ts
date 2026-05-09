@@ -41,6 +41,7 @@ const MOCK_TASKS: TaskList = [
 ];
 
 const MOCK_PARTNER: Partner = {
+  name: 'Amy',
   voiceConfig: { voiceName: 'Amy', languageCode: 'en-US' },
   personalityDescription: 'Friendly barista',
   color: 'skin-medium',

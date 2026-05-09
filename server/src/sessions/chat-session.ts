@@ -8,6 +8,8 @@ import type { Chat } from "@thesis/types";
 import { FeedbackService } from "../services/chat/feedback-service.js";
 import { TaskListUpdaterService } from "../services/chat/task-list-updater-service.js";
 import { MessageService } from "../services/chat/message-service.js";
+import { saveTaskList } from "../repository/chat/task-list-repository.js";
+import { log } from "../services/logger/activity-logger-service.js";
 
 interface TurnContext {
     transcript: string;
@@ -44,6 +46,7 @@ export class ChatSession {
 
     initializeListeners() {
         this.client.on('user_msg', async (data: WSMessage) => {
+
             if (data.type === "recording_start") {
                 this.currentTurn = {
                     transcript: "",
@@ -72,6 +75,17 @@ export class ChatSession {
                     history: data.history
                 };
                 this.ai?.handleSendTextMessage(this.chat, data.message, data.history);
+                return;
+            }
+
+            if (data.type === "hint_used" && typeof data.taskId === "number") {
+                this.applyHelpFlag(data.taskId, "hint");
+                return;
+            }
+
+            if (data.type === "solution_used" && typeof data.taskId === "number") {
+                this.applyHelpFlag(data.taskId, "solution");
+                return;
             }
         });
 
@@ -125,7 +139,28 @@ export class ChatSession {
         });
     };
 
+    private applyHelpFlag(taskId: number, kind: "hint" | "solution") {
+        const task = this.chat.taskList.find((t) => t.id === taskId);
+        if (!task) return;
+
+        if (task[kind].used) return;
+        task[kind].used = true;
+
+        saveTaskList(this.userInfo.uid, this.chat.id, this.chat.taskList)
+            .catch((err) => console.error(`Failed to persist ${kind} reveal:`, err));
+    }
+
     private async cleanupState() {
+
+        log({
+            action: "cleanup_turn",
+            status: "success",
+            uid: this.userInfo.uid,
+            relatedIds: {
+                chatId: this.chat.id
+            }
+        })
+
         if (this.processingMessagePromise) {
             await this.processingMessagePromise;
             this.processingMessagePromise = null;
@@ -175,13 +210,28 @@ export class ChatSession {
                 const updatedTaskList = await this.taskListUpdaterService
                     .update(userMessage, this.chat);
 
-                this.client.sendTaskListUpdates({
-                    type: "taskList",
-                    data: updatedTaskList
+                // Merge in any hint/solution reveals that may have arrived
+                // while the AI updater was running. `used` is monotonic — once
+                // true, it stays true — so a simple OR is safe.
+                const merged = updatedTaskList.map((task) => {
+                    const live = this.chat.taskList.find((t) => t.id === task.id);
+                    if (!live) return task;
+                    return {
+                        ...task,
+                        hint: { ...task.hint, used: task.hint.used || live.hint.used },
+                        solution: { ...task.solution, used: task.solution.used || live.solution.used }
+                    };
                 });
 
-                // update in-memory
-                this.chat.taskList = updatedTaskList;
+                this.chat.taskList = merged;
+
+                this.client.sendTaskListUpdates({
+                    type: "taskList",
+                    data: merged
+                });
+
+                saveTaskList(this.userInfo.uid, this.chat.id, merged)
+                    .catch((err) => console.error("Failed to persist taskList:", err));
 
             } catch (error) {
                 console.error("Failed to generate feedback:", (error as Error).message);

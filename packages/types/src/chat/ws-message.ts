@@ -7,7 +7,15 @@ export const WSMessageSchema = z.object({
     rawAudio: z.base64().optional(),
     message: MessageSchema.optional(),
     history: z.array(MessageSchema).optional(),
-    type: z.enum(["audio", "text", "recording_start", "recording_stop"])
+    taskId: z.number().optional(),
+    type: z.enum([
+        "audio",
+        "text",
+        "recording_start",
+        "recording_stop",
+        "hint_used",
+        "solution_used"
+    ])
 });
 
 export type WSMessage = z.infer<typeof WSMessageSchema>;

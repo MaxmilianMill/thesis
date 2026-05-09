@@ -30,7 +30,7 @@ export class SummaryController {
         
         log({
             uid,
-            action: "Generated chat summary",
+            action: "summary_generated",
             status: "success",
             relatedIds: {
                 chatId

@@ -3,6 +3,7 @@ import type { InfoService } from "../../services/setup/info-service.js";
 import type { ScenarioService } from "../../services/setup/scenario-service.js";
 import type { AuthRequest } from "../../middlewares/auth-handler.js";
 import type { LinguisticStateService } from "../../services/linguistics/linguistic-state-service.js";
+import { log } from "../../services/logger/activity-logger-service.js";
 
 export class SetupController {
 
@@ -24,6 +25,12 @@ export class SetupController {
         // trigger the linguistic store creation
         this.linguisticStoreService.update({uid});
 
+        log({
+            action: "info_created",
+            status: "success",
+            uid
+        })
+
         return res.status(response.status).json({userInfo: response.userInfo});        
     };
 
@@ -36,6 +43,12 @@ export class SetupController {
 
         const response = await this.infoService.updateUserData(data, uid);
 
+        log({
+            action: "info_updated",
+            status: "success",
+            uid
+        })
+
         return res.status(response.status).json({userInfo: response.data});
     }
 
@@ -45,6 +58,12 @@ export class SetupController {
         } = req.authToken;
 
         const response = await this.infoService.getUserData(uid);
+
+        log({
+            action: "get_info",
+            status: "success",
+            uid
+        })
 
         return res.status(response.status).json({userInfo: response.userInfo})
     }
@@ -56,6 +75,12 @@ export class SetupController {
         } = req.body;
 
         const {status, scenario} = await this.scenarioService.getScenario(userInfo);
+
+        log({
+            action: "get_scenario",
+            status: "success",
+            uid: userInfo.uid
+        })
 
         return res.status(status).json({scenario});
     }

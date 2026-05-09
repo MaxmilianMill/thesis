@@ -1,6 +1,7 @@
 import type { AuthRequest } from "../../middlewares/auth-handler.js";
 import type { ChatService } from "../../services/chat/chat-service.js";
 import type { Request, Response } from "express";
+import { log } from "../../services/logger/activity-logger-service.js";
 
 export class ChatController {
 
@@ -26,6 +27,16 @@ export class ChatController {
             updatedFields
         );
 
+        log({
+            action: "chat_updated",
+            message: `Updated Fields: ${JSON.stringify(updatedFields)}`,
+            status: "success",
+            uid: uid,
+            relatedIds: {
+                chatId
+            }
+        })
+
         return res.status(status).json({chat});
     };
 
@@ -40,6 +51,15 @@ export class ChatController {
             status, 
             chat: savedChat
         } = await this.chatService.create(uid, chat);
+
+        log({
+            action: "chat_created",
+            status: "success",
+            uid,
+            relatedIds: {
+                chatId: savedChat.id
+            }
+        })
 
         return res.status(status).json({chat: savedChat});
     }

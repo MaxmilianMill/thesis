@@ -11,16 +11,17 @@ function getFeatureValue(partner: Record<string, string>, feature: FeatureKey): 
 type Props = {
   scenarioTitle: string;
   onGiveUp?: () => void;
+  isWarmup: boolean;
 };
 
-export function PartnerSection({ scenarioTitle, onGiveUp }: Props) {
+export function PartnerSection({ scenarioTitle, onGiveUp, isWarmup }: Props) {
   const userInfo = useSetupSelectors.use.userInfo();
   const partner = userInfo?.partner;
 
   return (
     <div className="flex flex-col items-center gap-3 px-5 pt-4 pb-2 relative">
       <div className="flex w-full items-center justify-center">
-        <p className="text-xs font-medium text-muted-foreground tracking-wide">{scenarioTitle}</p>
+        <p className="text-xs font-medium text-muted-foreground tracking-wide">{isWarmup ? "Warmup Chat: " : "" + scenarioTitle}</p>
         {onGiveUp && (
           <button
             onClick={onGiveUp}

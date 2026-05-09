@@ -56,7 +56,7 @@ export class LinguisticStateService {
         );
 
         log({
-            action: "Updated linguistic store",
+            action: "linguistic_store_updated",
             status: "success",
             uid,
             relatedIds: {

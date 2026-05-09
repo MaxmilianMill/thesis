@@ -38,7 +38,7 @@ export class TutorService {
         });
 
         log({
-            action: "Tutor answer generated & saved",
+            action: "tutor_answer_generated",
             status: "success",
             uid: data.userInfo.uid,
             relatedIds: {
