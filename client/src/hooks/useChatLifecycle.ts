@@ -10,7 +10,7 @@ export const useChatLifecycle = (messageLimit: number = 20) => {
                               chat.taskList.every(task => task.completed);
 
     // check if message limit is reached
-    const isLimitReached = history.length >= messageLimit;
+    const isLimitReached = history.filter(m => !m.isTutor).length >= messageLimit;
 
     // determine overall completion state
     const isChatFinished = allTasksCompleted || isLimitReached;

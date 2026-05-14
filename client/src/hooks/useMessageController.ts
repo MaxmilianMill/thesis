@@ -43,6 +43,8 @@ export const useMessageController = () => {
 
     const { connectionStatus, send, subscribe } = useChatSocket({ uid, chatId });
 
+    console.log(history)
+
     // Initialize the audio streamer once we are connected
     useEffect(() => {
         if (!connectionStatus || audioStreamerRef.current) return;

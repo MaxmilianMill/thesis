@@ -1,12 +1,16 @@
-import type { Chat, Message, TaskList } from "@thesis/types";
+import type { Chat, Message, TaskList, TutorResponse } from "@thesis/types";
 import { create } from "zustand";
 import { createSelectors } from "./utils/createSelectors";
 
-type UIMessage = Message & { isStreaming?: boolean };
+export type UIMessage = Message & {
+    isStreaming?: boolean;
+    tutorResponse?: TutorResponse;
+};
 
 interface ChatState {
     chat: Chat | undefined;
     history: UIMessage[];
+    isTutorMode: boolean;
     setChat: (chat: Chat) => void;
     resetHistory: () => void;
     updateChat: (updatedFields: Partial<Chat>) => void;
@@ -18,13 +22,17 @@ interface ChatState {
     appendUserStreamChunk: (chunk: string) => void;
     addFeedback: (feedback: Message) => void,
     finalizeAITurn: () => void;
+    setTutorMode: (on: boolean) => void;
+    addTutorMessage: (question: string, id: string) => void;
+    resolveTutorQuestion: (id: string, response: TutorResponse | 'error') => void;
 };
 
 const useChatStore = create<ChatState>((set) => ({
     chat: undefined,
     history: [],
+    isTutorMode: false,
     setChat: (chat) => set({chat}),
-    resetHistory: () => set({history: []}),
+    resetHistory: () => set({history: [], isTutorMode: false}),
     updateChat: (updatedFields) => set((state) => {
         return {chat: {...state.chat, ...updatedFields} as Chat}
     }),
@@ -126,8 +134,45 @@ const useChatStore = create<ChatState>((set) => ({
                 isStreaming: false
             };
         }
-        return { history: newHistory };
-    })
+        return { history: newHistory, isTutorMode: false };
+    }),
+    setTutorMode: (on) => set({ isTutorMode: on }),
+    addTutorMessage: (question, id) => set((state) => ({
+        history: [
+            ...state.history,
+            {
+                id,
+                isUser: true,
+                isTutor: true,
+                text: question,
+                uid: '',
+                createdAt: new Date(),
+            } as UIMessage,
+        ],
+    })),
+    resolveTutorQuestion: (id, response) => set((state) => ({
+        history: state.history.map((msg) => {
+            if (msg.id !== id) return msg;
+            if (response === 'error') {
+                return {
+                    ...msg,
+                    tutorResponse: {
+                        response_text: 'Sorry, something went wrong. Please try again.',
+                        response_type: 'text',
+                        suggested_next_steps: [],
+                        category: 'META_INSTRUCTION',
+                        explanation: '',
+                        uid: '',
+                        id: '',
+                        chatId: '',
+                        createdAt: new Date(),
+                        lastMessageId: '',
+                    } as TutorResponse,
+                };
+            }
+            return { ...msg, tutorResponse: response };
+        }),
+    })),
 }));
 
 export const useChatSelectors = createSelectors(useChatStore);

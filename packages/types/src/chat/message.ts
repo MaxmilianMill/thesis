@@ -10,7 +10,8 @@ export const MessageSchema = z.object({
     createdAt: z.coerce.date(),
     improvedVersion: z.string().optional(),
     isCorrect: z.boolean().optional(),
-    mistakes: z.array(MistakeSchema).optional()
+    mistakes: z.array(MistakeSchema).optional(),
+    isTutor: z.boolean().optional(),
 });
 
 export type Message = z.infer<typeof MessageSchema>;

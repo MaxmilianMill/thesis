@@ -5,6 +5,7 @@ import { PartnerInfoCard } from '@/components/overview/PartnerInfoCard';
 import { TimeLimitCard } from '@/components/overview/TimeLimitCard';
 import { TaskListSection } from '@/components/overview/TaskListSection';
 import { useOverview } from '@/hooks/useOverview';
+import { useSetupSelectors } from '@/contexts/useSetupStore';
 
 export default function OverviewScreen() {
   const {
@@ -15,6 +16,8 @@ export default function OverviewScreen() {
     handleGenerateTasks,
     handleStartSpeaking,
   } = useOverview();
+
+  const userInfo = useSetupSelectors.use.userInfo();
 
   const isLoadingTasks = overviewState === 'loading';
   const showTasks = overviewState === 'loading' || overviewState === 'tasks';
@@ -31,7 +34,7 @@ export default function OverviewScreen() {
     <div className="dark min-h-screen bg-background text-foreground flex items-center justify-center p-4 md:p-8">
       <div className="w-full max-w-lg">
         <Card className="overflow-hidden p-0 gap-0">
-          <ScenarioCard scenario={scenario} />
+          <ScenarioCard scenario={scenario} level={userInfo?.level.code ?? "a1"} />
 
           <CardContent className="px-4 pt-4 pb-2">
             {showTasks ? (

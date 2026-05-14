@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Mic, Grid3X3, HelpCircle, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { RecordingButton } from './RecordingButton';
+import { TutorModeBadge } from './TutorModeBadge';
 
 type InputMode = 'audio' | 'text';
 
@@ -10,6 +11,9 @@ type ChatInputProps = {
   toggleRecording: () => void;
   isRecording: boolean;
   onHelpPress: () => void;
+  isTutorMode: boolean;
+  onTutorSend: (text: string) => void;
+  isTutorLoading: boolean;
   disabled?: boolean;
   isConnected?: boolean;
 }
@@ -19,6 +23,9 @@ export function ChatInput({
   toggleRecording,
   isRecording,
   onHelpPress,
+  isTutorMode,
+  onTutorSend,
+  isTutorLoading,
   disabled = false,
   isConnected = true,
 }: ChatInputProps) {
@@ -27,22 +34,29 @@ export function ChatInput({
   const [textValue, setTextValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const effectiveMode: InputMode = isTutorMode ? 'text' : mode;
+
   useEffect(() => {
-    if (mode === 'text') {
+    if (effectiveMode === 'text') {
       inputRef.current?.focus();
     }
-  }, [mode]);
+  }, [effectiveMode]);
 
   const handleSend = () => {
     if (!textValue.trim()) return;
-    
-    sendTextMessage(textValue.trim());
+    if (isTutorMode) {
+      onTutorSend(textValue.trim());
+    } else {
+      sendTextMessage(textValue.trim());
+    }
     setTextValue('');
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') handleSend();
   };
+
+  const sendDisabled = !textValue.trim() || inputDisabled || (isTutorMode && isTutorLoading);
 
   return (
     <div className="flex flex-col bg-background">
@@ -51,71 +65,82 @@ export function ChatInput({
           Reconnecting…
         </div>
       )}
+      {isTutorMode && <TutorModeBadge />}
       <div className="flex items-center gap-3 px-5 py-4">
-      {/* Text switch button */}
-      <button
-        onClick={() => setMode(mode === 'text' ? 'audio' : 'text')}
-        disabled={inputDisabled}
-        className={cn(
-          'flex flex-col items-center gap-1 min-w-[52px] transition-colors disabled:opacity-40 disabled:pointer-events-none',
-          mode === 'text'
-            ? 'text-primary'
-            : 'text-muted-foreground hover:text-foreground',
+        {/* Text switch button — hidden in tutor mode */}
+        {!isTutorMode && (
+          <button
+            onClick={() => setMode(mode === 'text' ? 'audio' : 'text')}
+            disabled={inputDisabled}
+            className={cn(
+              'flex flex-col items-center gap-1 min-w-[52px] transition-colors disabled:opacity-40 disabled:pointer-events-none',
+              mode === 'text'
+                ? 'text-primary'
+                : 'text-muted-foreground hover:text-foreground',
+            )}
+            aria-label="Switch to text input"
+          >
+            <Grid3X3 className="size-5" />
+            <span className="text-xs font-medium">Text</span>
+          </button>
         )}
-        aria-label="Switch to text input"
-      >
-        <Grid3X3 className="size-5" />
-        <span className="text-xs font-medium">Text</span>
-      </button>
 
-      {/* Center: mic or text input */}
-      <div className="flex flex-1 items-center justify-center">
-        {mode === 'audio' ? (
-          isRecording ? (
-            <RecordingButton onStop={toggleRecording} />
+        {/* Spacer to keep layout when text toggle is hidden */}
+        {isTutorMode && <div className="min-w-[52px]" />}
+
+        {/* Center: mic, text input, or tutor input */}
+        <div className="flex flex-1 items-center justify-center">
+          {effectiveMode === 'audio' ? (
+            isRecording ? (
+              <RecordingButton onStop={toggleRecording} />
+            ) : (
+              <button
+                className="flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none"
+                aria-label="Record audio"
+                onClick={toggleRecording}
+                disabled={inputDisabled}
+              >
+                <Mic className="size-7" />
+              </button>
+            )
           ) : (
-            <button
-              className="flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none"
-              aria-label="Record audio"
-              onClick={toggleRecording}
-              disabled={inputDisabled}
-            >
-              <Mic className="size-7" />
-            </button>
-          )
-        ) : (
-          <div className="flex w-full items-center gap-2 rounded-full bg-input px-4 py-2.5">
-            <input
-              ref={inputRef}
-              type="text"
-              value={textValue}
-              onChange={(e) => setTextValue(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Type a message…"
-              disabled={inputDisabled}
-              className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none disabled:opacity-40"
-            />
-            <button
-              onClick={handleSend}
-              disabled={!textValue.trim() || inputDisabled}
-              className="flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground disabled:opacity-40 transition-opacity"
-              aria-label="Send message"
-            >
-              <Send className="size-3.5" />
-            </button>
-          </div>
-        )}
-      </div>
+            <div className="flex w-full items-center gap-2 rounded-full bg-input px-4 py-2.5">
+              <input
+                ref={inputRef}
+                type="text"
+                value={textValue}
+                onChange={(e) => setTextValue(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={isTutorMode ? 'Ask the tutor…' : 'Type a message…'}
+                disabled={inputDisabled || (isTutorMode && isTutorLoading)}
+                className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none disabled:opacity-40"
+              />
+              <button
+                onClick={handleSend}
+                disabled={sendDisabled}
+                className="flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground disabled:opacity-40 transition-opacity"
+                aria-label="Send message"
+              >
+                <Send className="size-3.5" />
+              </button>
+            </div>
+          )}
+        </div>
 
-      {/* Help button */}
-      <button
-        onClick={onHelpPress}
-        className="flex flex-col items-center gap-1 min-w-[52px] text-muted-foreground hover:text-foreground transition-colors"
-        aria-label="Help"
-      >
-        <HelpCircle className="size-5" />
-        <span className="text-xs font-medium">Help</span>
-      </button>
+        {/* Help button */}
+        <button
+          onClick={onHelpPress}
+          className={cn(
+            'flex flex-col items-center gap-1 min-w-[52px] transition-colors',
+            isTutorMode
+              ? 'text-primary'
+              : 'text-muted-foreground hover:text-foreground',
+          )}
+          aria-label="Help"
+        >
+          <HelpCircle className="size-5" />
+          <span className="text-xs font-medium">Help</span>
+        </button>
       </div>
     </div>
   );

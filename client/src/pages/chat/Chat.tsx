@@ -3,7 +3,6 @@ import { ChatInput } from '@/components/chat/Input';
 import { MessageList } from '@/components/chat/MessageList';
 import { PartnerSection } from '@/components/chat/PartnerSection';
 import { TaskList } from '@/components/chat/TaskList';
-import { TutorDrawer } from '@/components/chat/TutorDrawer';
 import { useChatSelectors } from '@/contexts/useChatStore';
 import { useSetupSelectors } from '@/contexts/useSetupStore';
 import { useMessageController } from '@/hooks/useMessageController';
@@ -75,15 +74,7 @@ export default function ChatScreen() {
   const userInfo = useSetupSelectors.use.userInfo();
   const { isChatFinished, allTasksCompleted } = useChatLifecycle();
 
-  const { 
-    isOpen: isTutorOpen, 
-    openTutor, 
-    closeTutor, 
-    entries, 
-    isLoading: isTutorLoading, 
-    sendQuestion, 
-    lastMessage 
-  } = useTutor(history, userInfo, chat?.id);
+  const { isTutorMode, toggleTutorMode, isLoading: isTutorLoading, sendQuestion } = useTutor(userInfo, chat?.id);
 
   const goToSummary = () => navigate('/summary');
 
@@ -103,24 +94,18 @@ export default function ChatScreen() {
         onSolutionUsed={sendSolutionUsed}
       />
       <div className="flex flex-1 items-end">
-        <MessageList messages={history} partnerName="Amy" />
+        <MessageList messages={history} partnerName="Amy" isTutorLoading={isTutorLoading} isTutorMode={isTutorMode} />
       </div>
       <ChatInput
         sendTextMessage={sendTextMessage}
         toggleRecording={toggleRecording}
         isRecording={isRecording}
-        onHelpPress={openTutor}
+        onHelpPress={toggleTutorMode}
+        isTutorMode={isTutorMode}
+        onTutorSend={sendQuestion}
+        isTutorLoading={isTutorLoading}
         disabled={!!isChatFinished}
         isConnected={connectionStatus}
-      />
-
-      <TutorDrawer
-        open={isTutorOpen}
-        onClose={closeTutor}
-        lastMessage={lastMessage}
-        entries={entries}
-        isLoading={isTutorLoading}
-        onSendQuestion={sendQuestion}
       />
 
       <Dialog open={!!isChatFinished}>

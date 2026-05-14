@@ -1,66 +1,51 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import type { Message, TutorResponse, UserInfo } from '@thesis/types';
+import { useState, useCallback } from 'react';
+import type { UserInfo } from '@thesis/types';
 import { generateTutorResponse } from '@/lib/api/tutorApi';
+import { useChatSelectors } from '@/contexts/useChatStore';
 
-export type TutorEntry = {
-  question: string;
-  response?: TutorResponse;
-};
-
-export function useTutor(history: Message[], userInfo: UserInfo | undefined, chatId: string | undefined) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [entries, setEntries] = useState<TutorEntry[]>([]);
+export function useTutor(userInfo: UserInfo | undefined, chatId: string | undefined) {
   const [isLoading, setIsLoading] = useState(false);
-  const lastAIMessageId = useRef<string | undefined>(undefined);
 
-  // Reset tutor conversation when a new AI partner message arrives
-  useEffect(() => {
-    const lastAIMessage = [...history].reverse().find((m) => !m.isUser);
-    if (lastAIMessage?.id && lastAIMessage.id !== lastAIMessageId.current) {
-      lastAIMessageId.current = lastAIMessage.id;
-      setEntries([]);
-    }
-  }, [history]);
+  const history = useChatSelectors.use.history();
+  const isTutorMode = useChatSelectors.use.isTutorMode();
+  const setTutorMode = useChatSelectors.use.setTutorMode();
+  const addTutorMessage = useChatSelectors.use.addTutorMessage();
+  const resolveTutorQuestion = useChatSelectors.use.resolveTutorQuestion();
 
-  const openTutor = useCallback(() => setIsOpen(true), []);
-  const closeTutor = useCallback(() => setIsOpen(false), []);
+  const toggleTutorMode = useCallback(() => setTutorMode(!isTutorMode), [isTutorMode, setTutorMode]);
 
   const sendQuestion = useCallback(
     async (question: string) => {
-      if (!userInfo || !question.trim() || !chatId) return;
+      if (!userInfo || !question.trim() || !chatId || isLoading) return;
 
-      const newEntry: TutorEntry = { question };
-      setEntries((prev) => [...prev, newEntry]);
+      const questionId = crypto.randomUUID();
+      addTutorMessage(question, questionId);
       setIsLoading(true);
+
+      const nonTutorHistory = history.filter((m) => !m.isTutor);
 
       try {
         const response = await generateTutorResponse({
           userInfo,
           chatId,
           question,
-          history: history as Message[],
+          history: nonTutorHistory,
         });
-        setEntries((prev) =>
-          prev.map((e, i) => (i === prev.length - 1 ? { ...e, response } : e))
-        );
+        resolveTutorQuestion(questionId, response);
       } catch (err) {
         console.error('Tutor error:', err);
+        resolveTutorQuestion(questionId, 'error');
       } finally {
         setIsLoading(false);
       }
     },
-    [userInfo, history]
+    [userInfo, chatId, isLoading, history, addTutorMessage, resolveTutorQuestion]
   );
 
-  const lastMessage = history[history.length - 1] as Message | undefined;
-
   return {
-    isOpen,
-    openTutor,
-    closeTutor,
-    entries,
+    isTutorMode,
+    toggleTutorMode,
     isLoading,
     sendQuestion,
-    lastMessage,
   };
 }

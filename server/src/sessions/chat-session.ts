@@ -97,15 +97,11 @@ export class ChatSession {
 
             if (aiResponse.type === "ai_msg")
                 this.currentAiTranscript += aiResponse.data;
-
-            if (aiResponse.type === "ai_msg" && !this.processingMessage) {
-                this.processingMessage = true;
-                this.processingMessagePromise = this.processUserMessage();
-            }
         });
 
         this.ai?.on('turn_complete', async () => {
             this.client.sendAIResponse({ type: "done", data: null });
+            this.processingMessagePromise = this.processUserMessage();
 
             const aiText = this.currentAiTranscript.trim();
             this.currentAiTranscript = "";
@@ -152,6 +148,11 @@ export class ChatSession {
 
     private async cleanupState() {
 
+        if (this.processingMessagePromise) {
+            await this.processingMessagePromise;
+            this.processingMessagePromise = null;
+        }
+        this.processingMessage = false;
         log({
             action: "cleanup_turn",
             status: "success",
@@ -160,12 +161,6 @@ export class ChatSession {
                 chatId: this.chat.id
             }
         })
-
-        if (this.processingMessagePromise) {
-            await this.processingMessagePromise;
-            this.processingMessagePromise = null;
-        }
-        this.processingMessage = false;
     };
 
     private async processUserMessage() {
@@ -184,12 +179,16 @@ export class ChatSession {
                     createdAt: new Date()
                 };
 
-                const feedback = await this.feedbackService.generateFeedback({
-                    userInfo: this.userInfo,
-                    chat: this.chat,
-                    message: userMessage,
-                    history: turnSnapshot.history
-                });
+                const [feedback, updatedTaskList] = await Promise.all([
+                    this.feedbackService.generateFeedback({
+                        userInfo: this.userInfo,
+                        chat: this.chat,
+                        message: userMessage,
+                        history: turnSnapshot.history
+                    }),
+                    this.taskListUpdaterService
+                    .update(userMessage, this.chat)
+                ]);
 
                 this.messageService.save({
                     uid: this.userInfo.uid,
@@ -206,9 +205,6 @@ export class ChatSession {
                     type: "feedback",
                     data: feedback
                 });
-
-                const updatedTaskList = await this.taskListUpdaterService
-                    .update(userMessage, this.chat);
 
                 // Merge in any hint/solution reveals that may have arrived
                 // while the AI updater was running. `used` is monotonic — once

@@ -2,9 +2,10 @@ import type { Scenario } from '@thesis/types';
 
 interface ScenarioCardProps {
   scenario: Scenario;
+  level: string;
 }
 
-export function ScenarioCard({ scenario }: ScenarioCardProps) {
+export function ScenarioCard({ scenario, level }: ScenarioCardProps) {
   return (
     <div
       className="relative w-full h-40 md:h-48 rounded-t-xl overflow-hidden bg-accent"
@@ -24,7 +25,7 @@ export function ScenarioCard({ scenario }: ScenarioCardProps) {
             {scenario.title}
           </h2>
           <span className="inline-flex w-fit items-center rounded bg-secondary/90 px-2 py-0.5 text-xs font-semibold text-secondary-foreground">
-            B1
+            {level.toUpperCase()}
           </span>
         </div>
       </div>
