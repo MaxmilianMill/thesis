@@ -1,6 +1,7 @@
 import { Modality } from "@google/genai";
 import { MODELS } from "../../integrations/ai/config.js";
 import type { Chat, LinguisticStore, Message, UserInfo } from "@thesis/types";
+import { log } from "../logger/activity-logger-service.js";
 
 export class AISessionService {
 
@@ -64,6 +65,17 @@ export class AISessionService {
         ws.send(JSON.stringify({
             realtimeInput: { activityStart: {} }
         }));
+
+        log({
+            action: "turn_prompt",
+            status: "success",
+            uid: this.userInfo.uid,
+            message: turnPrompt,
+            relatedIds: {
+                chatId: this.chat.id,
+                condition: this.chat.condition
+            }
+        })
     }
 
     sendActivityEnd(ws: WebSocket) {

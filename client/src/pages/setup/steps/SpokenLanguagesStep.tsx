@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { InterestChip } from '@/components/setup/InterestChip';
 import { Input } from '@/components/ui/input';
+import type { Mothertongue } from '@thesis/types';
 
 const TOP_LANGUAGES = [
   'Mandarin Chinese',
@@ -18,10 +19,11 @@ const TOP_LANGUAGES = [
 
 interface SpokenLanguagesStepProps {
   selectedLanguages: string[];
+  mothertongue?: Mothertongue;
   onToggle: (language: string) => void;
 }
 
-export function SpokenLanguagesStep({ selectedLanguages, onToggle }: SpokenLanguagesStepProps) {
+export function SpokenLanguagesStep({ selectedLanguages, mothertongue, onToggle }: SpokenLanguagesStepProps) {
   const [isOtherExpanded, setIsOtherExpanded] = useState(false);
   const [otherInput, setOtherInput] = useState('');
 
@@ -49,7 +51,7 @@ export function SpokenLanguagesStep({ selectedLanguages, onToggle }: SpokenLangu
         </p>
       </div>
       <div className="flex flex-wrap gap-2">
-        {TOP_LANGUAGES.map((lang) => (
+        {TOP_LANGUAGES.filter((lang) => lang != mothertongue?.name).map((lang) => (
           <InterestChip
             key={lang}
             interest={lang}

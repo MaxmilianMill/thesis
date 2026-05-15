@@ -9,39 +9,6 @@ const MAIN_LANGUAGES: Mothertongue[] = [
   { code: 'en', name: 'English' },
 ];
 
-const OTHER_LANGUAGES: Mothertongue[] = [
-  { code: 'zh', name: 'Mandarin Chinese' },
-  { code: 'hi', name: 'Hindi' },
-  { code: 'fr', name: 'French' },
-  { code: 'ar', name: 'Arabic' },
-  { code: 'bn', name: 'Bengali' },
-  { code: 'pt', name: 'Portuguese' },
-  { code: 'ru', name: 'Russian' },
-  { code: 'ur', name: 'Urdu' },
-  { code: 'id', name: 'Indonesian' },
-  { code: 'ja', name: 'Japanese' },
-  { code: 'tr', name: 'Turkish' },
-  { code: 'ko', name: 'Korean' },
-  { code: 'it', name: 'Italian' },
-  { code: 'vi', name: 'Vietnamese' },
-  { code: 'pl', name: 'Polish' },
-  { code: 'nl', name: 'Dutch' },
-  { code: 'th', name: 'Thai' },
-  { code: 'el', name: 'Greek' },
-  { code: 'ro', name: 'Romanian' },
-  { code: 'cs', name: 'Czech' },
-  { code: 'sv', name: 'Swedish' },
-  { code: 'hu', name: 'Hungarian' },
-  { code: 'fi', name: 'Finnish' },
-  { code: 'da', name: 'Danish' },
-  { code: 'no', name: 'Norwegian' },
-  { code: 'ca', name: 'Catalan' },
-  { code: 'uk', name: 'Ukrainian' },
-  { code: 'fa', name: 'Persian' },
-  { code: 'sw', name: 'Swahili' },
-  { code: 'es', name: 'Spanish' },
-];
-
 interface MotherTongueStepProps {
   selectedMothertongue: Mothertongue | null;
   onSelect: (language: Mothertongue) => void;

@@ -91,6 +91,7 @@ export default function SetupScreen() {
               <SpokenLanguagesStep
                 selectedLanguages={selectedSpokenLanguages}
                 onToggle={toggleSpokenLanguage}
+                mothertongue={selectedMothertongue}
               />
             )}
             {step === 8 && (

@@ -23,7 +23,7 @@ export function useSummary() {
 
     async function load() {
       const [summaryData, memoryData] = await Promise.all([
-        generateSummary(chatId, history),
+        generateSummary(chatId, history, chat?.condition),
         getMemoryUpdates(uid),
       ])
       setSummary(summaryData)

@@ -94,7 +94,7 @@ export default function ChatScreen() {
         onSolutionUsed={sendSolutionUsed}
       />
       <div className="flex flex-1 items-end">
-        <MessageList messages={history} partnerName="Amy" isTutorLoading={isTutorLoading} isTutorMode={isTutorMode} />
+        <MessageList messages={history} partnerName={userInfo?.partner?.name || "Partner"} isTutorLoading={isTutorLoading} isTutorMode={isTutorMode} />
       </div>
       <ChatInput
         sendTextMessage={sendTextMessage}

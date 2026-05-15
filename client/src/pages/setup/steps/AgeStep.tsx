@@ -1,4 +1,4 @@
-const AGE_RANGES = ["18-22", "23-26", "27-30", "31-35", "36-40"];
+const AGE_RANGES = ["18-21", "22-25", "26-29", "30-33", "34-37"];
 
 interface AgeStepProps {
   selectedAgeRange: string;

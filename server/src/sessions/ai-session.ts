@@ -3,6 +3,7 @@ import type { UserInfo } from "@thesis/types";
 import type { AISessionService } from "../services/chat/ai-session-service.js";
 import type { Chat } from "@thesis/types";
 import type { Message } from "@thesis/types";
+import { log } from "../services/logger/activity-logger-service.js";
 
 const AI_WS_URL = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?key=${process.env.GEMINI_API_KEY}`;
 
@@ -29,7 +30,17 @@ export class AISession extends EventEmitter {
             this.ws.send(systemInstruction);
             this.emit("ai_ready");
 
-            console.log("Live API connected.")
+            console.log("Live API connected.");
+            log({
+                action: "system_prompt",
+                uid: this.userInfo.uid,
+                status: "success",
+                message: systemInstruction,
+                relatedIds: {
+                    chatId: this.sessionService.chat.id,
+                    condition: this.sessionService.chat.condition
+                }
+            })
         };
 
         this.ws.onmessage = async (event) => {

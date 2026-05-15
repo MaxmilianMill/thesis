@@ -62,7 +62,7 @@ export const FEATURE_OPTIONS: Record<FeatureType, FeatureOption[]> = {
 
 export const VOICE_OPTIONS: VoiceOption[] = [
   { id: 'samira', displayName: 'FEMALE', name: "Aoede", languageCode: 'en-US' },
-  { id: 'marcus', displayName: 'MALE', name: "Callirrhoe", languageCode: 'en-US' },
+  { id: 'marcus', displayName: 'MALE', name: "Charon", languageCode: 'en-US' },
 ];
 
 export async function submitPartner(partner: Partner): Promise<Partner | undefined> {

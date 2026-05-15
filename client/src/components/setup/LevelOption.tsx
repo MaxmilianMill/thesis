@@ -5,10 +5,11 @@ interface LevelOptionProps {
   description: string;
   subtitle?: string;
   isSelected: boolean;
+  canDo?: string[];
   onSelect: () => void;
 }
 
-export function LevelOption({ level, description, subtitle, isSelected, onSelect }: LevelOptionProps) {
+export function LevelOption({ level, description, subtitle, isSelected, canDo, onSelect }: LevelOptionProps) {
   return (
     <button
       onClick={onSelect}
@@ -26,6 +27,13 @@ export function LevelOption({ level, description, subtitle, isSelected, onSelect
           <span className={cn('text-xs', isSelected ? 'text-primary-foreground/70' : 'text-muted-foreground')}>
             {subtitle}
           </span>
+        )}
+        {canDo && (
+          <ul>
+            {canDo.map((statement) => {
+              return (<li className='text-xs font-light my-1'>- {statement}</li>)
+            })}
+          </ul>
         )}
       </div>
     </button>
