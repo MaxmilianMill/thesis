@@ -1,6 +1,6 @@
 import { useChatSelectors } from "@/contexts/useChatStore";
 
-export const useChatLifecycle = (messageLimit: number = 20) => {
+export const useChatLifecycle = (messageLimit: number = 30) => {
 
     const chat = useChatSelectors.use.chat();
     const history = useChatSelectors.use.history();

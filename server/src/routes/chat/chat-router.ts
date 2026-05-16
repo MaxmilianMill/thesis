@@ -20,8 +20,15 @@ chatRouter.post("/update",
 
 chatRouter.post("/create",
     catchAsync(
-        (req: AuthRequest, res: Response) => 
+        (req: AuthRequest, res: Response) =>
             chatController.handleAddChat(req, res)
+    )
+);
+
+chatRouter.get("/:chatId",
+    catchAsync(
+        (req: AuthRequest, res: Response) =>
+            chatController.handleGetChat(req, res)
     )
 );
 

@@ -25,6 +25,7 @@ export class SummaryController {
             uid, chatId, history
         });
 
+        console.log(condition);
         // update the linguistic store only on the warm up chat
         if (condition === "warmup") this.linguisticStoreService.update({uid, chatId});
         

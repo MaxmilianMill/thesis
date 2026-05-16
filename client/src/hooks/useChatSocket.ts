@@ -150,5 +150,14 @@ export function useChatSocket({ uid, chatId }: UseChatSocketArgs) {
         };
     }, []);
 
-    return { connectionStatus, send, subscribe };
+    const stop = useCallback(() => {
+        giveUpRef.current = true;
+        clearReconnectTimer();
+        const ws = wsRef.current;
+        if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+            ws.close();
+        }
+    }, []);
+
+    return { connectionStatus, send, subscribe, stop };
 }

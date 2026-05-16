@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { useAudioMessageStream } from "./useAudioStream";
-import type { WSMessage } from "@thesis/types";
+import type { Message, WSMessage } from "@thesis/types";
 import { useChatSelectors } from "@/contexts/useChatStore";
 import { useAuthSelectors } from "@/contexts/useAuthStore";
 import { AudioStreamer } from "./lib/audio-streamer";
@@ -24,7 +24,8 @@ export const useMessageController = () => {
     const {
         initAudio,
         playAudioChunk,
-        resetAudioQueue
+        resetAudioQueue,
+        warmupAudio
     } = useAudioMessageStream();
 
     const {
@@ -33,7 +34,8 @@ export const useMessageController = () => {
         finalizeAITurn,
         history,
         updateTaskList,
-        addFeedback
+        addFeedback,
+        updateHistory
     } = useChatSelectors();
 
     const user = useAuthSelectors.use.user();
@@ -41,7 +43,7 @@ export const useMessageController = () => {
     const uid = user?.authToken.uid;
     const chatId = chat?.id;
 
-    const { connectionStatus, send, subscribe } = useChatSocket({ uid, chatId });
+    const { connectionStatus, send, subscribe, stop } = useChatSocket({ uid, chatId });
 
     console.log(history)
 
@@ -97,6 +99,7 @@ export const useMessageController = () => {
 
                 case "ai_disconnected":
                     console.warn("AI session disconnected on server.");
+                    stop();
                     break;
 
                 case "error":
@@ -108,7 +111,7 @@ export const useMessageController = () => {
             }
         });
         return unsubscribe;
-    }, [subscribe, playAudioChunk, appendUserStreamChunk, appendAIStreamChunk, resetAudioQueue, finalizeAITurn, addFeedback, updateTaskList]);
+    }, [subscribe, playAudioChunk, appendUserStreamChunk, appendAIStreamChunk, resetAudioQueue, finalizeAITurn, addFeedback, updateTaskList, stop]);
 
     // Audio recorder wiring — drop chunks instead of queuing them when offline
     useEffect(() => {
@@ -152,6 +155,9 @@ export const useMessageController = () => {
                 text: ""
             } as WSMessage);
         } else {
+            // avoid fight over audio profile
+            warmupAudio();
+
             send({
                 uid,
                 chatId,
@@ -166,11 +172,30 @@ export const useMessageController = () => {
         if (!text.trim()) return;
         initAudio();
 
+        // avoid fight over the audio profile
+        warmupAudio();
+
+        const message: Message = {
+            id: crypto.randomUUID(),
+            uid: uid!,
+            isUser: true,
+            text: text.trim(),
+            createdAt: new Date(),
+        };
+
+        updateHistory(message);
+
+        const validHistory = history.filter(
+            (m) => typeof m.uid === 'string' && m.uid.length > 0 &&
+                   m.createdAt instanceof Date && !isNaN(m.createdAt.getTime())
+        );
+
         send({
             uid,
             chatId,
             type: "text",
-            text: text
+            message,
+            history: validHistory.length > 0 ? validHistory : undefined,
         } as WSMessage);
     };
 
@@ -203,3 +228,4 @@ export const useMessageController = () => {
         inVolume
     }
 }
+

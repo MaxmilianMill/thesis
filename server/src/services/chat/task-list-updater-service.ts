@@ -75,7 +75,10 @@ export class TaskListUpdaterService {
         return {
             temperature: 0.5,
             responseMimeType: "application/json",
-            responseJsonSchema: z.toJSONSchema(TaskListUpdateSchema)
+            responseJsonSchema: z.toJSONSchema(TaskListUpdateSchema),
+            thinkingConfig: {
+                thinkingBudget: 0
+            }
         }
     };
 }

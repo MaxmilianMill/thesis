@@ -14,6 +14,20 @@ async function improveVersion(
     return response.text;
 };
 
+async function generateMistakes(
+    prompt: string,
+    config: GenerateContentConfig
+): Promise<string | undefined> {
+    const response = await ai.models.generateContent({
+        model: MODELS.FLASH,
+        contents: prompt,
+        config
+    });
+
+    return response.text;
+};
+
 export {
-    improveVersion
+    improveVersion,
+    generateMistakes
 }

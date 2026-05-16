@@ -67,7 +67,6 @@ export function ChatInput({
       )}
       {isTutorMode && <TutorModeBadge />}
       <div className="flex items-center gap-3 px-5 py-4">
-        {/* Text switch button — hidden in tutor mode */}
         {!isTutorMode && (
           <button
             onClick={() => setMode(mode === 'text' ? 'audio' : 'text')}
@@ -85,10 +84,8 @@ export function ChatInput({
           </button>
         )}
 
-        {/* Spacer to keep layout when text toggle is hidden */}
         {isTutorMode && <div className="min-w-[52px]" />}
 
-        {/* Center: mic, text input, or tutor input */}
         <div className="flex flex-1 items-center justify-center">
           {effectiveMode === 'audio' ? (
             isRecording ? (
@@ -127,7 +124,6 @@ export function ChatInput({
           )}
         </div>
 
-        {/* Help button */}
         <button
           onClick={onHelpPress}
           className={cn(
@@ -138,8 +134,10 @@ export function ChatInput({
           )}
           aria-label="Help"
         >
-          <HelpCircle className="size-5" />
-          <span className="text-xs font-medium">Help</span>
+          {isTutorMode ? <><HelpCircle className="size-5" />
+          <span className="text-xs font-medium">Help</span></> : 
+          <><HelpCircle className="size-5" />
+          <span className="text-xs font-medium">Help</span></>}
         </button>
       </div>
     </div>

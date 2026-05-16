@@ -22,6 +22,16 @@ export async function submitSetup(
   })
 }
 
+export async function fetchUserInfo(uid: string): Promise<UserInfo | undefined> {
+  return api.get(`/setup/info/${uid}`).then((res) => {
+    if (res.status !== HttpStatusCode.Ok) return undefined;
+    return res.data.userInfo;
+  }).catch((error) => {
+    console.error(error.message);
+    return undefined;
+  });
+}
+
 /** Returns the updatedFields if update was successful */
 export async function updateSetup(
   data: Partial<UserInfo>,

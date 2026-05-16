@@ -59,6 +59,16 @@ export async function fetchPartner(): Promise<Partner> {
   return new Promise((resolve) => setTimeout(() => resolve(MOCK_PARTNER), 200));
 }
 
+export async function fetchChat(chatId: string): Promise<Chat | undefined> {
+  return api.get(`/chat/${chatId}`).then((res) => {
+    if (res.status !== HttpStatusCode.Ok) return undefined;
+    return res.data.chat;
+  }).catch((error) => {
+    console.error(error.message);
+    return undefined;
+  });
+}
+
 export async function createChat(chat: Partial<Chat>): Promise<Chat> {
   return await api.post("/chat/create", {chat}).then((res) => {
     if (res.status !== HttpStatusCode.Created) return;

@@ -10,7 +10,7 @@ export const MessageSchema = z.object({
     createdAt: z.coerce.date(),
     improvedVersion: z.string().optional(),
     isCorrect: z.boolean().optional(),
-    mistakes: z.array(MistakeSchema).optional(),
+    mistakes: z.array(MistakeSchema).nullish(),
     isTutor: z.boolean().optional(),
 });
 

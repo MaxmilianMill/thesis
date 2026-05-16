@@ -86,10 +86,22 @@ async function getChatMessages(
 
     const response = await cursor.toArray();
 
-    const messages = response.map((msg) => {
-        return transformMongoDBDoc<Message>(msg, MessageSchema)
-    });
-
+    let messages = [];
+    try {
+        messages = response.map((msg) => {
+            return transformMongoDBDoc<Message>(msg, MessageSchema)
+        });
+    } catch (error) {
+        // just a protection to avoid failure of the linguistic store update 
+        messages = response.map((msg) => {
+            return {
+                ...msg,
+                id: msg._id.toString(),
+                _id: undefined
+            } as unknown as Message
+        })
+    }
+    
     return {status: 200, messages: messages}
 }
 

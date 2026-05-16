@@ -17,6 +17,9 @@ export class AISessionService {
         message?: Message,
         history?: Message[]
     ) {
+
+        console.log(message);
+
         const turnPrompt = this.buildTurnContext(chat, false, history, message);
 
         console.log(turnPrompt);
@@ -30,6 +33,17 @@ export class AISessionService {
 
         ws.send(JSON.stringify(textMessage));
         console.log("Text message sent: ", textMessage);
+
+        log({
+            action: "turn_prompt",
+            status: "success",
+            uid: this.userInfo.uid,
+            message: turnPrompt,
+            relatedIds: {
+                chatId: this.chat.id,
+                condition: this.chat.condition
+            }
+        })
     }
 
     sendAudioMessage(
@@ -143,7 +157,7 @@ export class AISessionService {
             fieldOfWork, difficulties, learningGoal, learningTools
         } = this.userInfo;
 
-        const persona = partner?.personalityDescription ?? "a friendly language buddy";
+        const persona = partner?.name ?? "a friendly language buddy";
 
         const summary = this.linguisticStore?.summary?.trim()
             ? this.linguisticStore.summary
@@ -189,9 +203,15 @@ export class AISessionService {
             ${this.levelGuidance(level.code)}
             3. **Stay in character.** Do not explain grammar unless the user asks.
             4. **Guide, don't give away.** Steer the conversation so the learner has a natural opportunity to attempt the current task. Never complete it for them.
-            5. **Be concise.** 1–3 sentences unless the moment genuinely calls for more.
+            5. **Be concise & relevant.** 1-3 sentences. DO NOT ask random questions about their interests/job if it distracts from the current Scenario or Task. Only weave in personal facts if it flows perfectly naturally.
             6. **Never mention tasks, lists, learning goals, the linguistic profile, or that you are an AI / language tutor.** This must feel like a real chat.
-            7. **Your reply will be spoken aloud — write naturally. No markdown, no bullet points, no emoji, no stage directions.**`;
+            7. **Your reply will be spoken aloud — write naturally. No markdown, no bullet points, no emoji, no stage directions.**
+            
+            ## Error Correction Protocol
+            1. **IGNORE MINOR ERRORS:** Do not point out minor mistakes (e.g., missing accents, slightly wrong prepositions, or wrong noun gender). Just use the correct form naturally in your ${language.name} response.
+            2. **EXPLAIN MAJOR ERRORS:** If the user makes a mistake that changes the meaning or makes the sentence incomprehensible, you MUST interrupt briefly.
+            3. **LANGUAGE SWITCH:** When explaining a major error, switch to **English** for exactly ONE sentence to explain the rule, then immediately switch back to **${language.name}** to continue the conversation.
+            `;
     }
 
     private buildGenericSystemPrompt(): string {
@@ -207,7 +227,13 @@ export class AISessionService {
             3. **Guide, don't give away.** Steer the conversation so the user has a natural opportunity to attempt the current task. Never complete it for them.
             4. **Be concise.** 1–3 sentences unless the moment genuinely calls for more.
             5. **Never mention tasks, lists, learning goals, or that you are an AI / language tutor.** This must feel like a real chat.
-            6. **Your reply will be spoken aloud — write naturally. No markdown, no bullet points, no emoji, no stage directions.**`;
+            6. **Your reply will be spoken aloud — write naturally. No markdown, no bullet points, no emoji, no stage directions.**
+            
+            ## Error Correction Protocol
+            1. **IGNORE MINOR ERRORS:** Do not point out minor mistakes (e.g., missing accents, slightly wrong prepositions, or wrong noun gender like "el mesa"). Just use the correct form naturally in your [Language] response.
+            2. **EXPLAIN MAJOR ERRORS:** If the user makes a mistake that changes the meaning of the sentence (e.g., "anos" vs "años") or makes it incomprehensible, you MUST interrupt briefly.
+            3. **LANGUAGE SWITCH:** When explaining a major error, switch to **English** for exactly ONE sentence to explain the rule, then immediately switch back to **[Language]** to continue the conversation.
+            `;
     }
 
     private buildTaskBlocks(chat: Chat) {
@@ -244,6 +270,7 @@ export class AISessionService {
         message?: Message,
     ): string {
         const { progressSummary, currentTaskBlock, upcomingTasksBlock } = this.buildTaskBlocks(chat);
+        const languageName = this.userInfo.language.name;
 
         const mistakes = history
             ?.filter(m => m.isUser && m.mistakes && m.mistakes.length > 0)
@@ -252,24 +279,19 @@ export class AISessionService {
             .join("\n");
 
         const conversationHistory = history?.map((msg) => {
-            return { role: msg.isUser ? "user" : "assistant", text: msg.text}
-        }).toString();
+            return `${msg.isUser ? "User" : "Assistant"}: ${msg.text}`
+        }).join("\n");
 
         const recentMistakesBlock = mistakes
-            ? `## Recent Mistakes in This Conversation
-                ${mistakes}
-                (Watch for these patterns; gently model the correct form in your reply.)`
+            ? `## Recent Mistakes in This Conversation\n${mistakes}`
             : "";
 
         const factsBlock = this.linguisticStore?.facts?.length
-            ? `## Linguistic Patterns to Watch (from prior sessions)
-                ${this.linguisticStore.facts.map(f => `- ${f}`).join("\n")}
-                (If the user produces these correctly, reinforce naturally. If not, model the correct form — never label the mistake.)`
+            ? `## Linguistic Patterns to Watch (from prior sessions)\n${this.linguisticStore.facts.map(f => `- ${f}`).join("\n")}`
             : "";
 
         const scenarioBlock = chat.scenario?.aiDescription
-            ? `## Scenario
-                ${chat.scenario.aiDescription}`
+            ? `## Scenario\n${chat.scenario.aiDescription}`
             : "";
 
         return `${scenarioBlock}
@@ -292,6 +314,14 @@ export class AISessionService {
             ## Current User Message
             ${this.formatUserMessage(isAudio, message)}
 
+            ## Active Correction Check
+            Review the user's latest message against the "Recent Mistakes" and "Linguistic Patterns" provided above.
+            ACTION REQUIRED:
+            - If the user made a MAJOR error that they have made before, start your response with ONE English sentence: "I noticed you often [mention the pattern]. Here is the trick: [explanation]." 
+            - If it's a new MAJOR error, explain it in English in ONE sentence.
+            - After the English tip, immediately switch back to ${languageName} to continue the scenario.
+            - If there are no major errors, ignore minor ones and reply entirely in ${languageName}.
+
             Respond now as the conversation partner. Speak naturally — your reply will be spoken aloud, so no markdown and no bullet points.`;
     }
 
@@ -304,8 +334,8 @@ export class AISessionService {
         const { progressSummary, currentTaskBlock, upcomingTasksBlock } = this.buildTaskBlocks(chat);
 
         const conversationHistory = history?.map((msg) => {
-            return { role: msg.isUser ? "user" : "assistant", text: msg.text}
-        }).toString();
+            return `role: ${msg.isUser ? "user" : "assistant"}, text: ${msg.text}`
+        }).join("\n");
 
         const scenarioBlock = chat.scenario?.aiDescription
             ? `## Scenario
@@ -327,6 +357,12 @@ export class AISessionService {
 
             ## Current User Message
             ${this.formatUserMessage(isAudio, message)}
+
+            ## Correction Check
+            Review the user's latest message. If there is a MAJOR meaning-changing error:
+            1. Start your response in English: "Quick tip: [1-sentence explanation of the mistake]."
+            2. Then, reply to their actual message in spanish to keep the conversation moving. 
+            If there are no major errors, respond entirely in spanish.
 
             Respond now. Speak naturally — your reply will be spoken aloud, so no markdown and no bullet points.`;
     }

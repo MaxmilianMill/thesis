@@ -40,6 +40,17 @@ export class ChatController {
         return res.status(status).json({chat});
     };
 
+    public async handleGetChat(req: AuthRequest, res: Response) {
+        const { uid } = req.authToken;
+        const { chatId } = req.params;
+
+        const { chat } = await this.chatService.get(uid, chatId);
+
+        if (!chat) return res.status(404).json({ error: "Chat not found" });
+
+        return res.status(200).json({ chat });
+    }
+
     public async handleAddChat(req: AuthRequest, res: Response) {
         const {uid} = req.authToken;
 

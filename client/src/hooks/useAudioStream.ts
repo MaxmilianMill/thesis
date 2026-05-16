@@ -10,12 +10,23 @@ export const useAudioMessageStream = () => {
             // Added webkitAudioContext for iOS/Safari support
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-            audioContextRef.current = new AudioContextClass();
+            audioContextRef.current = new AudioContextClass({ sampleRate: 24000 });
         }
 
         if (audioContextRef.current.state === "suspended") {
             audioContextRef.current.resume();
         }
+    }, [])
+
+    const warmupAudio = useCallback(() => {
+        if (!audioContextRef.current) return;
+        
+        // Create a 0.1-second silent buffer
+        const buffer = audioContextRef.current.createBuffer(1, audioContextRef.current.sampleRate * 0.1, audioContextRef.current.sampleRate);
+        const source = audioContextRef.current.createBufferSource();
+        source.buffer = buffer;
+        source.connect(audioContextRef.current.destination);
+        source.start(0);
     }, [])
 
     const playAudioChunk = useCallback(async (base64Audio: string) => {
@@ -90,6 +101,7 @@ export const useAudioMessageStream = () => {
     return {
         initAudio,
         playAudioChunk,
-        resetAudioQueue
+        resetAudioQueue,
+        warmupAudio
     };
 }

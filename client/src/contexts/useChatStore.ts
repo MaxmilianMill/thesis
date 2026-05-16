@@ -31,7 +31,10 @@ const useChatStore = create<ChatState>((set) => ({
     chat: undefined,
     history: [],
     isTutorMode: false,
-    setChat: (chat) => set({chat}),
+    setChat: (chat) => {
+        localStorage.setItem("chatId", chat.id);
+        set({ chat });
+    },
     resetHistory: () => set({history: [], isTutorMode: false}),
     updateChat: (updatedFields) => set((state) => {
         return {chat: {...state.chat, ...updatedFields} as Chat}

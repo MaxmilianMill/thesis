@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import type { UIMessage } from '@/contexts/useChatStore';
 import { PartnerMessage } from './PartnerMessage';
 import { UserMessage } from './UserMessage';
@@ -6,11 +7,12 @@ import { TutorMessage } from './TutorMessage';
 type Props = {
   messages: UIMessage[];
   partnerName: string;
-  isTutorLoading: boolean;
   isTutorMode: boolean;
 };
 
-export function MessageList({ messages, partnerName, isTutorLoading, isTutorMode }: Props) {
+export function MessageList({ messages, partnerName, isTutorMode }: Props) {
+  const bottomRef = useRef<HTMLDivElement>(null);
+
   const chatMessages = messages.filter((m) => !m.isTutor);
   const lastTwo = chatMessages.slice(-2);
 
@@ -20,13 +22,12 @@ export function MessageList({ messages, partnerName, isTutorLoading, isTutorMode
       ? messages.slice(lastChatIdx + 1).filter((m) => m.isTutor)
       : messages.filter((m) => m.isTutor);
 
-    console.log(activeTutorMessages)
-
-  const showTutorLoading =
-    isTutorLoading && activeTutorMessages.at(-1)?.isUser === true;
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   return (
-    <div className="flex flex-col gap-6 px-5 py-6 w-full">
+    <div className="flex flex-col gap-6 px-5 py-6 w-full flex-1 overflow-y-auto">
       {lastTwo.map((message) =>
         message.isUser ? (
           <UserMessage key={message.id} message={message} />
@@ -37,12 +38,7 @@ export function MessageList({ messages, partnerName, isTutorLoading, isTutorMode
       {isTutorMode && activeTutorMessages.map((message) => (
         <TutorMessage key={message.id} message={message} />
       ))}
-      {showTutorLoading && (
-        <TutorMessage
-          message={{ id: '__loading', isUser: false, isTutor: true, text: '', uid: '', createdAt: new Date() }}
-          isLoading
-        />
-      )}
+      <div ref={bottomRef} />
     </div>
   );
 }

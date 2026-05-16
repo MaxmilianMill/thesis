@@ -46,7 +46,7 @@ export class ClientSession extends EventEmitter {
     }
 
     close() {
-        this.ws.close();
+        this.ws.close(4000, "AI session ended");
     };
 
     private safeSend(payload: WSPayload): void {
