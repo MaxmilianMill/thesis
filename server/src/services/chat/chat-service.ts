@@ -1,5 +1,5 @@
 import { addChat, getChat, updateChat } from "../../repository/chat/chat-repository.js";
-import type { Chat } from "../../types/chat/chat.js";
+import type { Chat } from "@thesis/types";
 
 export class ChatService {
 
@@ -10,12 +10,13 @@ export class ChatService {
     ) {
         // Filter out null/undefined values to prevent MongoDB $set errors
         const cleanFields = this.removeNullUndefined(updatedFields);
+        
         return await updateChat(uid, chatId, cleanFields);
     };
 
     async create(
         uid: string,
-        chat: Omit<Chat, "createdAt">
+        chat: Omit<Chat, "createdAt" | "id" | "completed" | "condition">
     ) {
         return await addChat(uid, chat);
     };

@@ -1,5 +1,5 @@
 import { addInfoData, getInfoData, updateInfoData } from "../../repository/setup/info-repository.js";
-import type { UserInfo } from "../../types/setup/user-info.js";
+import type { UserInfo } from "@thesis/types";
 
 export class InfoService {
 

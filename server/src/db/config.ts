@@ -1,4 +1,7 @@
 import { Db, MongoClient } from 'mongodb';
+import * as dotenv from "dotenv";
+
+dotenv.config()
 
 let dbInstance: Db;
 let mongoClient: MongoClient;
@@ -9,12 +12,11 @@ export async function connectDB() {
   const uri = process.env.MONGODB_URI || "";
   const dbName = process.env.MONGODB_NAME || "";
 
-  console.log("URI ", uri);
   console.log("DB NAME ", dbName);
   
   try {
 
-    mongoClient = new MongoClient(uri);
+    mongoClient = new MongoClient(uri, {autoSelectFamily: false});
     
     await mongoClient.connect();
     

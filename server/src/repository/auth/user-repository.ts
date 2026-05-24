@@ -1,6 +1,6 @@
 import { MongoError } from "mongodb";
 import { getDB } from "../../db/config.js";
-import type { User } from "../../types/auth/user.js";
+import type { User } from "@thesis/types";
 
 const USER_COLLECTION = "users";
 
@@ -37,8 +37,18 @@ async function getLastUser() {
     return result;
 };
 
+async function getUserByUid(uid: string): Promise<User | undefined> {
+    const db = getDB();
+    const result = await db
+        .collection<User>(USER_COLLECTION)
+        .findOne({ "authToken.uid": uid });
+
+    return result ?? undefined;
+}
+
 export {
     addUser,
-    getLastUser
+    getLastUser,
+    getUserByUid
 }
 

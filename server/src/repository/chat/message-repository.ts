@@ -1,10 +1,10 @@
 import type { GenerateContentConfig } from "@google/genai";
 import { ai, MODELS } from "../../integrations/ai/config.js";
-import { MessageSchema, type Message } from "../../types/chat/message.js";
+import { MessageSchema, type Message } from "@thesis/types";
 import { MongoError, ObjectId } from "mongodb";
 import { getDB } from "../../db/config.js";
 import { transformMongoDBDoc } from "./utils/transform-chat-doc.js";
-import type { WithStatus } from "../../types/utils/with-status.js";
+import type { WithStatus } from "@thesis/types";
 
 const MESSAGE_COLLECTION = "messages";
 
@@ -14,13 +14,20 @@ async function *generateMessageStream(
 ): AsyncGenerator<string> {
     
     const response = await ai.models.generateContentStream({
-        model: MODELS.FLASH,
+        model: "gemini-2.5-flash-preview-tts",
         contents: prompt,
         config
     });
 
     for await (const textChunk of response) {
         if (textChunk.text) yield textChunk.text;
+
+        const audioChunk = textChunk.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+
+        if (audioChunk) {
+            const audioBuffer = Buffer.from(audioChunk, "base64");
+            console.log(audioBuffer.toString().slice(0, 10));
+        };
     };
 };
 
@@ -59,7 +66,70 @@ async function saveOrUpdateMessage(
     return {status: 200, message};
 };
 
+/**
+ * Returns all messages for a specific chat is descending order.
+ * @param uid 
+ * @param chatId 
+ * @returns 
+ */
+async function getChatMessages(
+    uid: string, chatId: string
+): Promise<WithStatus<"messages", Message[]>>  {
+    const db = getDB();
+
+    const query = {uid, chatId};
+
+    const cursor = db
+        .collection(MESSAGE_COLLECTION)
+        .find(query)
+        .sort({createdAt: "desc"});
+
+    const response = await cursor.toArray();
+
+    let messages = [];
+    try {
+        messages = response.map((msg) => {
+            return transformMongoDBDoc<Message>(msg, MessageSchema)
+        });
+    } catch (error) {
+        // just a protection to avoid failure of the linguistic store update 
+        messages = response.map((msg) => {
+            return {
+                ...msg,
+                id: msg._id.toString(),
+                _id: undefined
+            } as unknown as Message
+        })
+    }
+    
+    return {status: 200, messages: messages}
+}
+
+type StoredMessage = Omit<Message, 'id'> & { chatId: string };
+
+async function saveMessage(
+    message: StoredMessage
+): Promise<WithStatus<"message", Message>> {
+    const db = getDB();
+
+    const result = await db.collection(MESSAGE_COLLECTION).insertOne(message);
+
+    if (!result.insertedId)
+        throw new MongoError("Insert failed.");
+
+    const doc = await db.collection(MESSAGE_COLLECTION).findOne({ _id: result.insertedId });
+
+    if (!doc)
+        return { status: 200, message: {...message, id: result.insertedId.toString()}}
+
+    const saved = transformMongoDBDoc<Message>(doc, MessageSchema);
+
+    return { status: 201, message: saved };
+}
+
 export {
     generateMessageStream,
-    saveOrUpdateMessage
+    saveOrUpdateMessage,
+    saveMessage,
+    getChatMessages
 };

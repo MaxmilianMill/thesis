@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx shadcn@latest add drawer)",
+      "Bash(npx shadcn@latest add select)",
+      "Bash(npx tsc:*)",
+      "Bash(xargs grep *)",
+      "Bash(xargs wc *)",
+      "Bash(grep -E \"\\\\.\\(tsx|ts|jsx|js\\)$\")",
+      "Bash(npm install *)"
+    ]
+  }
+}

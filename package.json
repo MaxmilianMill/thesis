@@ -1,0 +1,5 @@
+{
+    "name": "thesis",
+    "private": true,
+    "workspaces": ["packages/*", "server", "client"]
+}

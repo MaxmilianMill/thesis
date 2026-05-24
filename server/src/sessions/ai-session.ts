@@ -1,0 +1,144 @@
+import { EventEmitter } from "events";
+import type { UserInfo } from "@thesis/types";
+import type { AISessionService } from "../services/chat/ai-session-service.js";
+import type { Chat } from "@thesis/types";
+import type { Message } from "@thesis/types";
+import { log } from "../services/logger/activity-logger-service.js";
+
+const AI_WS_URL = `${process.env.AI_WEBSOCKET_URL}?key=${process.env.GEMINI_API_KEY}`;
+
+export class AISession extends EventEmitter {
+
+    private ws: WebSocket;
+    private disconnected = false;
+
+    constructor(
+        public sessionService: AISessionService,
+        public userInfo: UserInfo
+    ) {
+        super();
+        this.ws = new WebSocket(AI_WS_URL);
+        this.sessionService = sessionService;
+        this.userInfo = userInfo;
+
+        this.initialize();
+    }
+
+    initialize() {
+        this.ws.onopen = () => {
+            const systemInstruction = this.sessionService.buildSystemInstruction();
+            this.ws.send(systemInstruction);
+            this.emit("ai_ready");
+
+            console.log("Live API connected.");
+            log({
+                action: "system_prompt",
+                uid: this.userInfo.uid,
+                status: "success",
+                message: systemInstruction,
+                relatedIds: {
+                    chatId: this.sessionService.chat.id,
+                    condition: this.sessionService.chat.condition
+                }
+            })
+        };
+
+        this.ws.onmessage = async (event) => {
+
+            let rawData = event.data;
+
+            // Unwrap the Blob into a string
+            if (rawData instanceof Blob) {
+                rawData = await rawData.text();
+            } else if (Buffer.isBuffer(rawData)) {
+                rawData = rawData.toString();
+            }
+
+            const response = JSON.parse(rawData);
+            console.log("Response: ", response);
+
+            if (response.serverContent) {
+
+                const serverContent = response.serverContent;
+
+                if (serverContent.modelTurn?.parts) {
+                    for (const part of serverContent.modelTurn.parts) {
+                        if (part.inlineData) {
+                            this.emit("ai_msg", { type: "audio", data: part.inlineData.data });
+                        }
+                    }
+                }
+
+                if (serverContent.inputTranscription) {
+                    this.emit("ai_msg", {
+                        type: "user_msg",
+                        data: serverContent.inputTranscription.text
+                    });
+
+                    console.log("User transcript: ", serverContent.inputTranscription.text);
+                }
+
+                if (serverContent.outputTranscription) {
+                    this.emit("ai_msg", {
+                        type: "ai_msg",
+                        data: serverContent.outputTranscription.text
+                    });
+                }
+
+                if (serverContent.turnComplete) {
+                    this.emit("turn_complete");
+                }
+            }
+        };
+
+        const emitDisconnectedOnce = () => {
+            if (this.disconnected) return;
+            this.disconnected = true;
+            this.emit("disconnected");
+        };
+
+        // Add the error listener
+        this.ws.onerror = (error) => {
+            console.error("🚨 Gemini WebSocket Error:", error);
+            // An 'error' is not always followed by 'close' — emit here too
+            // so the chat-session listener still tears down the user side.
+            emitDisconnectedOnce();
+        };
+
+        // Update the close listener to print the exact reason
+        this.ws.onclose = (event) => {
+            const reason = event.reason ? event.reason.toString() : "No reason provided";
+            console.log(`🔌 Gemini connection closed. Code: ${event.code}, Reason: ${reason}`);
+            emitDisconnectedOnce();
+        };
+    };
+
+    close() {
+        this.ws.close();
+    }
+
+    handleSendTextMessage(
+        chat: Chat,
+        message?: Message,
+        history?: Message[]
+    ) {
+        this.sessionService.sendTextMessage(
+            this.ws,
+            chat,
+            message,
+            history
+        );
+    };
+
+    handleAudioChunk(base64Audio: string) {
+        this.sessionService.sendAudioMessage(this.ws, base64Audio);
+    }
+
+    handleRecordingStart(chat: Chat, history?: Message[]) {
+        this.sessionService.sendActivityStart(this.ws, chat, history);
+    }
+
+    handleRecordingStop() {
+        this.sessionService.sendActivityEnd(this.ws);
+    }
+}

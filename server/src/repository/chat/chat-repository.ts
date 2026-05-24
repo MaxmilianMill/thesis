@@ -1,9 +1,10 @@
 import { MongoError, ObjectId } from "mongodb";
 import { getDB } from "../../db/config.js";
-import type { Chat } from "../../types/chat/chat.js";
-import { ChatSchema } from "../../types/chat/chat.js";
-import type { WithStatus } from "../../types/utils/with-status.js";
+import type { Chat } from "@thesis/types";
+import { ChatSchema } from "@thesis/types";
+import type { WithStatus } from "@thesis/types";
 import { transformMongoDBDoc } from "./utils/transform-chat-doc.js";
+import { getUserByUid } from "../auth/user-repository.js";
 
 export const CHAT_COLLECTION = "chat";
 
@@ -30,21 +31,49 @@ async function updateChat(
     return { chat: transformedData, status: 200 };
 };
 
+function deriveCondition(
+    group: "control_first" | "experiment_first",
+    existingCount: number
+): "warmup" | "control" | "experiment" {
+    if (existingCount === 0) return "warmup";
+    if (group === "control_first") return existingCount % 2 === 1 ? "control" : "experiment";
+    return existingCount % 2 === 1 ? "experiment" : "control";
+}
+
 async function addChat(
     uid: string,
-    partialChat: Omit<Chat, "createdAt">
+    partialChat: Omit<Chat, "createdAt" | "id" | "completed" | "condition">
 ): Promise<WithStatus<"chat", Chat>> {
 
     const db = getDB();
 
-    const chat: Chat = {...partialChat, createdAt: new Date()};
+    const [existingCount, user] = await Promise.all([
+        countChats(uid),
+        getUserByUid(uid)
+    ]);
+
+    const group = user?.group ?? "control_first";
+    const condition = deriveCondition(group, existingCount);
+
+    const chatDoc: Omit<Chat, "id"> = {
+        ...partialChat,
+        condition,
+        createdAt: new Date(),
+        completed: false,
+        uid
+    };
 
     const response = await db
         .collection(CHAT_COLLECTION)
-        .insertOne(chat);
+        .insertOne(chatDoc);
 
     if (!response.acknowledged)
         throw new MongoError("Unable to add document");
+
+    const chat: Chat = {
+        ...chatDoc,
+        id: response.insertedId.toString()
+    };
 
     return {chat, status: 201};
 };
@@ -72,8 +101,14 @@ async function getChat(
     return {status: 200, chat: transformedChat};
 }
 
+async function countChats(uid: string): Promise<number> {
+    const db = getDB();
+    return db.collection(CHAT_COLLECTION).countDocuments({ uid });
+}
+
 export {
     updateChat,
     addChat,
-    getChat
+    getChat,
+    countChats
 };

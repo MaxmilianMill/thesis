@@ -1,31 +1,18 @@
 import { WebSocketServer, type WebSocket } from "ws";
 import type { Server } from "http";
-import { ChatController } from "../../controllers/chat/chat-controller.js";
 import { ChatService } from "../../services/chat/chat-service.js";
-import { MessageService } from "../../services/chat/message-service.js";
 import { InfoService } from "../../services/setup/info-service.js";
+import { ChatSession } from "../../sessions/chat-session.js";
+import * as url from "url";
+import { AISessionService } from "../../services/chat/ai-session-service.js";
 import { FeedbackService } from "../../services/chat/feedback-service.js";
-import { TaskListUpdaterService } from "../../services/chat/task-list-updater-service.js";
-import { ChatSession } from "./chat-session.js";
+import { MessageService } from "../../services/chat/message-service.js";
+import { LinguisticStateService } from "../../services/linguistics/linguistic-state-service.js";
 
 export function initializeChatSocket(httpServer: Server) {
     console.log("Initializing Websocket...")
 
     try {
-        // Create dependencies internally
-        const chatService = new ChatService();
-        const messageService = new MessageService();
-        const infoService = new InfoService();
-        const feedbackService = new FeedbackService();
-        const taskListUpdateService = new TaskListUpdaterService();
-
-        const chatController = new ChatController(
-            chatService,
-            messageService,
-            infoService,
-            feedbackService,
-            taskListUpdateService
-        );
 
         const wss = new WebSocketServer({
             server: httpServer,
@@ -34,21 +21,100 @@ export function initializeChatSocket(httpServer: Server) {
 
         console.log(`WebSocket server created on path: /ws/chat`);
 
-        wss.on("connection", (ws: WebSocket, req) => {
-            console.log(`WebSocket connection from ${req.socket.remoteAddress}`);
-            console.log("WebSocket connection established");
+        wss.on("connection", async (ws: WebSocket, req) => {
 
-            const session = new ChatSession(ws);
-
-            chatController.handleMessage(session).catch((error) => {
-                console.error("Unhandled connection error: ", error);
-                ws.close(1011, "Internal server error")
+            // Attach error listener immediately so an error during async setup
+            // does not propagate to the process and crash the server.
+            ws.on("error", (err) => {
+                console.error("Client socket error during setup/lifetime:", err);
             });
+
+            // Heartbeat: mark this socket alive on each pong
+            (ws as WebSocket & { isAlive?: boolean }).isAlive = true;
+            ws.on("pong", () => {
+                (ws as WebSocket & { isAlive?: boolean }).isAlive = true;
+            });
+
+            try {
+
+                console.log(`WebSocket connection from ${req.socket.remoteAddress}`);
+                console.log("WebSocket connection established");
+
+                const { query } = url.parse(req.url || "", true);
+                const chatId = query.chatId as string;
+                const uid = query.uid as string;
+
+                if (!chatId || !uid) {
+                    console.error("Missing credentials in WebSocket URL");
+                    ws.close(1008, "Policy Violation: Missing chatId or userId");
+                    return;
+                }
+            
+                const chatService = new ChatService();
+                const infoService = new InfoService();
+                const linguisticStateService = new LinguisticStateService();
+
+                const [
+                    userInfo,
+                    chat,
+                    linguisticStore
+                ] = await Promise.all([
+                    infoService.getUserData(uid),
+                    chatService.get(uid, chatId),
+                    linguisticStateService.get(uid).catch(() => null)
+                ]);
+
+                console.log(chat)
+
+                if (!chat.chat)
+                    throw new Error("Chat does not exist.");
+
+                const aiSessionService = new AISessionService(
+                    userInfo.userInfo,
+                    chat.chat,
+                    linguisticStore ?? null
+                );
+                const feedbackService = new FeedbackService();
+                const messageService = new MessageService();
+
+                new ChatSession(
+                    ws,
+                    aiSessionService,
+                    feedbackService,
+                    messageService,
+                    userInfo.userInfo,
+                    chat.chat
+                );
+
+            } catch (error) {
+                console.error("Failed to initialize session data: ", error);
+                ws.close(1011, "Internal server error during setup");
+            }
         });
 
         wss.on("error", (error) => {
             console.error("WebSocket server error:", error);
         });
+
+        // Heartbeat sweeper: every 30s, terminate sockets that didn't pong
+        // since the previous tick. Catches half-open TCP (laptop sleep, NAT timeout).
+        const heartbeatInterval = setInterval(() => {
+            wss.clients.forEach((ws) => {
+                const tracked = ws as WebSocket & { isAlive?: boolean };
+                if (tracked.isAlive === false) {
+                    console.warn("Terminating unresponsive socket");
+                    return ws.terminate();
+                }
+                tracked.isAlive = false;
+                try {
+                    ws.ping();
+                } catch (err) {
+                    console.error("Ping failed:", err);
+                }
+            });
+        }, 30000);
+
+        wss.on("close", () => clearInterval(heartbeatInterval));
 
         console.log("WebSocket initialization completed successfully");
     } catch (error) {

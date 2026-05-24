@@ -2,27 +2,45 @@ import { Router, type Request, type Response } from "express";
 import { catchAsync } from "../../utils/catch-async.js";
 import { SetupController } from "../../controllers/setup/setup-controller.js";
 import { InfoService } from "../../services/setup/info-service.js";
+import { ScenarioService } from "../../services/setup/scenario-service.js";
+import { authHandler, type AuthRequest } from "../../middlewares/auth-handler.js";
+import { LinguisticStateService } from "../../services/linguistics/linguistic-state-service.js";
 
 const setupRouter = Router();
 
 const infoService = new InfoService();
-const setupController = new SetupController(infoService);
+const scenarioService = new ScenarioService();
+const linguisticStoreService = new LinguisticStateService();
+const setupController = new SetupController(
+    infoService,
+    scenarioService,
+    linguisticStoreService
+);
+
+// protect all routes
+setupRouter.use(authHandler);
 
 setupRouter.post("/create",
-    catchAsync((req: Request, res: Response) => 
+    catchAsync((req: AuthRequest, res: Response) => 
         setupController.handleCreateInfo(req, res)
     )
 );
 
 setupRouter.post("/update", 
-    catchAsync((req: Request, res: Response) => 
+    catchAsync((req: AuthRequest, res: Response) => 
         setupController.handleUpdateInfo(req, res)
     )
 );
 
 setupRouter.get("/info/:id",
-    catchAsync((req: Request, res: Response) => 
+    catchAsync((req: AuthRequest, res: Response) => 
         setupController.handleGetInfo(req, res)
+    )
+);
+
+setupRouter.post("/scenario",
+    catchAsync((req: Request, res: Response) => 
+        setupController.handleGetScenario(req, res)
     )
 );
 

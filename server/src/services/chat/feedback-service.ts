@@ -1,24 +1,35 @@
 import type { GenerateContentConfig } from "@google/genai";
-import type { Chat } from "../../types/chat/chat.js";
-import type { Message } from "../../types/chat/message.js";
-import type { UserInfo } from "../../types/setup/user-info.js";
+import type { Chat } from "@thesis/types";
+import type { Message, Mistake } from "@thesis/types";
+import type { UserInfo } from "@thesis/types";
 import { ImprovedVersionSchema } from "./schemas/improved-version.js";
+import { MistakesSchema } from "./schemas/mistakes.js";
 import z from "zod";
-import type { Language } from "../../types/setup/language.js";
-import type { Level } from "../../types/setup/level.js";
-import { improveVersion } from "../../repository/chat/feedback-repository.js";
+import type { Language } from "@thesis/types";
+import type { Level } from "@thesis/types";
+import { improveVersion, generateMistakes } from "../../repository/chat/feedback-repository.js";
 
-interface IFeedbackInput {
+export interface IFeedbackInput {
     userInfo: UserInfo;
     chat: Chat;
     message: Message;
-    history?: Message[];
+    history?: Message[] | undefined;
 };
 
 export class FeedbackService {
 
     public async generateFeedback(data: IFeedbackInput) {
-        return await this.generateImprovedVersion(data);
+        const updatedMessage = await this.generateImprovedVersion(data);
+
+        if (updatedMessage.improvedVersion) {
+            const mistakes = await this.generateMistakesForMessage(
+                data.message.text,
+                updatedMessage.improvedVersion
+            );
+            return { ...updatedMessage, mistakes };
+        }
+
+        return updatedMessage;
     };
 
     private async generateImprovedVersion(data: IFeedbackInput): Promise<Message> {
@@ -46,6 +57,53 @@ export class FeedbackService {
             {isCorrect: false, improvedVersion: validatedResponse} : 
             {isCorrect: true}
         )};
+    };
+
+    private async generateMistakesForMessage(
+        originalText: string,
+        improvedVersion: string
+    ): Promise<Mistake[]> {
+        const hasBrackets = /\[.+?\]/.test(improvedVersion);
+        if (!hasBrackets) return [];
+
+        const prompt = this.buildMistakesPrompt(originalText, improvedVersion);
+        const config = this.getConfig(0.1, MistakesSchema);
+
+        const rawResponse = await generateMistakes(prompt, config);
+        return this.validateMistakes(rawResponse);
+    };
+
+    private buildMistakesPrompt(originalText: string, improvedVersion: string) {
+        return `You are a language error classifier.
+
+            You are given a learner's original message and the same message with their mistakes marked in [square brackets].
+            For each bracketed mistake, return:
+            - "type": one of "grammar", "spelling", or "formulation"
+            - "explanation": one sentence explaining the mistake clearly
+
+            Return a JSON array with one entry per mistake, in the same order they appear.
+
+            Important:
+            - "grammar" = incorrect verb form, wrong tense, missing article, wrong preposition, subject-verb agreement, etc.
+            - "spelling" = misspelled word (e.g. "relly" instead of "really")
+            - "formulation" = awkward or unnatural phrasing that is grammatically acceptable but sounds wrong to a native speaker
+            - Keep explanations short and direct (one sentence max).
+
+            Original message: "${originalText}"
+            Message with marked mistakes: "${improvedVersion}"
+        `;
+    };
+
+    private validateMistakes(rawResponse?: string): Mistake[] {
+        if (!rawResponse) return [];
+
+        const jsonResponse = JSON.parse(rawResponse);
+        const validated = MistakesSchema.safeParse(jsonResponse);
+
+        if (!validated.success)
+            throw new Error("Response of mistakes is invalid.");
+
+        return validated.data;
     };
 
     private buildImprovedVersionPrompt(
@@ -85,7 +143,7 @@ export class FeedbackService {
             - The user is able to identify his/her mistakes and improve his/her speaking skills.
 
             Input:
-            Partner Message (context): ${history?.toString()}
+            Partner Message (context): ${JSON.stringify(history)}
 
             User message: ${userMessage.text}
         `;
@@ -98,7 +156,10 @@ export class FeedbackService {
         return {
             temperature,
             responseMimeType: "application/json",
-            responseJsonSchema: z.toJSONSchema(schema)
+            responseJsonSchema: z.toJSONSchema(schema),
+            thinkingConfig: {
+                thinkingBudget: 0
+            }
         }
     };
 

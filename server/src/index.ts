@@ -3,14 +3,31 @@ import { globalErrorHandler } from './middlewares/global-error-handler.js';
 import v1Router from './routes/index.js';
 import http from "http";
 import { initializeChatSocket } from './sockets/chat/chat-socket.js';
+import cors from "cors";
 
 export const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Last-resort guards: log instead of letting a stray error tear down
+// the process. Per-socket and per-request handlers should still catch
+// errors at their natural boundary first.
+process.on("uncaughtException", (err) => {
+  console.error("uncaughtException:", err);
+});
+process.on("unhandledRejection", (reason) => {
+  console.error("unhandledRejection:", reason);
+});
+
 // Create HTTP server
 export const server = http.createServer(app);
 
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  optionsSuccessStatus: 200 
+};
+
 app.use(express.json());
+app.use(cors(corsOptions));
 app.use("/api/v1", v1Router);
 
 // keep error handler as last use statement

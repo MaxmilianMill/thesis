@@ -1,6 +1,6 @@
 import type { GenerateContentConfig } from "@google/genai";
-import type { Chat } from "../../types/chat/chat.js";
-import type { Message } from "../../types/chat/message.js";
+import type { Chat } from "@thesis/types";
+import type { Message } from "@thesis/types";
 import z from "zod";
 import { TaskListUpdateSchema } from "./schemas/task-list-update.js";
 import { findCompletedTasks } from "../../repository/chat/task-list-repository.js";
@@ -17,7 +17,9 @@ export class TaskListUpdaterService {
         );
 
         const updatedTaskIds = this.validate(rawResponse);
-        return this.updateTasksInChat(updatedTaskIds, chat);
+        const updatedTaskList = this.updateTasksInChat(updatedTaskIds, chat);
+
+        return updatedTaskList;
     };
 
     private updateTasksInChat(taskIds: number[], chat: Chat) {
@@ -73,7 +75,10 @@ export class TaskListUpdaterService {
         return {
             temperature: 0.5,
             responseMimeType: "application/json",
-            responseJsonSchema: z.toJSONSchema(TaskListUpdateSchema)
+            responseJsonSchema: z.toJSONSchema(TaskListUpdateSchema),
+            thinkingConfig: {
+                thinkingBudget: 0
+            }
         }
     };
 }

@@ -1,0 +1,152 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+/* @import "shadcn/tailwind.css"; <-- You may not need this if you are using the v4 setup below, but leave it if your specific shadcn port requires it */
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/montserrat";
+
+@custom-variant dark (&:is(.dark *));
+
+/* 1. Tell Tailwind v4 how to build your utility classes */
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  /* THIS LINE fixes your specific build error */
+  --color-border: hsl(var(--border));
+  
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-warning: hsl(var(--warning));
+  --color-success: hsl(var(--success));
+  --color-info: hsl(var(--info));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+/* 2. Define your raw HSL values */
+@layer base {
+  :root {
+    --background: 215 100% 6%;
+    --foreground: 204 100% 94%;
+    --card: 207 100% 8%;
+    --card-foreground: 204 100% 94%;
+    --popover: 207 100% 8%;
+    --popover-foreground: 204 100% 94%;
+    --primary: 199 100% 55%;
+    --primary-foreground: 230 100% 5%;
+    --secondary: 30 99% 57%;
+    --secondary-foreground: 230 100% 5%;
+    --muted: 207 100% 8%;
+    --muted-foreground: 204 74% 68%;
+    --accent: 199 100% 24%;
+    --accent-foreground: 204 100% 94%;
+    --destructive: 7 89% 66%;
+    --destructive-foreground: 204 100% 94%;
+    --border: 202 100% 18%;
+    --input: 207 100% 15%;
+    --ring: 199 100% 55%;
+    --radius: 0.5rem;
+
+    --warning: 54 100% 25%;
+    --success: 162 100% 29%;
+    --info: 217 100% 69%;
+  }
+
+  .dark {
+    --background: 215 100% 6%;
+    --foreground: 204 100% 94%;
+    --card: 207 100% 8%;
+    --card-foreground: 204 100% 94%;
+    --popover: 207 100% 8%;
+    --popover-foreground: 204 100% 94%;
+    --primary: 199 100% 55%;
+    --primary-foreground: 230 100% 5%;
+    --secondary: 30 99% 57%;
+    --secondary-foreground: 230 100% 5%;
+    --muted: 207 100% 8%;
+    --muted-foreground: 204 74% 68%;
+    --accent: 199 100% 24%;
+    --accent-foreground: 204 100% 94%;
+    --destructive: 7 89% 66%;
+    --destructive-foreground: 204 100% 94%;
+    --border: 202 100% 18%;
+    --input: 207 100% 15%;
+    --ring: 199 100% 55%;
+
+    --warning: 54 100% 25%;
+    --success: 162 100% 29%;
+    --info: 217 100% 69%;
+  }
+}
+
+@keyframes expand-right {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+}
+
+.animate-expand-right {
+  animation: expand-right 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes wave-bar {
+  0%, 100% { transform: scaleY(0.25); }
+  50% { transform: scaleY(1); }
+}
+
+.tutor-markdown p { margin-bottom: 0.5rem; }
+.tutor-markdown p:last-child { margin-bottom: 0; }
+.tutor-markdown ul { list-style: disc; padding-left: 1.25rem; margin-bottom: 0.5rem; }
+.tutor-markdown ol { list-style: decimal; padding-left: 1.25rem; margin-bottom: 0.5rem; }
+.tutor-markdown li { margin-bottom: 0.25rem; }
+.tutor-markdown h1, .tutor-markdown h2, .tutor-markdown h3 { font-weight: 600; margin-bottom: 0.375rem; }
+.tutor-markdown h1 { font-size: 1rem; }
+.tutor-markdown h2 { font-size: 0.9375rem; }
+.tutor-markdown h3 { font-size: 0.875rem; }
+.tutor-markdown strong { font-weight: 600; }
+.tutor-markdown em { font-style: italic; }
+.tutor-markdown code { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 0.25rem; padding: 0.125rem 0.375rem; font-size: 0.8125rem; }
+.tutor-markdown pre { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 0.5rem; padding: 0.75rem; overflow-x: auto; margin-bottom: 0.5rem; }
+.tutor-markdown pre code { background: none; border: none; padding: 0; }
+.tutor-markdown table { width: 100%; border-collapse: collapse; margin-bottom: 0.5rem; font-size: 0.8125rem; }
+.tutor-markdown th, .tutor-markdown td { border: 1px solid hsl(var(--border)); padding: 0.375rem 0.625rem; text-align: left; }
+.tutor-markdown th { background: hsl(var(--card)); font-weight: 600; }
+
+/* 3. Apply the base utilities */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
