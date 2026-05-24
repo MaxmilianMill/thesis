@@ -7,6 +7,7 @@ import OverviewScreen from './pages/chat/Overview'
 import ChatScreen from './pages/chat/Chat';
 import SummaryScreen from './pages/summary/Summary';
 import ExpiredScreen from './pages/expired/ExpiredScreen';
+import ThankYouScreen from './pages/thankyou/ThankYouScreen';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 const router = createBrowserRouter([
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "/expired",
     element: <ExpiredScreen />,
+  },
+  {
+    path: "/thankyou",
+    element: <ThankYouScreen />,
   },
   {
     element: <ProtectedRoute />,

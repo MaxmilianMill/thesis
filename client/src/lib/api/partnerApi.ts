@@ -30,8 +30,7 @@ export const FEATURE_OPTIONS: Record<FeatureType, FeatureOption[]> = {
     { id: 'skin-light', label: 'Light', placeholderColor: '#F5CBA7' },
     { id: 'skin-medium', label: 'Medium', placeholderColor: '#D4A077' },
     { id: 'skin-tan', label: 'Tan', placeholderColor: '#C68642' },
-    { id: 'skin-dark', label: 'Dark', placeholderColor: '#8D5524' },
-    { id: 'skin-black', label: 'Black', placeholderColor: "#FFFFFF" }
+    { id: 'skin-dark', label: 'Dark', placeholderColor: '#8D5524' }
   ],
   hair: [
     { id: 'hair-turban', label: 'Turban', placeholderColor: '#9E9E9E' },

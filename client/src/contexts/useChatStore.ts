@@ -105,6 +105,7 @@ const useChatStore = create<ChatState>((set) => ({
             };
         }
         else {
+
             newHistory.push({
                 id: crypto.randomUUID(),
                 isUser: true,

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useAudioMessageStream } from "./useAudioStream";
 import type { Message, WSMessage } from "@thesis/types";
 import { useChatSelectors } from "@/contexts/useChatStore";
@@ -113,7 +113,7 @@ export const useMessageController = () => {
         return unsubscribe;
     }, [subscribe, playAudioChunk, appendUserStreamChunk, appendAIStreamChunk, resetAudioQueue, finalizeAITurn, addFeedback, updateTaskList, stop]);
 
-    // Audio recorder wiring — drop chunks instead of queuing them when offline
+    // Audio recorder wiring. Drop chunks instead of queuing them when offline
     useEffect(() => {
         const onInputAudio = (base64Audio: string) => {
             send({
@@ -139,7 +139,7 @@ export const useMessageController = () => {
         };
     }, [uid, chatId, audioRecorder, isRecording, connectionStatus, send]);
 
-    const toggleRecording = () => {
+    const toggleRecording = useCallback(() => {
         if (!connectionStatus) return;
 
         const nextRecording = !isRecording;
@@ -152,7 +152,8 @@ export const useMessageController = () => {
                 uid,
                 chatId,
                 type: "recording_start",
-                text: ""
+                text: "",
+                history: history
             } as WSMessage);
         } else {
             // avoid fight over audio profile
@@ -166,9 +167,9 @@ export const useMessageController = () => {
         }
 
         setIsRecording(nextRecording);
-    };
+    }, [connectionStatus, isRecording, initAudio, send, warmupAudio, history]);
 
-    const sendTextMessage = (text: string) => {
+    const sendTextMessage = useCallback((text: string) => {
         if (!text.trim()) return;
         initAudio();
 
@@ -185,19 +186,15 @@ export const useMessageController = () => {
 
         updateHistory(message);
 
-        const validHistory = history.filter(
-            (m) => typeof m.uid === 'string' && m.uid.length > 0 &&
-                   m.createdAt instanceof Date && !isNaN(m.createdAt.getTime())
-        );
-
         send({
             uid,
             chatId,
             type: "text",
             message,
-            history: validHistory.length > 0 ? validHistory : undefined,
+            // include current message explicitly — Zustand state hasn't flushed yet in this closure
+            history: [...history, message],
         } as WSMessage);
-    };
+    }, [history, updateHistory, warmupAudio, initAudio, send]);
 
     const sendHintUsed = (taskId: number) => {
         send({

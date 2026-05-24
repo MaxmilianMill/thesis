@@ -18,7 +18,8 @@ export const SummarySchema = z.object({
     uid: z.string(),
     chatId: z.string(),
     createdAt: z.date(),
-    wordCount: z.number()
+    wordCount: z.number(),
+    newFacts: z.array(z.string()).optional()
 });
 
 export type Summary = z.infer<typeof SummarySchema>;

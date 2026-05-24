@@ -1,0 +1,76 @@
+const languageName = this.userInfo.language.name;
+
+const mistakes = history
+    ?.filter(m => m.isUser && m.mistakes && m.mistakes.length > 0)
+    .flatMap(m => m.mistakes!)
+    .map(mk => `- [${mk.type}] ${mk.explanation}`)
+    .join("\n");
+
+const conversationHistory = history?.map((msg) => {
+    return `${msg.isUser ? "User" : "Assistant"}: ${msg.text}`
+}).join("\n");
+
+const recentMistakesBlock = mistakes
+    ? `## Recent Mistakes in This Conversation\n${mistakes}`
+    : "";
+
+const factsBlock = this.linguisticStore?.facts?.length
+    ? `## Weak Points to Watch (from prior sessions)\n${this.linguisticStore.facts.map(f => `- ${f}`).join("\n")}`
+    : "";
+
+const turnStrengthsBlock = this.linguisticStore?.strengths?.length
+    ? `## Confirmed Strengths (push above comfort zone here)\n${this.linguisticStore.strengths.map(s => `- ${s}`).join("\n")}`
+    : "";
+
+const scenarioBlock = chat.scenario?.aiDescription
+    ? `## Scenario\n${chat.scenario.aiDescription}`
+    : "";
+
+return `${scenarioBlock}
+
+    ## Progress
+    ${progressSummary}
+
+    ## Current Task — steer toward this, do NOT reveal it
+    ${currentTaskBlock}
+
+    ${upcomingTasksBlock ? `## Upcoming Tasks — be aware, do NOT address yet\n${upcomingTasksBlock}` : ""}
+
+    ${recentMistakesBlock}
+
+    ${factsBlock}
+
+    ${turnStrengthsBlock}
+
+    ## Conversation history
+    ${conversationHistory}
+
+    ## Current User Message
+    ${this.formatUserMessage(isAudio, message)}
+
+    ## Active Correction Check
+    Review the user's latest message against the "Recent Mistakes" and "Weak Points" provided above.
+    ACTION REQUIRED:
+    - If the user made a MAJOR error that they have made before, start your response with ONE English sentence: "I noticed you often [mention the pattern]. Here is the trick: [explanation]." 
+    - If it's a new MAJOR error, explain it in English in ONE sentence.
+    - After the English tip, immediately switch back to ${languageName} to continue the scenario.
+    - If there are no major errors, ignore minor ones and reply entirely in ${languageName}.
+
+    Respond now as the conversation partner. Speak naturally — your reply will be spoken aloud, so no markdown and no bullet points.`;
+
+    ____________________________________________________________________________________________________________________________
+
+    <TaskUpdates>
+    ## Progress
+    ${progressSummary}
+
+    ## Current Task — steer toward this, do NOT reveal it
+    ${currentTaskBlock}
+
+    ${upcomingTasksBlock ? `## Upcoming Tasks — be aware, do NOT address yet\n${upcomingTasksBlock}` : ""}
+    </TaskUpdates>
+
+    <Context>
+    ## Current User Message
+    ${this.formatUserMessage(isAudio, message)}
+    </Context>

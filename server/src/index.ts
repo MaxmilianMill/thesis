@@ -22,7 +22,7 @@ process.on("unhandledRejection", (reason) => {
 export const server = http.createServer(app);
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
   optionsSuccessStatus: 200 
 };
 

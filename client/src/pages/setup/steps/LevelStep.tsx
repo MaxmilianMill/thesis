@@ -91,7 +91,7 @@ export function LevelStep({ selectedLevel, onSelect }: LevelStepProps) {
             subtitle={subtitle}
             canDo={canDo}
             isSelected={selectedLevel?.code === code}
-            onSelect={() => onSelect({ name, code })}
+            onSelect={() => onSelect({ name, code } as Level)}
           />
         ))}
       </div>

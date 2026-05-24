@@ -1,8 +1,10 @@
 import z from "zod";
 
 export const LinguisticStoreAIGenerationSchema = z.object({
-    facts: z.array(z.string()).describe("Array of factual details representing the lingiustic state of the user, f.e. his weak points."),
-    summary: z.string().describe("Linguistic summary of the user")
+    facts: z.array(z.string()).describe("Array of specific, evidence-based weak points and recurring error patterns with concrete examples."),
+    strengths: z.array(z.string()).default([]).describe("Array of specific linguistic areas the learner consistently handles well, with examples. Used to calibrate challenge level."),
+    summary: z.string().describe("Concise narrative of the learner's overall linguistic state — level, personality, key strengths and weaknesses."),
+    progressNotes: z.string().default("").describe("Trajectory analysis: which weak points are improving, which are fossilizing, and any newly observed patterns from this session.")
 });
 
 export const LinguisticStoreSchema = z.object({

@@ -54,7 +54,7 @@ export class ChatSession {
                     history: data.history
                 };
 
-                this.ai?.handleRecordingStart(this.chat, data.history);
+                this.ai?.handleRecordingStart(this.chat, data.history as Message[]);
                 return;
             }
 
@@ -74,7 +74,7 @@ export class ChatSession {
                     message: data.message,
                     history: data.history
                 };
-                this.ai?.handleSendTextMessage(this.chat, data.message, data.history);
+                this.ai?.handleSendTextMessage(this.chat, data.message, data.history as Message[]);
                 return;
             }
 
@@ -184,7 +184,7 @@ export class ChatSession {
                         userInfo: this.userInfo,
                         chat: this.chat,
                         message: userMessage,
-                        history: turnSnapshot.history
+                        history: turnSnapshot.history as Message[]
                     }),
                     this.taskListUpdaterService
                     .update(userMessage, this.chat)

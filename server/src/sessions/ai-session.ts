@@ -5,7 +5,7 @@ import type { Chat } from "@thesis/types";
 import type { Message } from "@thesis/types";
 import { log } from "../services/logger/activity-logger-service.js";
 
-const AI_WS_URL = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?key=${process.env.GEMINI_API_KEY}`;
+const AI_WS_URL = `${process.env.AI_WEBSOCKET_URL}?key=${process.env.GEMINI_API_KEY}`;
 
 export class AISession extends EventEmitter {
 

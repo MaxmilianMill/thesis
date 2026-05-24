@@ -1,12 +1,11 @@
 import type { GenerateContentConfig } from "@google/genai";
-import { LinguisticStoreAIGenerationSchema, LinguisticStoreSchema, type LinguisticStore, type Message, type TutorResponse, type UserInfo, type WithStatus } from "@thesis/types";
+import { LinguisticStoreAIGenerationSchema, type LinguisticStore, type Message, type TutorResponse, type UserInfo, type WithStatus } from "@thesis/types";
 import { getInfoData } from "../../repository/setup/info-repository.js";
 import { generateLinguisticAnalysis, getLinguisticStore, saveOrUpdateLinguisticStore } from "../../repository/linguistics/linguistic-store-repository.js";
 import { getChatMessages } from "../../repository/chat/message-repository.js";
 import z from "zod";
 import { log } from "../logger/activity-logger-service.js";
 import { getTutorAnswers } from "../../repository/chat/tutor-repository.js";
-import { validateSchema } from "../../utils/validate-schema.js";
 
 interface IUpdateStateInput {
     uid: string;
@@ -15,7 +14,7 @@ interface IUpdateStateInput {
 
 export class LinguisticStateService {
 
-    async update(data: IUpdateStateInput): Promise<WithStatus<"store", LinguisticStore>> {
+    async update(data: IUpdateStateInput): Promise<WithStatus<"store", LinguisticStore> & { newFacts: string[] }> {
 
         const {uid, chatId} = data;
         const [
@@ -30,6 +29,8 @@ export class LinguisticStateService {
             getLinguisticStore(uid),
             getTutorAnswers(uid)
         ]);
+
+        const oldFacts = linguisticStore.store?.facts ?? [];
 
         const prompt = this.buildPrompt(
             userInfo.userInfo,
@@ -55,6 +56,8 @@ export class LinguisticStateService {
             uid, chatId ?? "", validatedResponse
         );
 
+        const newFacts = savedStore.store.facts.filter(f => !oldFacts.includes(f));
+
         log({
             action: "linguistic_store_updated",
             status: "success",
@@ -66,14 +69,14 @@ export class LinguisticStateService {
 
         console.log(savedStore.store);
 
-        return savedStore;
+        return { ...savedStore, newFacts };
     }
 
-    public async get(uid: string) {
+    public async get(uid: string): Promise<LinguisticStore | null> {
 
-        const linguisticStore = await getLinguisticStore(uid);
+        const { store } = await getLinguisticStore(uid);
 
-        return validateSchema(linguisticStore.store, LinguisticStoreSchema);
+        return store ?? null;
     };
 
     private buildPrompt(
@@ -109,6 +112,10 @@ export class LinguisticStateService {
             ? linguisticStore.facts.map((f, i) => `${i + 1}. ${f}`).join("\n")
             : "No existing facts.";
 
+        const existingStrengths = linguisticStore && linguisticStore.strengths?.length > 0
+            ? linguisticStore.strengths.map((s, i) => `${i + 1}. ${s}`).join("\n")
+            : "No existing strengths.";
+
         return `You are an expert language coach maintaining a precise, up-to-date linguistic profile for a language learner.
             ## Learner Profile
             - Name: ${userInfo.name ?? "Unknown"}
@@ -122,8 +129,14 @@ export class LinguisticStateService {
             ### Summary
             ${linguisticStore?.summary || "No summary yet."}
 
-            ### Known Facts (weak points, patterns, tendencies)
+            ### Known Facts (weak points, recurring errors)
             ${existingFacts}
+
+            ### Known Strengths (areas the learner handles well)
+            ${existingStrengths}
+
+            ### Progress Notes
+            ${linguisticStore?.progressNotes || "No progress notes yet."}
 
             ## New Conversation Data
             ### Conversation
@@ -136,24 +149,30 @@ export class LinguisticStateService {
             ${correctionBlock}
 
             ## Your Task
-            Update the linguistic store based on the new conversation. Apply these rules strictly:
+            Update the full linguistic store based on the new conversation. Apply these rules strictly:
 
-            **Adding facts:**
+            **facts — weak points and recurring errors:**
             - Add a new fact only if it reveals a clear, specific linguistic pattern (e.g. "Confuses 'since' and 'for' with present perfect" — not "makes grammar mistakes").
-            - A pattern requires at least one concrete example from this or prior sessions. Be specific.
-            - Distinguish mistake types: grammar, vocabulary choice, word order, register, formulation.
+            - A pattern requires at least one concrete example. Be specific. Distinguish mistake types: grammar, vocabulary choice, word order, register, fluency.
+            - Remove a fact if the user showed clear improvement (the error did not recur and corrections were fluent in that area).
+            - Update a fact to be more precise if you have a better characterization. Merge overlapping facts into one sharper statement.
 
-            **Removing or updating facts:**
-            - Remove a fact if the user showed clear improvement in this area (i.e. the mistake did not recur and corrected versions are fluent in that area).
-            - Update a fact to be more precise if you have a better characterization now.
-            - Never keep vague or redundant facts. Merge overlapping facts into one sharper statement.
+            **strengths — what the learner does well:**
+            - Add a strength only if the learner consistently demonstrated correct, fluent usage in that area with no errors across multiple turns.
+            - Be specific and include an example (e.g. "Uses subjunctive correctly in hypothetical clauses: 'si tuviera más tiempo'").
+            - Remove a strength if errors in that area reappeared in this session.
 
-            **Summary:**
-            - Write a concise paragraph (3–6 sentences) describing the user's current linguistic state.
-            - Mention their strongest areas, their most persistent weak points, and the trajectory (improving / plateauing / newly emerging issues).
-            - Tailor the language to be useful for an AI conversation partner that will adapt its responses to help this specific learner.
+            **summary:**
+            - Write a concise paragraph (3–6 sentences) describing the learner's current linguistic state.
+            - Cover their CEFR-relevant fluency, their most reliable strengths, their most persistent weak points, and overall communicative effectiveness.
+            - Tailor the language to be useful for an AI conversation partner adapting to this specific learner.
 
-            Return the updated \`facts\` array and \`summary\`. The facts array should contain highly relevant, specific, actionable insights. Remove anything that is no longer accurate.`;
+            **progressNotes:**
+            - Write 2–4 sentences describing the learner's trajectory.
+            - Identify: (1) weak points that are clearly improving (fewer recurrences, better self-correction), (2) weak points that are fossilizing (persisting despite prior corrections), (3) any newly observed patterns from this session.
+            - Be concrete: reference specific error types, not vague categories.
+
+            Return the updated \`facts\`, \`strengths\`, \`summary\`, and \`progressNotes\`. All arrays should contain highly relevant, specific, actionable insights. Remove anything that is no longer accurate.`;
     }
 
     private getConfig(): GenerateContentConfig {

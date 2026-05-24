@@ -44,7 +44,7 @@ export class ChatController {
         const { uid } = req.authToken;
         const { chatId } = req.params;
 
-        const { chat } = await this.chatService.get(uid, chatId);
+        const { chat } = await this.chatService.get(uid, chatId as string);
 
         if (!chat) return res.status(404).json({ error: "Chat not found" });
 

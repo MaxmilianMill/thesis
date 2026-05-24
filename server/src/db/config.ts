@@ -12,7 +12,6 @@ export async function connectDB() {
   const uri = process.env.MONGODB_URI || "";
   const dbName = process.env.MONGODB_NAME || "";
 
-  console.log("URI ", uri);
   console.log("DB NAME ", dbName);
   
   try {

@@ -25,7 +25,7 @@ export function FeatureOptionCell({ option, isSelected, onSelect }: FeatureOptio
         className="w-full aspect-square rounded-lg object-cover"
       />
       <span className="text-xs text-muted-foreground truncate w-full text-center leading-tight">
-        {option.label}
+        {!option.id.startsWith("skin") &&  option.label}
       </span>
     </button>
   );

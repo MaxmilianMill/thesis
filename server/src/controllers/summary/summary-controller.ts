@@ -25,10 +25,14 @@ export class SummaryController {
             uid, chatId, history
         });
 
-        console.log(condition);
-        // update the linguistic store only on the warm up chat
-        if (condition === "warmup") this.linguisticStoreService.update({uid, chatId});
-        
+        let newFacts: string[] = [];
+        // update the linguistic store only on the warm up chat — await so the store
+        // is ready before the user navigates into the next chat session
+        if (condition === "warmup") {
+            const storeResult = await this.linguisticStoreService.update({uid, chatId});
+            newFacts = storeResult.newFacts;
+        }
+
         log({
             uid,
             action: "summary_generated",
@@ -38,6 +42,6 @@ export class SummaryController {
             }
         });
 
-        return res.status(status).json(summary);
+        return res.status(status).json({ ...summary, newFacts });
     }
 };
