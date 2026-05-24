@@ -1,0 +1,72 @@
+# Cloud Build pipeline — run from monorepo root:
+#   gcloud builds submit --config cloudbuild.yaml .
+#
+# Prerequisites (one-time setup):
+#   gcloud artifacts repositories create thesis-repo \
+#     --repository-format=docker --location=europe-west1
+#   gcloud secrets create MONGODB_URI --data-file=-   <<< "your-uri"
+#   gcloud secrets create JWT_SECRET --data-file=-    <<< "your-secret"
+#   gcloud secrets create GEMINI_API_KEY --data-file=- <<< "your-key"
+#
+# Substitutions you can override on the command line:
+#   --substitutions=_REGION=europe-west1,_SERVICE=thesis-server,...
+substitutions:
+  _REGION: europe-west1
+  _SERVICE: thesis-server
+  _REPO: thesis-repo
+  _MONGODB_NAME: master-thesis
+  # Set this to your Vercel URL after first deploy, e.g. https://your-app.vercel.app
+  _CORS_ORIGIN: https://PLACEHOLDER.vercel.app
+
+steps:
+  # ── Step 1: Build Docker image ──────────────────────────────────────────────
+  - id: Build
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - europe-west1-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA
+      - -t
+      - europe-west1-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:latest
+      - -f
+      - server/Dockerfile
+      - .
+
+  # ── Step 2: Push both tags ───────────────────────────────────────────────────
+  - id: Push
+    name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - --all-tags
+      - europe-west1-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}
+    waitFor: [Build]
+
+  # ── Step 3: Deploy to Cloud Run ─────────────────────────────────────────────
+  - id: Deploy
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - ${_SERVICE}
+      - --image=europe-west1-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA
+      - --region=${_REGION}
+      - --platform=managed
+      - --allow-unauthenticated
+      - --port=8080
+      - --timeout=3600
+      - --min-instances=0
+      - --max-instances=1
+      - --memory=512Mi
+      - --cpu=1
+      - --update-secrets=MONGODB_URI=MONGODB_URI:latest,JWT_SECRET=JWT_SECRET:latest,GEMINI_API_KEY=GEMINI_API_KEY:latest
+      - --set-env-vars=NODE_ENV=production,MONGODB_NAME=${_MONGODB_NAME},CORS_ORIGIN=${_CORS_ORIGIN}
+    waitFor: [Push]
+
+images:
+  - europe-west1-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA
+  - europe-west1-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:latest
+
+options:
+  machineType: E2_HIGHCPU_8
+  logging: CLOUD_LOGGING_ONLY
