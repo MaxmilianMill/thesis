@@ -1,7 +1,7 @@
 {
     "buildCommand": "npm run build --workspace=packages/types && npm run build --workspace=client",
     "outputDirectory": "client/dist",
-    "installCommand": "npm install",
+    "installCommand": "npm install --include=optional",
     "framework": null,
     "rewrites": [
         { "source": "/((?!api/).*)", "destination": "/index.html" }
