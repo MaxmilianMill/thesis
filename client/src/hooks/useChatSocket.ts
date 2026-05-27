@@ -54,8 +54,7 @@ export function useChatSocket({ uid, chatId }: UseChatSocketArgs) {
             if (isUnmountingRef.current || giveUpRef.current) return;
 
             const SERVER_URL = import.meta.env.VITE_WS_SERVER_URL;
-            const baseUrl = SERVER_URL ?? window.location.protocol === "https" ? 
-                "wss://localhost:3000/ws/chat" : "ws://localhost:3000/ws/chat";
+            const baseUrl = SERVER_URL ?? "ws://localhost:3000/ws/chat";
 
             const ws = new WebSocket(
                 `${baseUrl}?uid=${uid}&chatId=${chatId}`
