@@ -10,7 +10,7 @@ export async function connectDB() {
   if (dbInstance) return;
 
   const uri = process.env.MONGODB_URI || "";
-  const dbName = process.env.NODE_ENV === 'development' ? 
+  const dbName = process.env.NODE_ENV === 'DEV' ? 
     process.env.MONGODB_NAME_TEST : process.env.MONGODB_NAME;
 
   console.log("DB NAME ", dbName);
