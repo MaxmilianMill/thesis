@@ -39,7 +39,7 @@ app.get('/', (req: Request, res: Response) => {
 
 server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
-  console.log(`WebSocket available at ws://localhost:${PORT}/ws/chat`);
+  console.log(`WebSocket available at wss://localhost:${PORT}/ws/chat`);
 
   try {
     initializeChatSocket(server);
