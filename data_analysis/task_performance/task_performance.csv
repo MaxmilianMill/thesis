@@ -1,0 +1,5 @@
+Metric;Mean Control (SD);Mean Experiment (SD);Shapiro p;Method;Test Stat;p-value;Effect Size;Carry-Over p
+Task Success Rate (%);87.14 (28.15);93.57 (9.80);0.000;Non-Parametric (Wilcoxon)*;W = 10.0;.547;r = 0.29;.533
+Message Length (Words);6.04 (2.61);4.94 (1.67);0.113;Parametric (t-test);t(19) = -2.18;.042;dz = 0.50;.033
+Session Duration (Min);5.79 (2.60);6.71 (4.02);0.003;Non-Parametric (Wilcoxon)*;W = 80.0;.368;r = 0.24;.313
+Assistance Score (SANS);2.30 (3.37);3.25 (4.51);0.001;Non-Parametric (Wilcoxon)*;W = 13.5;.166;r = 0.51;.113
