@@ -1,0 +1,10 @@
+Category;Total (N);Neutral Votes;Experiment Votes;Control Votes;Decided (n);Binomial p;Carry-Over p
+overall_preference;20;1 (5%);10 (50%);9 (45%);19;1.000;.656
+more_efficient;20;7 (35%);8 (40%);5 (25%);13;.581;.293
+less_frustrating;20;5 (25%);8 (40%);7 (35%);15;1.000;1.000
+more_level_adapted;20;12 (60%);4 (20%);4 (20%);8;1.000;.486
+more_task_adapted;20;8 (40%);6 (30%);6 (30%);12;1.000;1.000
+better_mistake_handling;20;8 (40%);7 (35%);5 (25%);12;.774;.242
+more_productive;20;5 (25%);7 (35%);8 (40%);15;1.000;1.000
+more_confident;20;6 (30%);5 (25%);9 (45%);14;.424;.580
+experiment_guess;20;3 (15%);10 (50%);7 (35%);17;.629;.622
