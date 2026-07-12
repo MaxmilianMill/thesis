@@ -1,0 +1,32 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: "8080"
+      NODE_ENV: production
+      MONGODB_URI: ${MONGODB_URI}
+      MONGODB_NAME: ${MONGODB_NAME}
+      MONGODB_NAME_TEST: ${MONGODB_NAME_TEST}
+      JWT_SECRET: ${JWT_SECRET}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      AI_WEBSOCKET_URL: ${AI_WEBSOCKET_URL}
+      # Must match the host port the client is served on
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+      args:
+        # These are baked into the JS bundle at build time.
+        # They must be URLs that the *browser* can reach, not Docker-internal hostnames.
+        VITE_SERVER_URL: ${VITE_SERVER_URL:-http://localhost:8080/api/v1}
+        VITE_WS_SERVER_URL: ${VITE_WS_SERVER_URL:-ws://localhost:8080/ws/chat}
+    ports:
+      - "5173:80"
+    depends_on:
+      - server
