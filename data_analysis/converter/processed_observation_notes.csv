@@ -1,0 +1,607 @@
+﻿participant_id,start,end,text,speaker,source_type,main_phase,sub_phase
+1,0,0,Language level are clean,Speaker 1,Observation Note,Pre-Phase / General,
+1,0,0,Struggles: Which things do I select,Speaker 1,Observation Note,Pre-Phase / General,
+1,0,0,Makes bullet points in text field,Speaker 1,Observation Note,Pre-Phase / General,
+1,0,0,Nice to have the record button,Speaker 1,Observation Note,Warmup,
+1,0,0,Uses tutor if being lost,Speaker 1,Observation Note,Warmup,
+1,0,0,Was looking a bit to get out of tutor mode,Speaker 1,Observation Note,Warmup,
+1,0,0,Tends to ask the tutor as a quick fix for uncertain situations,Speaker 1,Observation Note,Warmup,
+1,0,0,Has the impression that AI is bad at referencing past messages,Speaker 1,Observation Note,Warmup,
+1,0,0,Tutor references the wrong message  P. tried to just copy and paste the message,Speaker 1,Observation Note,Warmup,
+1,0,0,"Likes the tutor, also the format",Speaker 1,Observation Note,Warmup,
+1,0,0,Uses tutor very intensely,Speaker 1,Observation Note,Warmup,
+1,0,0,"Asks questions about pronunciation, which the ai can’t answer in audio",Speaker 1,Observation Note,Warmup,
+1,0,0,Has difficulties to do it without the hints,Speaker 1,Observation Note,Warmup,
+1,0,0,"AI misunderstood P. but he thought, that he mispronounced it",Speaker 1,Observation Note,Warmup,
+1,0,0,Really likes the hint function,Speaker 1,Observation Note,Warmup,Partner explained something in Spanish instead of English
+1,0,0,"Does not understand the red highlight, what the mistake was",Speaker 1,Observation Note,Warmup,Partner explained something in Spanish instead of English
+1,0,0,Really likes that its spoken audio and that there are explanations in the partner message,Speaker 1,Observation Note,Warmup,Partner explained something in Spanish instead of English
+1,0,0,Tried to do it intuitively,Speaker 1,Observation Note,Warmup,Think Aloud
+1,0,0,Overread that he has to do the task,Speaker 1,Observation Note,Warmup,Think Aloud
+1,0,0,Doesn’t know how fast he could do it without the hint,Speaker 1,Observation Note,Warmup,Think Aloud
+1,0,0,"When realizing there are hints, switched from tutor to using hints  Were really good",Speaker 1,Observation Note,Warmup,Think Aloud
+1,0,0,Got into it after a few messages,Speaker 1,Observation Note,Warmup,Think Aloud
+1,0,0,"Felt good: Corrections were woven into the responses, felt like he was learning with a partner",Speaker 1,Observation Note,Warmup,Think Aloud
+1,0,0,Tried to give it his own touch,Speaker 1,Observation Note,Warmup,Think Aloud
+1,0,0,Thought app crashed because of loading animation,Speaker 1,Observation Note,Warmup,Summary
+1,0,0,Like the cite,Speaker 1,Observation Note,Warmup,Summary
+1,0,0,Aha moment with musica,Speaker 1,Observation Note,Warmup,Summary
+1,0,0,Looking for option to save the feedback,Speaker 1,Observation Note,Warmup,Summary
+1,0,0,Vocabulary very practical,Speaker 1,Observation Note,Warmup,Summary
+1,0,0,Feels like the summary items are saved in the app,Speaker 1,Observation Note,Warmup,Summary
+1,0,0,Good in general,Speaker 1,Observation Note,Warmup,Summary
+1,0,0,"But reading the updates feels a bit frustrating to see, because it lists so many weak points",Speaker 1,Observation Note,Warmup,Summary
+1,0,0,"Wanted to check the hint, but oversaw that now it’s the solution",Speaker 1,Observation Note,Chat 1,
+1,0,0,Tends to use the hint when unsure,Speaker 1,Observation Note,Chat 1,
+1,0,0,"Ai skipped one task, then the AI continued but was confused",Speaker 1,Observation Note,Chat 1,
+1,0,0,Tends to use only the hint/solution without adding extra content,Speaker 1,Observation Note,Chat 1,
+1,0,0,Reads the summary very carefully,Speaker 1,Observation Note,Chat 1,Summary
+1,0,0,Connection issue in the beginning of the convo,Speaker 1,Observation Note,Chat 2,
+1,0,0,Got a personalized explanation,Speaker 1,Observation Note,Chat 2,"Partner made a joke, P. had to laugh"
+1,0,0,Reconnection error,Speaker 1,Observation Note,Chat 2,"Partner made a joke, P. had to laugh"
+1,0,0,For abblino:,Speaker 1,Observation Note,Chat 2,"Partner made a joke, P. had to laugh"
+1,0,0,Always have pronunciation option for all messages,Speaker 1,Observation Note,Chat 2,"Partner made a joke, P. had to laugh"
+1,0,0,Hint feature,Speaker 1,Observation Note,Chat 2,"Partner made a joke, P. had to laugh"
+1,0,0,Offer a translation of the messages,Speaker 1,Observation Note,Chat 2,"Partner made a joke, P. had to laugh"
+2,0,0,Likes the design,Speaker 1,Observation Note,Onboarding,
+2,0,0,Lots of text @level,Speaker 1,Observation Note,Onboarding,
+2,0,0,Likes the progress bar,Speaker 1,Observation Note,Onboarding,
+2,0,0,Likes that the app asks his struggles,Speaker 1,Observation Note,Onboarding,
+2,0,0,Likes that its an age range,Speaker 1,Observation Note,Onboarding,
+2,0,0,Likes the partner customization,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Taps on play button but no sound,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Warm-up:,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Audio understanding had difficulties from background noise,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Wanted to use text input,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,"Would be nice to still see tutor responds in normal chat, otherwise you have to memorize what he said",Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Would be nice to have voice input in the tutor mode,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Common flow: Partner response  Ask tutor how to respond  Say answer,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Noticed that the speech recognition continue when toggling tutor mode,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Can’t scroll up the chat  Bad UX,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Voice sounds very natural  Likes it very much,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Asks if he can see the mistake explanations in the chat,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Speech recognition works really well,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Retrospective:,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Intuitive,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,But felt like he was lacking Spanish skills,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Couldn’t see tutor message when answering so it was a bit overwhelming,Speaker 1,Observation Note,Onboarding,Partner
+2,0,0,Likes the quote,Speaker 1,Observation Note,Onboarding,Summary
+2,0,0,Make the tab structure more visible  Was not clear that you can toggle,Speaker 1,Observation Note,Onboarding,Summary
+2,0,0,Likes that he remembers/gave a short summary,Speaker 1,Observation Note,Onboarding,Summary
+2,0,0,Finds it cool that you can see the updates and that he feels like the partner memorizes stuff about him,Speaker 1,Observation Note,Onboarding,Summary
+2,0,0,Important: Thought that there were 10 tasks in the menu,Speaker 1,Observation Note,Onboarding,Summary
+2,0,0,Likes that the tutor used his name,Speaker 1,Observation Note,Chat 1,
+2,0,0,Finds it very motivating that the STT is very accurate and high performance,Speaker 1,Observation Note,Chat 1,
+2,0,0,Would be nice to see what the tutor recommended to say,Speaker 1,Observation Note,Chat 1,Partner sometimes gives the tutor tip in Spanish instead of English  Then P. uses the tutor to ask what he said
+2,0,0,Noticed the task list view only by accident  Is not obvious,Speaker 1,Observation Note,Chat 1,Partner tends to say Moritz in every message
+2,0,0,Tends to open the hint/solution while recording the audio to read from the hints,Speaker 1,Observation Note,Chat 2,
+2,0,0,Says he really likes it and feels like he makes progress,Speaker 1,Observation Note,Chat 2,
+2,0,0,Doesn’t make so many mistakes because he uses the hints/tutor mode,Speaker 1,Observation Note,Chat 2,Partner gave an in depth correction
+3,0,0,Asks if the level is what she has on paper or how she would rate herself now,Speaker 1,Observation Note,Onboarding,
+3,0,0,Creates someone that looks like her,Speaker 1,Observation Note,Onboarding,Partner
+3,0,0,Reconnecting issue,Speaker 1,Observation Note,Warmup,
+3,0,0,Is unsure if she has to press to record,Speaker 1,Observation Note,Warmup,
+3,0,0,"Very fast answer, was almost shocked",Speaker 1,Observation Note,Warmup,
+3,0,0,Voice sounded very natural and fluent,Speaker 1,Observation Note,Warmup,
+3,0,0,Did not recognize that she solved the task,Speaker 1,Observation Note,Warmup,
+3,0,0,"Really liked that the partner corrected her, meta cognitively",Speaker 1,Observation Note,Warmup,Partner showed hole context
+3,0,0,Giving alternatives and the use case for them,Speaker 1,Observation Note,Warmup,Partner showed hole context
+3,0,0,The immediate answer was very helpful,Speaker 1,Observation Note,Warmup,Partner showed hole context
+3,0,0,Really liked the text highlights,Speaker 1,Observation Note,Warmup,Partner showed hole context
+3,0,0,What does words learned mean,Speaker 1,Observation Note,Warmup,Summary
+3,0,0,Likes the vocabulary list,Speaker 1,Observation Note,Warmup,Summary
+3,0,0,Very clean and structured,Speaker 1,Observation Note,Warmup,Summary
+3,0,0,Likes that the mistakes are explained,Speaker 1,Observation Note,Warmup,Summary
+3,0,0,Memory:,Speaker 1,Observation Note,Warmup,Summary
+3,0,0,Feels like its notes,Speaker 1,Observation Note,Warmup,Summary
+3,0,0,"Likes that its structured and that its too much text, not overwhelming",Speaker 1,Observation Note,Warmup,Summary
+3,0,0,Looks at task list carefully,Speaker 1,Observation Note,Chat 1,
+3,0,0,Did not recognize the second task/didn’t do the task,Speaker 1,Observation Note,Chat 1,
+3,0,0,Maybe task list is too subtle?,Speaker 1,Observation Note,Chat 1,
+3,0,0,Tends to immerse in the chat instead of following the task list strictly,Speaker 1,Observation Note,Chat 2,
+3,0,0,Did not complete all tasks then tries to do them after saying goodbye,Speaker 1,Observation Note,Chat 2,
+4,0,0,"Skin color: Finds it strange to select skin color, because she doesn’t care",Speaker 1,Observation Note,Onboarding,
+4,0,0,Seemed a bit confused,Speaker 1,Observation Note,Onboarding,
+4,0,0,Tries to click the voice button at the voice input,Speaker 1,Observation Note,Onboarding,
+4,0,0,Name: SpansihBuddy: Says its very uncreative,Speaker 1,Observation Note,Onboarding,
+4,0,0,Warm-Up:,Speaker 1,Observation Note,Onboarding,
+4,0,0,Tries help immediately,Speaker 1,Observation Note,Onboarding,
+4,0,0,Asks the tutor for approval of what she want to say,Speaker 1,Observation Note,Onboarding,
+4,0,0,Cannot find the way to go back to from help,Speaker 1,Observation Note,Onboarding,
+4,0,0,Doesn’t understand something  Then goes to tutor,Speaker 1,Observation Note,Onboarding,
+4,0,0,Is confused if she has to follow the conversation OR follow the task,Speaker 1,Observation Note,Onboarding,
+4,0,0,Sometimes it might be confusing or two different goals,Speaker 1,Observation Note,Onboarding,
+4,0,0,Feel like the AI doesn’t get everything correctly  Issues with STT,Speaker 1,Observation Note,Onboarding,
+4,0,0,AI spoke too fast  Especially because she is a bigger,Speaker 1,Observation Note,Onboarding,Summary very long loading time
+4,0,0,Would prefer to have shorter scenarios,Speaker 1,Observation Note,Onboarding,Summary very long loading time
+4,0,0,Was lost what to do,Speaker 1,Observation Note,Onboarding,Summary very long loading time
+4,0,0,But really liked the feedback in the response,Speaker 1,Observation Note,Onboarding,Summary very long loading time
+4,0,0,Overlooked the other tabs,Speaker 1,Observation Note,Onboarding,Summary very long loading time
+4,0,0,Good,Speaker 1,Observation Note,Onboarding,Summary
+4,0,0,Felt like the facts are correct,Speaker 1,Observation Note,Onboarding,Summary
+4,0,0,Most important: To know what to work on,Speaker 1,Observation Note,Onboarding,Summary
+4,0,0,Goes to tutor and asks for a word translation,Speaker 1,Observation Note,Chat 1,
+4,0,0,Speech recognition has trouble to recognize the speech sometimes like misunderstands words,Speaker 1,Observation Note,Chat 1,
+4,0,0,Later starts recording and then opens the hint to see it and read from it directly,Speaker 1,Observation Note,Chat 1,
+4,0,0,Noticed that the messages disappear like chat history is not long enough,Speaker 1,Observation Note,Chat 1,Partner switched to English for the second part of the reply
+4,0,0,Misunderstands participant,Speaker 1,Observation Note,Chat 2,
+4,0,0,Then tends to take the hint instead of trying on their own again,Speaker 1,Observation Note,Chat 2,
+4,0,0,Uses copy paste to get the translation of a partner message,Speaker 1,Observation Note,Chat 2,
+4,0,0,Tends to just take the hints and makes no mistakes/very few,Speaker 1,Observation Note,Chat 2,
+5,0,0,Likes the partner customization,Speaker 1,Observation Note,Onboarding,
+5,0,0,Names the partner like herself,Speaker 1,Observation Note,Onboarding,Partner
+5,0,0,Oversaw the name field for a moment,Speaker 1,Observation Note,Onboarding,Partner
+5,0,0,Likes design  Calming color,Speaker 1,Observation Note,Warmup,
+5,0,0,Also likes the structure,Speaker 1,Observation Note,Warmup,
+5,0,0,Starts talking without pressing to record,Speaker 1,Observation Note,Warmup,
+5,0,0,Got a correction in the first scenario,Speaker 1,Observation Note,Warmup,
+5,0,0,Sometimes confused from the transcripts,Speaker 1,Observation Note,Warmup,
+5,0,0,Did not got what she actually said,Speaker 1,Observation Note,Warmup,
+5,0,0,Tasks  The ones she didn’t finish she just redo after the partner said adios,Speaker 1,Observation Note,Warmup,
+5,0,0,Later the transcripts were correct but in the beginning not,Speaker 1,Observation Note,Warmup,
+5,0,0,Transcript are helpful,Speaker 1,Observation Note,Warmup,
+5,0,0,Likes that she gives explanations/correction immediately,Speaker 1,Observation Note,Warmup,
+5,0,0,"Would be helpful  Emphasize that the current task is not done, before flowing to the next one, like actively nudging the user to do the current task before continuing",Speaker 1,Observation Note,Warmup,
+5,0,0,Cool,Speaker 1,Observation Note,Warmup,Summary
+5,0,0,Likes the word count and the quote,Speaker 1,Observation Note,Warmup,Summary
+5,0,0,Words learned really cool,Speaker 1,Observation Note,Warmup,Summary
+5,0,0,Likes the recommendations,Speaker 1,Observation Note,Warmup,Summary
+5,0,0,Does not see the tabs with other info,Speaker 1,Observation Note,Warmup,Summary
+5,0,0,For the recommendations: Have a see more button to see a detailed description,Speaker 1,Observation Note,Warmup,Summary
+5,0,0,Skips the second task (did partner nudged her?),Speaker 1,Observation Note,Chat 1,
+5,0,0,Then recognizes and does the second task delayed,Speaker 1,Observation Note,Chat 1,
+5,0,0,Later user tried to just finish the tasks instead of referencing the partner responses,Speaker 1,Observation Note,Chat 1,"Partner didn’t gave any corrections  Also user performed much better and didn’t make any mistakes, except a few minor ones"
+5,0,0,"Very focused on the conversation, doesn’t use tutor or hints in any conversation",Speaker 1,Observation Note,Chat 2,
+5,0,0,Doesn’t follow the task list again,Speaker 1,Observation Note,Chat 2,
+5,0,0,Doesn’t know a word and asks the tutor,Speaker 1,Observation Note,Chat 2,
+5,0,0,Now starts to use the tutor mode more for words she didn’t know,Speaker 1,Observation Note,Chat 2,
+5,0,0,Ask if she can manually check off the tasks,Speaker 1,Observation Note,Chat 2,
+6,0,0,Spanish info is missing,Speaker 1,Observation Note,Onboarding,
+6,0,0,Only five interests: Mean!,Speaker 1,Observation Note,Onboarding,
+6,0,0,41 years,Speaker 1,Observation Note,Onboarding,
+6,0,0,Funny,Speaker 1,Observation Note,Onboarding,Partner
+6,0,0,Tries to click the play button for audio,Speaker 1,Observation Note,Onboarding,Partner
+6,0,0,Asks why its in English,Speaker 1,Observation Note,Warmup,
+6,0,0,Which classmate,Speaker 1,Observation Note,Warmup,
+6,0,0,Does not click on stop and waits that partner answers,Speaker 1,Observation Note,Warmup,
+6,0,0,Class mate talks like a teacher,Speaker 1,Observation Note,Warmup,
+6,0,0,Strange that the partner comes from Madrid,Speaker 1,Observation Note,Warmup,
+6,0,0,But its very fun,Speaker 1,Observation Note,Warmup,
+6,0,0,But says the system could be easily replicated by ChatGPT,Speaker 1,Observation Note,Warmup,
+6,0,0,But really likes it,Speaker 1,Observation Note,Warmup,
+6,0,0,Gets the correction and is confused,Speaker 1,Observation Note,Warmup,
+6,0,0,Correction makes sense,Speaker 1,Observation Note,Warmup,
+6,0,0,Is also confused that the message has both parts,Speaker 1,Observation Note,Warmup,
+6,0,0,Doesn’t feel real like an AI,Speaker 1,Observation Note,Warmup,
+6,0,0,Wants a divider between tutor and partner,Speaker 1,Observation Note,Warmup,
+6,0,0,Also task is confusing,Speaker 1,Observation Note,Warmup,
+6,0,0,History got lost so summary is not so helpful,Speaker 1,Observation Note,Warmup,Summary
+6,0,0,Words learns makes no sense,Speaker 1,Observation Note,Warmup,Summary
+6,0,0,Tab section would be nice to have more highlight that it’s a certain tab,Speaker 1,Observation Note,Warmup,Summary
+6,0,0,Likes the recommendations,Speaker 1,Observation Note,Warmup,Summary
+6,0,0,The memory update: Uses third form instead of you,Speaker 1,Observation Note,Warmup,Summary
+6,0,0,Also doesn’t understand why its memory,Speaker 1,Observation Note,Warmup,Summary
+6,0,0,Should update,Speaker 1,Observation Note,Warmup,Summary
+6,0,0,Needs more just overview and vocabulary,Speaker 1,Observation Note,Warmup,Summary
+6,0,0,Interesting that the AI analyzes it,Speaker 1,Observation Note,Warmup,Summary
+6,0,0,Feels like the app should be in German or Spanish not English,Speaker 1,Observation Note,Chat 1,
+6,0,0,Says this chat will be a bit harder,Speaker 1,Observation Note,Chat 1,
+6,0,0,Started talking without pushing the button,Speaker 1,Observation Note,Chat 1,
+6,0,0,Gave a correction,Speaker 1,Observation Note,Chat 1,
+6,0,0,Conversation diverged from task,Speaker 1,Observation Note,Chat 1,
+6,0,0,"Then proceeds to do the task, after the conversation is at a different state already",Speaker 1,Observation Note,Chat 1,
+6,0,0,Doesn’t use the tutor,Speaker 1,Observation Note,Chat 1,"Partner speaks fast, he has to read the messages"
+6,0,0,Start to use the normal chat to also ask tutor questions  What is banana in Spanish?,Speaker 1,Observation Note,Chat 2,
+6,0,0,Now tries to have fun with it,Speaker 1,Observation Note,Chat 2,
+6,0,0,Got a personalized correction/explanation,Speaker 1,Observation Note,Chat 2,
+6,0,0,Seems to rate the chat 2 worse than chat 1,Speaker 1,Observation Note,Chat 2,
+7,0,0,Likes the design,Speaker 1,Observation Note,Onboarding,
+7,0,0,"Struggles, basically everything",Speaker 1,Observation Note,Onboarding,
+7,0,0,Seems to struggle a bit with English,Speaker 1,Observation Note,Onboarding,
+7,0,0,Points out that you can’t go back in onboarding flow,Speaker 1,Observation Note,Onboarding,
+7,0,0,Name like her boyfriend,Speaker 1,Observation Note,Onboarding,Partner
+7,0,0,Seems to have fun with customization,Speaker 1,Observation Note,Onboarding,Partner
+7,0,0,Customization options are sometimes hard to see,Speaker 1,Observation Note,Onboarding,Partner
+7,0,0,Maybe change the color for option fields,Speaker 1,Observation Note,Onboarding,Partner
+7,0,0,Select a female voice,Speaker 1,Observation Note,Onboarding,Partner
+7,0,0,Would like to have a voice sample,Speaker 1,Observation Note,Onboarding,Partner
+7,0,0,Thoughts she must click the tasks and it’s a test,Speaker 1,Observation Note,Warmup,
+7,0,0,Started talking before pushing the button,Speaker 1,Observation Note,Warmup,
+7,0,0,"Tutor mode: Have an obvious back button to go back to normal chat, help button was intuitive",Speaker 1,Observation Note,Warmup,
+7,0,0,Would be great to click on the single words and see the translation,Speaker 1,Observation Note,Warmup,
+7,0,0,"Prefers to use the tutor mode instead of hint, uses it to look up words",Speaker 1,Observation Note,Warmup,
+7,0,0,Keeps to have reconnection errors,Speaker 1,Observation Note,Warmup,
+7,0,0,Only took words after refresh,Speaker 1,Observation Note,Warmup,Summary
+7,0,0,Starts directly with a hint,Speaker 1,Observation Note,Chat 1,
+7,0,0,AI doesn’t recognize that she finished first task,Speaker 1,Observation Note,Chat 1,
+7,0,0,Seems to not follow the task but wants to immerse herself in the conversation flow,Speaker 1,Observation Note,Chat 1,
+7,0,0,Feels a bit overwhelmed,Speaker 1,Observation Note,Chat 1,
+7,0,0,Gives one word answers if she doesn’t know how to continue,Speaker 1,Observation Note,Chat 1,
+7,0,0,Doesn’t read the other tabs,Speaker 1,Observation Note,Chat 1,Summary
+7,0,0,AI doesn’t recognize that he did the task,Speaker 1,Observation Note,Chat 2,
+7,0,0,Does not check the task list,Speaker 1,Observation Note,Chat 2,
+7,0,0,Does not follow the task list but the partner dialog flow,Speaker 1,Observation Note,Chat 2,
+7,0,0,Clearly struggles with the tasks and conversation,Speaker 1,Observation Note,Chat 2,
+8,0,0,Not clear if he should add German again in the other languages selection,Speaker 1,Observation Note,Onboarding,
+8,0,0,Finds it funny that you can customize a partner,Speaker 1,Observation Note,Onboarding,Partner
+8,0,0,Very nice,Speaker 1,Observation Note,Onboarding,Partner
+8,0,0,Picks a Spanish name,Speaker 1,Observation Note,Onboarding,Partner
+8,0,0,Male partner,Speaker 1,Observation Note,Onboarding,Partner
+8,0,0,Is really fast,Speaker 1,Observation Note,Warmup,
+8,0,0,Finds it a bit confusing that he asks a follo up and then says goodbye,Speaker 1,Observation Note,Warmup,
+8,0,0,"After a few messages, ai did not check",Speaker 1,Observation Note,Warmup,
+8,0,0,"Strong, mentions that its very fast from the pace",Speaker 1,Observation Note,Warmup,
+8,0,0,Assumed that I know a lot,Speaker 1,Observation Note,Warmup,
+8,0,0,Did not use the tutor mode,Speaker 1,Observation Note,Warmup,
+8,0,0,Was very fast and made no transcription mistakes,Speaker 1,Observation Note,Warmup,
+8,0,0,Corrected the mistake directly in the chat,Speaker 1,Observation Note,Warmup,
+8,0,0,Really nice,Speaker 1,Observation Note,Warmup,Summary
+8,0,0,Very clear practical recommendations that are true,Speaker 1,Observation Note,Warmup,Summary
+8,0,0,Find the other tabs not directly more by accident,Speaker 1,Observation Note,Warmup,Summary
+8,0,0,Explained available tools after asking,Speaker 1,Observation Note,Chat 1,
+8,0,0,Then starts using the hints for a few tasks,Speaker 1,Observation Note,Chat 1,
+8,0,0,Feels like if he would a complete beginner he couldn’t do the conversation but for him it was really enjoyable,Speaker 1,Observation Note,Chat 1,
+8,0,0,Unpredictable is positive for him  Its good because it was not repetitive,Speaker 1,Observation Note,Chat 1,
+8,0,0,Usual  Also positive because it was usual conversation like realistic,Speaker 1,Observation Note,Chat 1,
+8,0,0,There is confusion if you should rate the conversation or the system as a hole,Speaker 1,Observation Note,Chat 1,
+8,0,0,Important: DID NOT FILL OUT THE WEAK POINTS because he made no mistakes,Speaker 1,Observation Note,Chat 1,
+8,0,0,Uses also the hints,Speaker 1,Observation Note,Chat 2,
+8,0,0,Tends to overlook the tasks and gets involved in the conversation,Speaker 1,Observation Note,Chat 2,
+8,0,0,"Then after final message, tries to redo the remaining tasks",Speaker 1,Observation Note,Chat 2,
+8,0,0,Made no real mistakes,Speaker 1,Observation Note,Chat 2,
+8,0,0,Says that the partner answered him as a real vendor in Spain,Speaker 1,Observation Note,Chat 2,
+8,0,0,Off recording:,Speaker 1,Observation Note,Chat 2,
+8,0,0,"Says he doesn’t demand personalization, like the partner has information about him",Speaker 1,Observation Note,Chat 2,
+8,0,0,Should be as authentic as possible,Speaker 1,Observation Note,Chat 2,
+8,0,0,For him he wants to have a simulation: Like ordering a coffee,Speaker 1,Observation Note,Chat 2,
+8,0,0,He sees it also contrary to personalize,Speaker 1,Observation Note,Chat 2,
+8,0,0,Prefer highly personalized scenario or generic one:,Speaker 1,Observation Note,Chat 2,
+8,0,0,Everyday would be more important but it would nice to have both,Speaker 1,Observation Note,Chat 2,
+8,0,0,"Depends on motivation: If you are a tourist, you maybe want to know the basic scenario but if your partner is Spanish, you would like to discuss complex personal topics",Speaker 1,Observation Note,Chat 2,
+8,0,0,"Three different types: Tourist, Personal/Immigration, Career/Job",Speaker 1,Observation Note,Chat 2,
+8,0,0,Pricing:,Speaker 1,Observation Note,Chat 2,
+8,0,0,If its lesson + convo: 20€ a month,Speaker 1,Observation Note,Chat 2,
+8,0,0,"Too much: 30-35€, if it would be perfect also 50€ max.",Speaker 1,Observation Note,Chat 2,
+8,0,0,Too cheap: 5-7€,Speaker 1,Observation Note,Chat 2,
+9,0,0,Mentions it’s a good question to ask the language goal,Speaker 1,Observation Note,Onboarding,
+9,0,0,Nice,Speaker 1,Observation Note,Onboarding,Partner Customization
+9,0,0,Recreates me (the author),Speaker 1,Observation Note,Onboarding,Partner Customization
+9,0,0,"Uses a very unknown browser  Reconnection issue, only use text",Speaker 1,Observation Note,Warmup,
+9,0,0,Completely misunderstood user input,Speaker 1,Observation Note,Warmup,
+9,0,0,Tries to check off the boxes when he noticed that its not working,Speaker 1,Observation Note,Warmup,
+9,0,0,Now switched to text input and it works,Speaker 1,Observation Note,Warmup,
+9,0,0,Would be nice to have a scrollable chat history,Speaker 1,Observation Note,Warmup,
+9,0,0,Really likes it,Speaker 1,Observation Note,Warmup,Summary
+9,0,0,8 Words learns  Vocabulary,Speaker 1,Observation Note,Warmup,Summary
+9,0,0,Also likes that he can see his mistakes,Speaker 1,Observation Note,Warmup,Summary
+9,0,0,Likes that he remembers his mistakes,Speaker 1,Observation Note,Warmup,Summary
+9,0,0,Mentions that there is not break between ordering the food and rating the food  Finds it funny,Speaker 1,Observation Note,Chat 1,
+9,0,0,Looks up a word he didn’t know in the Google translator,Speaker 1,Observation Note,Chat 1,Summary
+9,0,0,"Mentions that he speaks chilenian Spanish and he didn’t know a few words, because it was Spanish Spanish",Speaker 1,Observation Note,Chat 1,Questionnaire
+9,0,0,Mentions that it’s a lot of questions,Speaker 1,Observation Note,Chat 1,Questionnaire
+9,0,0,Made a wrong correction about an accent,Speaker 1,Observation Note,Chat 2,
+9,0,0,Would be nice to have a distinction between the feedback and the partner response,Speaker 1,Observation Note,Chat 2,
+9,0,0,Response takes a lot of time,Speaker 1,Observation Note,Chat 2,
+9,0,0,Again a wrong correction,Speaker 1,Observation Note,Chat 2,
+9,0,0,Again reconnection error  His internet connection,Speaker 1,Observation Note,Chat 2,
+9,0,0,Likes that the vendor knows his name,Speaker 1,Observation Note,Chat 2,
+9,0,0,Is really annoying on a accentuation mistake because it got analyzed in the warmup,Speaker 1,Observation Note,Chat 2,
+9,0,0,Hallucinates that the user asked a question but it was a normal statement,Speaker 1,Observation Note,Chat 2,
+9,0,0,Hallucinates explanations  Made another mistake but suspects that the ai accessed an existing common mistake and explained him that,Speaker 1,Observation Note,Chat 2,
+10,0,0,Uses his own name,Speaker 1,Observation Note,Onboarding completely buggy  Browser issue in Chrome,Partner
+10,0,0,Tries to click the tasks,Speaker 1,Observation Note,Warmup,
+10,0,0,Likes the tutor explanation,Speaker 1,Observation Note,Warmup,
+10,0,0,Is a beginner and tends to use the tutor a lot,Speaker 1,Observation Note,Warmup,
+10,0,0,"Likes that the partner gave a direct explanation regarding the age, he didn’t make a mistake but the partner still gave some additional info on the linguistic logic",Speaker 1,Observation Note,Warmup,
+10,0,0,Flow  Ask tutor  Responds to partner,Speaker 1,Observation Note,Warmup,
+10,0,0,"In the first moment: Was overwhelmed but positively, felt like it was a real human that adapted to him",Speaker 1,Observation Note,Warmup,
+10,0,0,Really nice that he react to his messages and also gives feedback,Speaker 1,Observation Note,Warmup,
+10,0,0,"Found the help function really useful, because you could continue the app when you are stuck (QUOTE)",Speaker 1,Observation Note,Warmup,
+10,0,0,Oversees the other tabs,Speaker 1,Observation Note,Warmup,Summary
+10,0,0,Asked the tutor and the tutor responded how to say it in German,Speaker 1,Observation Note,Chat 1,
+10,0,0,"Transcribed his message wrong  Misunderstood him, then the conversation continue but the task was not updated correctly",Speaker 1,Observation Note,Chat 1,
+10,0,0,Uses very brief answers,Speaker 1,Observation Note,Chat 1,
+10,0,0,"Notices that he didn’t do one task, then after conversations ends naturally, tries to redo it",Speaker 1,Observation Note,Chat 1,
+10,0,0,Same flow as Chat 1,Speaker 1,Observation Note,Chat 2,
+10,0,0,"Did not solve all tasks on first try, then also goes to tutor mode to ask and solves them",Speaker 1,Observation Note,Chat 2,
+11,0,0,Ideas:,Speaker 1,Observation Note,Pre-Phase / General,
+11,0,0,"Check how the conversation is influenced by the user responses, especially the first one",Speaker 1,Observation Note,Pre-Phase / General,
+11,0,0,Confusion what is meant with other languages  Only mother tongue or fluent level or everything,Speaker 1,Observation Note,Onboarding,
+11,0,0,Doesn’t know how to name the partner and skips it first to do the visual selection,Speaker 1,Observation Note,Onboarding,Partner
+11,0,0,Happy face because he wants to be happy as well,Speaker 1,Observation Note,Onboarding,Partner
+11,0,0,Can’t think of a good name,Speaker 1,Observation Note,Onboarding,Partner
+11,0,0,Names her LatinaBuddy,Speaker 1,Observation Note,Onboarding,Partner
+11,0,0,Starts recording but user is not prepared  Expected that he can enable permission and then restart,Speaker 1,Observation Note,Warmup,
+11,0,0,Get an explanation,Speaker 1,Observation Note,Warmup,
+11,0,0,Very cool,Speaker 1,Observation Note,Warmup,
+11,0,0,Tasks are good,Speaker 1,Observation Note,Warmup,
+11,0,0,Maybe the tasks could be distracting/interrupt the dialog flow,Speaker 1,Observation Note,Warmup,
+11,0,0,Would be better to see all tasks and can do them more freely,Speaker 1,Observation Note,Warmup,
+11,0,0,Really likes the correction/explanation,Speaker 1,Observation Note,Warmup,
+11,0,0,But can also be distracting but he liked it,Speaker 1,Observation Note,Warmup,
+11,0,0,Likes the quote,Speaker 1,Observation Note,Warmup,Summary
+11,0,0,Finds it very cool with the recommendations,Speaker 1,Observation Note,Warmup,Summary
+11,0,0,The recommendations are very good,Speaker 1,Observation Note,Warmup,Summary
+11,0,0,Doesn’t spot the other tabs directly but finds them,Speaker 1,Observation Note,Warmup,Summary
+11,0,0,Finds it very good that it does not correct soo much during the conversation flow (QUOTE),Speaker 1,Observation Note,Warmup,Summary
+11,0,0,Memory:,Speaker 1,Observation Note,Warmup,Summary
+11,0,0,Very cool,Speaker 1,Observation Note,Warmup,Summary
+11,0,0,"Highlighted a mistake, but its just because he had to repeat the word and app tracked both",Speaker 1,Observation Note,Chat 1,
+11,0,0,Also says its cool that its not so predictable (QUOTE),Speaker 1,Observation Note,Chat 1,Questionnaire
+11,0,0,Conventional  Which is good for him,Speaker 1,Observation Note,Chat 1,Questionnaire
+11,0,0,Forgot a word but doesn’t recognize the tutor mode,Speaker 1,Observation Note,Chat 2,
+11,0,0,"Issues in last task  Did not mention something like “Here take the money” and then task was not checked, did not understand why",Speaker 1,Observation Note,Chat 2,
+11,0,0,Found it more exciting as Chat 1 but from the use case (scenario) (QUOTE),Speaker 1,Observation Note,Chat 2,
+11,0,0,Was more unpredictable but positively,Speaker 1,Observation Note,Chat 2,
+11,0,0,What’s motivating are the summaries for him,Speaker 1,Observation Note,Chat 2,
+11,0,0,Really likes the summary,Speaker 1,Observation Note,Chat 2,
+11,0,0,Thinks that Spanish is Mexican Spanish not classic Spanish,Speaker 1,Observation Note,Chat 2,
+11,0,0,Takes lots of time to read the summary carefully,Speaker 1,Observation Note,Chat 2,
+12,0,0,"Confused which language we practice, because there is not language selection",Speaker 1,Observation Note,Onboarding,
+12,0,0,Name like her dog,Speaker 1,Observation Note,Onboarding,Partner
+12,0,0,Doesn’t find the way back to the normal mode after entering tutor mode,Speaker 1,Observation Note,Warmup,
+12,0,0,Participant uses safari browser on iPad  App doesn’t work properly,Speaker 1,Observation Note,Warmup,
+12,0,0,Does not work directly,Speaker 1,Observation Note,Warmup,
+12,0,0,Seems very lost  She is a complete beginner,Speaker 1,Observation Note,Warmup,
+12,0,0,Felt very overwhelmed,Speaker 1,Observation Note,Warmup,
+12,0,0,Gave feedback  Found it very helpful,Speaker 1,Observation Note,Warmup,
+12,0,0,Flow: Hint  Copies  Continues,Speaker 1,Observation Note,Warmup,
+12,0,0,Had to refresh,Speaker 1,Observation Note,Warmup,
+12,0,0,"Can’t really say, how well it went, because he Spanish is very beginner",Speaker 1,Observation Note,Warmup,Summary
+12,0,0,Thinks that when you have alittle more experience its very valuable,Speaker 1,Observation Note,Warmup,Summary
+12,0,0,"But for her, it was very stressful and overwhelming because she didn’t know how to speak properly  App is too difficult for beginners like A1 or less (QUOTE)",Speaker 1,Observation Note,Warmup,Summary
+12,0,0,Doesn’t recognize the other tabs,Speaker 1,Observation Note,Warmup,Summary
+12,0,0,For tutor: Tries to copy the message into tutor mode,Speaker 1,Observation Note,Chat 1,
+12,0,0,Also here like with many other participants:,Speaker 1,Observation Note,Chat 1,
+12,0,0,There is a contradiction: Users tend to follow the conversation flow even if the task did not update,Speaker 1,Observation Note,Chat 1,
+12,0,0,This is something we need to fix in a following iteration,Speaker 1,Observation Note,Chat 1,
+12,0,0,Had to give up the conversation,Speaker 1,Observation Note,Chat 1,
+12,0,0,Same flow like in Chat 1,Speaker 1,Observation Note,Chat 2,
+13,0,0,Level:,Speaker 1,Observation Note,Onboarding,
+13,0,0,Confused in Level,Speaker 1,Observation Note,Onboarding,
+13,0,0,Which level is he,Speaker 1,Observation Note,Onboarding,
+13,0,0,Also confused because he sees everything in English but expected Spanish  Maybe it would bebetter to make it the mother tongue and target language,Speaker 1,Observation Note,Onboarding,
+13,0,0,Accidentally clicked on continue  Cant go back there is not back button,Speaker 1,Observation Note,Onboarding,
+13,0,0,Not sure if he should write in English or German,Speaker 1,Observation Note,Onboarding,
+13,0,0,Cant really see the asset options visually,Speaker 1,Observation Note,Onboarding,Partner
+13,0,0,Created a man,Speaker 1,Observation Note,Onboarding,Partner
+13,0,0,Does not realize that he has to press the stop button to finish the conversation,Speaker 1,Observation Note,Warmup,
+13,0,0,Really likes the pronunciation of the AI partner (QUOTE)  It’s fantastic,Speaker 1,Observation Note,Warmup,
+13,0,0,Flow: Hint  Copies it,Speaker 1,Observation Note,Warmup,
+13,0,0,Somehow partner doesn’t answer,Speaker 1,Observation Note,Warmup,Partner does not answer to the first message sent
+13,0,0,Asks if the highlighted text are mistakes,Speaker 1,Observation Note,Warmup,Partner does not answer to the first message sent
+13,0,0,Realizes that he forgot a lot what he learned in the past,Speaker 1,Observation Note,Warmup,Partner does not answer to the first message sent
+13,0,0,Also not sure how to write the Spanish words with German keyboard,Speaker 1,Observation Note,Warmup,Partner does not answer to the first message sent
+13,0,0,Reconnection issues,Speaker 1,Observation Note,Warmup,Partner does not answer to the first message sent
+13,0,0,Really likes the partners voice,Speaker 1,Observation Note,Warmup,Partner does not answer to the first message sent
+13,0,0,How was his experience:,Speaker 1,Observation Note,Warmup,Partner does not answer to the first message sent
+13,0,0,When you know how you need to answer it was really good,Speaker 1,Observation Note,Warmup,Partner does not answer to the first message sent
+13,0,0,"It was fun  If it would be for English, he would like to use it in his everyday life",Speaker 1,Observation Note,Warmup,Partner does not answer to the first message sent
+13,0,0,Very helpful and valuable to learn,Speaker 1,Observation Note,Warmup,Partner does not answer to the first message sent
+13,0,0,Also very good that you hear the voice,Speaker 1,Observation Note,Warmup,Partner does not answer to the first message sent
+13,0,0,QUOTE : Feeling that you speak with a real person,Speaker 1,Observation Note,Warmup,Partner does not answer to the first message sent
+13,0,0,In comparison with Duolingo  This app with is really good,Speaker 1,Observation Note,Warmup,Partner does not answer to the first message sent
+13,0,0,Asks if he can click on mistakes made to see his mistakes  Would be nice to just click on mistakes made,Speaker 1,Observation Note,Warmup,Summary
+13,0,0,Really likes the summary,Speaker 1,Observation Note,Warmup,Summary
+13,0,0,Feels like everything relevant is included to improve,Speaker 1,Observation Note,Warmup,Summary
+13,0,0,In general: He is very surprised positively everything works really well,Speaker 1,Observation Note,Warmup,Summary
+13,0,0,One issue in general: When you type and have a German keyboard its tricky to write the words correct because of autocorrect,Speaker 1,Observation Note,Chat 1,
+13,0,0,Mentions that he doesn’t like to use the tablet for practice,Speaker 1,Observation Note,Chat 1,
+13,0,0,But in general  Doesn’t really interact much outside of the hint,Speaker 1,Observation Note,Chat 1,
+13,0,0,"Says he really enjoys the app, its very fun and he can see himself using the app 30-60 mins a day if he wants to learn a language (QUOTE)",Speaker 1,Observation Note,Chat 1,
+13,0,0,Gets an explanation,Speaker 1,Observation Note,Chat 1,
+13,0,0,Its also really good that you get the correction,Speaker 1,Observation Note,Chat 1,
+13,0,0,Asks if you can save the vocabulary,Speaker 1,Observation Note,Chat 1,Summary
+13,0,0,Would also be nice to click on the word and see the translation,Speaker 1,Observation Note,Chat 1,Summary
+13,0,0,Gives very good ratings because he really likes the experience. It was really good for him (QUOTE),Speaker 1,Observation Note,Chat 1,Questionnaire
+13,0,0,Sometimes confusion about questions like if they mean the hole app or the conversation,Speaker 1,Observation Note,Chat 1,Questionnaire
+13,0,0,Is sometimes confused about the wording of some questions,Speaker 1,Observation Note,Chat 1,Questionnaire
+13,0,0,Still correct minor mistakes like accents sometimes,Speaker 1,Observation Note,Chat 2,
+13,0,0,"He said: If he would have the app and could practice for a few hours, he is confident that he could gain basic level. I did it really well (QUOTE)",Speaker 1,Observation Note,Chat 2,
+13,0,0,Feels like he could learn what he learned in the past,Speaker 1,Observation Note,Chat 2,
+13,0,0,General:,Speaker 1,Observation Note,Chat 2,
+13,0,0,Reconnection issues  Have a button to reconnect manually,Speaker 1,Observation Note,Chat 2,
+13,0,0,Prefers mobile,Speaker 1,Observation Note,Chat 2,
+13,0,0,Pricing:,Speaker 1,Observation Note,Chat 2,
+13,0,0,Good deal: 10 per month / annually 80-100,Speaker 1,Observation Note,Chat 2,
+13,0,0,Critically high: 20 per moth / annually 200,Speaker 1,Observation Note,Chat 2,
+13,0,0,"Too cheap: Would really think that, maybe 1 Euro",Speaker 1,Observation Note,Chat 2,
+14,0,0,Do you know others that might be interested?,Speaker 1,Observation Note,Pre-Phase / General,
+14,0,0,emma.fink@gmx.de,Speaker 1,Observation Note,Pre-Phase / General,
+14,0,0,Names the partner Anto,Speaker 1,Observation Note,Onboarding seems clear to her,Partner
+14,0,0,Has to giggle when creating the avatar,Speaker 1,Observation Note,Onboarding seems clear to her,Partner
+14,0,0,Starts without tapping the record button,Speaker 1,Observation Note,Warmup,
+14,0,0,Does not tap the stop button to end the recording,Speaker 1,Observation Note,Warmup,
+14,0,0,Thinks a bit before speaking the message,Speaker 1,Observation Note,Warmup,
+14,0,0,Issues that the AI did not transcribe the number of years  Does not check the task as done,Speaker 1,Observation Note,Warmup,
+14,0,0,Gets a correction  Reads it carefully,Speaker 1,Observation Note,Warmup,
+14,0,0,"Also here, the AI did not got that she completed the task, then continues and she engages in the conversation flow instead of repeating the task",Speaker 1,Observation Note,Warmup,
+14,0,0,Reconnection issue,Speaker 1,Observation Note,Warmup,
+14,0,0,Completely misses the correct transcription,Speaker 1,Observation Note,Warmup,
+14,0,0,"Good, in the beginning she was a bit confused but understood the system quickly",Speaker 1,Observation Note,Warmup,
+14,0,0,One time there was something in English which was good,Speaker 1,Observation Note,Warmup,
+14,0,0,Does not use the tutor mode,Speaker 1,Observation Note,Warmup,
+14,0,0,Again: Starts to engage in the conversation flow and oversees the current tasks which becomes unnatural to ask again later in the conversation,Speaker 1,Observation Note,Chat 1,
+14,0,0,"Then she seems stuck, but partner seems to help a bit",Speaker 1,Observation Note,Chat 1,
+14,0,0,Bug in the app,Speaker 1,Observation Note,Chat 2,
+14,0,0,Again transcription errors,Speaker 1,Observation Note,Chat 2,
+14,0,0,IMPORTANT:,Speaker 1,Observation Note,Chat 2,
+14,0,0,Take for uid the first and for uid 1 the first,Speaker 1,Observation Note,Chat 2,
+15,0,0,Do you know someone that is interested to participate?,Speaker 1,Observation Note,Pre-Phase / General,
+15,0,0,Names himself KITLover,Speaker 1,Observation Note,Onboarding,
+15,0,0,Seems lost with the language levels  Doesn’t know which one to select,Speaker 1,Observation Note,Onboarding,
+15,0,0,Asks if he can go back in onboarding which is not possible,Speaker 1,Observation Note,Onboarding,
+15,0,0,Also confused about what we mean with other languages and then for which language he should enter his learning goal,Speaker 1,Observation Note,Onboarding,
+15,0,0,Names his partner Spanny,Speaker 1,Observation Note,Onboarding,Partner
+15,0,0,Dark skin,Speaker 1,Observation Note,Onboarding,Partner
+15,0,0,Tries to tap the voice play button because he expect a voice sample to play  But there is none,Speaker 1,Observation Note,Onboarding,Partner
+15,0,0,Reconnection error  Has to refresh,Speaker 1,Observation Note,Warmup,
+15,0,0,Asks his tutor question directly into the partner chat,Speaker 1,Observation Note,Warmup,
+15,0,0,Transcriptions of the user messages are inaccurate,Speaker 1,Observation Note,Warmup,
+15,0,0,TA:,Speaker 1,Observation Note,Warmup,
+15,0,0,Was nice,Speaker 1,Observation Note,Warmup,
+15,0,0,Also likes that he could ask in English,Speaker 1,Observation Note,Warmup,
+15,0,0,"When he says something and it was like half of the task, the partner answered the other half, and you can adapt what the partner said",Speaker 1,Observation Note,Warmup,
+15,0,0,Nothing happened when he tapped on the highlighted text  Would’ve liked to get explanation on request,Speaker 1,Observation Note,Warmup,
+15,0,0,Otherwise it worked well,Speaker 1,Observation Note,Warmup,
+15,0,0,"Difference to ChatGPT  They recognize when he finished speaking, so it took him  alittle bit to finish the recording consciously",Speaker 1,Observation Note,Warmup,
+15,0,0,"But this was good for language learning, because he had to think what he wanted to say a few times",Speaker 1,Observation Note,Warmup,
+15,0,0,Was solved really nice,Speaker 1,Observation Note,Warmup,
+15,0,0,Again asks his questions in the partner chat and the partner answers in Spanish,Speaker 1,Observation Note,Chat 1,
+15,0,0,"At the end, transption accuracy is weak again, user is stuck for a few turns",Speaker 1,Observation Note,Chat 1,
+15,0,0,Repeats until the system gets it correctly,Speaker 1,Observation Note,Chat 1,
+15,0,0,"For one task, he used Spanish and english and the system marked it has correct",Speaker 1,Observation Note,Chat 1,
+15,0,0,"Really likes the summary, finds it very useful",Speaker 1,Observation Note,Chat 1,Summary
+15,0,0,Also he directly spots all tabs,Speaker 1,Observation Note,Chat 1,Summary
+15,0,0,"At the last task, the task seems not completely clear. He misses the first part. Then he uses the hint",Speaker 1,Observation Note,Chat 2,
+16,0,0,Do you know someone that is interested to participate?,Speaker 1,Observation Note,Pre-Phase / General,
+16,0,0,Hasn’t used any other methods than classes,Speaker 1,Observation Note,Onboarding,
+16,0,0,First a little confusion if she has to create her own avatar or the buddy,Speaker 1,Observation Note,Onboarding,Partner
+16,0,0,Finds it funny,Speaker 1,Observation Note,Onboarding,Partner
+16,0,0,Mentions that the partner has to smile,Speaker 1,Observation Note,Onboarding,Partner
+16,0,0,Really likes that she could create a buddy,Speaker 1,Observation Note,Onboarding,Partner
+16,0,0,Asks if the conversation difficulty is adapted to the entered level,Speaker 1,Observation Note,Warmup,
+16,0,0,Correctly recognizes that she has to press record,Speaker 1,Observation Note,Warmup,
+16,0,0,Accidentally says something in German and then has no way to cancel the recording to start again,Speaker 1,Observation Note,Warmup,
+16,0,0,Struggles to finish the 4th task,Speaker 1,Observation Note,Warmup,
+16,0,0,Is confused what she did wrong,Speaker 1,Observation Note,Warmup,
+16,0,0,"Interesting, its cool",Speaker 1,Observation Note,Warmup,Summary
+16,0,0,Feel that its valuable already (QUOTE),Speaker 1,Observation Note,Warmup,Summary
+16,0,0,Likes the recommendations,Speaker 1,Observation Note,Warmup,Summary
+16,0,0,Very nice experience,Speaker 1,Observation Note,Warmup,Summary
+16,0,0,"Its very engaging, you get way more in the flow (QUOTE)",Speaker 1,Observation Note,Warmup,Summary
+16,0,0,Chat (experiment):,Speaker 1,Observation Note,Warmup,Summary
+16,0,0,Also focuses more on the conversation flow instead of checking the current task,Speaker 1,Observation Note,Warmup,Summary
+16,0,0,She says she always want to press enter to finish the recording,Speaker 1,Observation Note,Warmup,Summary
+16,0,0,Mentions that the partner uses part of the task in his message then she thought the task is finished or feels unnatural to ask again,Speaker 1,Observation Note,Warmup,Summary
+16,0,0,Says she is excited what the summary will say (QUOTE),Speaker 1,Observation Note,Warmup,Summary
+16,0,0,Unsure if she has to do the last task because the partner already said goodbye,Speaker 1,Observation Note,Warmup,Summary
+16,0,0,Really read through the summary,Speaker 1,Observation Note,Warmup,Summary
+16,0,0,Says everything was understandable,Speaker 1,Observation Note,Warmup,Questionnaire
+16,0,0,Likes that she always asks the follow up questions,Speaker 1,Observation Note,Warmup,Questionnaire
+16,0,0,Says the partner is actually a little too fast for her (QUOTE),Speaker 1,Observation Note,Warmup,Questionnaire
+16,0,0,Easy  Her comment is that she thinks it should be too easy,Speaker 1,Observation Note,Warmup,Questionnaire
+16,0,0,Confusion about some items,Speaker 1,Observation Note,Warmup,Questionnaire
+16,0,0,Very motivating (1 with star)(QUOTE),Speaker 1,Observation Note,Warmup,Questionnaire
+16,0,0,"Says if she could use it longer it would be even better, you would way more in the flow (QUOTE)",Speaker 1,Observation Note,Warmup,Questionnaire
+16,0,0,Very attractive  Because you can create your own buddy,Speaker 1,Observation Note,Warmup,Questionnaire
+16,0,0,"When I said that the next is the last conversation, she is shocked and says she would love to have it on her phone and speak with the system for 30 mins (QUOTE)",Speaker 1,Observation Note,Warmup,Questionnaire
+16,0,0,In accurate transcription,Speaker 1,Observation Note,Chat 2,
+16,0,0,Again ai does not check the first task  Now confused what she has to do,Speaker 1,Observation Note,Chat 2,
+16,0,0,Realizes that you can also do the tasks out of order,Speaker 1,Observation Note,Chat 2,
+16,0,0,"Doesn’t understand why he highlighted a mistake, but says she is excited for later",Speaker 1,Observation Note,Chat 2,
+16,0,0,Again is confused about the first task not checked but continue with the other tasks,Speaker 1,Observation Note,Chat 2,
+16,0,0,Found it very intelligent and cool that the partner is adaptive (QUOTE)  Like leaves out words that she can say or uses different words´,Speaker 1,Observation Note,Chat 2,
+16,0,0,Thinks that she said what she got as recommendation she did say but the ai did not recognize it correctly,Speaker 1,Observation Note,Chat 2,Summary
+16,0,0,Hardest part is the English questionnaire,Speaker 1,Observation Note,Chat 2,Questionnaire
+16,0,0,Definitely not boring,Speaker 1,Observation Note,Chat 2,Questionnaire
+16,0,0,Prefers the scenario than the one in the café,Speaker 1,Observation Note,Chat 2,Questionnaire
+16,0,0,Fair Price: Prefers annually 50€,Speaker 1,Observation Note,Chat 2,Questionnaire
+16,0,0,Max: 6 months for 50€,Speaker 1,Observation Note,Chat 2,Questionnaire
+16,0,0,Lowest: 10@ for 6 months,Speaker 1,Observation Note,Chat 2,Questionnaire
+17,0,0,Do you know someone that is interested to participate?,Speaker 1,Observation Note,Pre-Phase / General,
+17,0,0,Name: Stitchy,Speaker 1,Observation Note,Onboarding,Partner
+17,0,0,"Tries to tap the voice play icon, but does not work",Speaker 1,Observation Note,Onboarding,Partner
+17,0,0,Said: How does she talk? (QUOTE),Speaker 1,Observation Note,Onboarding,Partner
+17,0,0,Confusion if she has to tick the task boxes,Speaker 1,Observation Note,Warmup,
+17,0,0,Makes a correction about anos,Speaker 1,Observation Note,Warmup,
+17,0,0,"Its really nice that she got corrected directly by the partner and that also the text is highlighted, this is super helpful (QUOTE)",Speaker 1,Observation Note,Warmup,
+17,0,0,"Expected that its just a conversation but not that you get feedback directly, and she really liked that, very efficient (QUOTE)",Speaker 1,Observation Note,Warmup,
+17,0,0,Did not use the hint or tutor mode,Speaker 1,Observation Note,Warmup,
+17,0,0,Takes very long to load,Speaker 1,Observation Note,Warmup,Summary
+17,0,0,"Seems to like it, its very detailed which is very good (QUOTE)",Speaker 1,Observation Note,Warmup,Summary
+17,0,0,"She never used an app that is so detailed, wow (QUOTE)",Speaker 1,Observation Note,Warmup,Summary
+17,0,0,"Especially for beginners, this is very helpful",Speaker 1,Observation Note,Warmup,Summary
+17,0,0,Took very long to update the task state,Speaker 1,Observation Note,Chat 1,
+17,0,0,Likes that the summary is written motivational,Speaker 1,Observation Note,Chat 1,Summary
+17,0,0,"Gives hope that you can learn the language, because she starts with motivation and then gives feedback (QUOTE)",Speaker 1,Observation Note,Chat 1,Summary
+17,0,0,Says that the conversation was very fast but the task updates and summary was slow,Speaker 1,Observation Note,Chat 1,Questionnaire
+17,0,0,Mentioned that normally she says her name with 123 in Spanish but in the beginning said it in English,Speaker 1,Observation Note,Chat 2,
+17,0,0,Mentions again that it takes really long to update the task  In general it takes really long,Speaker 1,Observation Note,Chat 2,
+17,0,0,Text is really well written,Speaker 1,Observation Note,Chat 2,Summary
+17,0,0,Also usability is very clean very great design (QUOTE),Speaker 1,Observation Note,Chat 2,Summary
+18,0,0,Do you know someone that is interested to participate?,Speaker 1,Observation Note,Pre-Phase / General,
+18,0,0,Cool,Speaker 1,Observation Note,Onboarding,Partner
+18,0,0,Does not realize that she has to stop the conversation,Speaker 1,Observation Note,Warmup,
+18,0,0,Tries to use the tutor mode but just tapped on the text input,Speaker 1,Observation Note,Warmup,
+18,0,0,Asks a question directly to the tutor and he answers in English to give a hint,Speaker 1,Observation Note,Warmup,
+18,0,0,Also struggles to get back from text to audio,Speaker 1,Observation Note,Warmup,
+18,0,0,AI does not even check the first message,Speaker 1,Observation Note,Warmup,
+18,0,0,"Did not complete the first task and after finishing the conversation flow, starts again",Speaker 1,Observation Note,Warmup,
+18,0,0,Loading time is very long,Speaker 1,Observation Note,Warmup,Summary
+18,0,0,Reads the summary carefully,Speaker 1,Observation Note,Warmup,Summary
+18,0,0,Thrown into very cold water,Speaker 1,Observation Note,Warmup,Summary
+18,0,0,Really likes that you also have text,Speaker 1,Observation Note,Warmup,Summary
+18,0,0,Found it funny that the goodbye was repetitive,Speaker 1,Observation Note,Warmup,Summary
+18,0,0,Really likes the AI feedback (QUOTE),Speaker 1,Observation Note,Warmup,Summary
+18,0,0,"Again, uses text for tutor mode",Speaker 1,Observation Note,Chat 1,
+18,0,0,Conversation flow is decreased because AI did not recognize the tasks correctly,Speaker 1,Observation Note,Chat 1,
+18,0,0,Asks also the author questions,Speaker 1,Observation Note,Chat 1,
+18,0,0,She says its sad that you cant scroll back the chat  No scrollable chat history,Speaker 1,Observation Note,Chat 1,
+18,0,0,Problem here: The conversation flow was not natural because the AI sometimes did not check off the tasks correctly and then the user was stuck or had to repeat things,Speaker 1,Observation Note,Chat 1,
+18,0,0,Found the Warmup easier,Speaker 1,Observation Note,Chat 1,Summary
+18,0,0,"Likes the design and also likes that you get thrown into cold water, things that you have a very steep learning curve when you use it easier (QUOTE)",Speaker 1,Observation Note,Chat 1,Summary
+18,0,0,Asks if the app has a vocabulary feature,Speaker 1,Observation Note,Chat 1,Summary
+18,0,0,It was fun but she was missing vocabs,Speaker 1,Observation Note,Chat 1,Questionnaire
+18,0,0,"Mentions that the partner starts his corrections always with the same start: “I see you…”, would like to have variations or just start with the answer directly",Speaker 1,Observation Note,Chat 1,Questionnaire
+18,0,0,Mentions that when she asks something the responses speaking speed is very fast and this makes it difficult to pay attention to the content,Speaker 1,Observation Note,Chat 1,Questionnaire
+18,0,0,Really likes the positive feedbacks,Speaker 1,Observation Note,Chat 1,Questionnaire
+18,0,0,"Mentions that the transcription accuracy is something wrong, but maybe also because the pronunciation is not correct by her (QUOTE)",Speaker 1,Observation Note,Chat 1,Questionnaire
+18,0,0,"Important: Its practical but thinks it would be better if you already have the basic level, like A2 and above",Speaker 1,Observation Note,Chat 1,Questionnaire
+18,0,0,"Not secure  Rated her feeling in the conversation, because she was overwhelmed and did not know a few words",Speaker 1,Observation Note,Chat 1,Questionnaire
+18,0,0,"Really likes it, is good you have to say (QUOTE)",Speaker 1,Observation Note,Chat 2,Summary
+18,0,0,Mentions that sometimes the AI responded the explanations in Spanish,Speaker 1,Observation Note,Chat 2,Summary
+18,0,0,It was fun but the scenario was not the most exciting,Speaker 1,Observation Note,Chat 2,Questionnaire
+18,0,0,"Really liked the flow that they talked about salad, felt that the speaking speed was slower when she asked clarifying questions",Speaker 1,Observation Note,Chat 2,Questionnaire
+18,0,0,Finds the vendor really outgoing and also adapted to her with the salad (QUOTE),Speaker 1,Observation Note,Chat 2,Questionnaire
+18,0,0,What would be nice is to also show common phrases in the summary that you can use in later sessions,Speaker 1,Observation Note,Chat 2,Questionnaire
+18,0,0,Feeling got better but the vocabs are still a bit missing (QUOTE),Speaker 1,Observation Note,Chat 2,Questionnaire
+19,0,0,Do you know someone that is interested to participate?,Speaker 1,Observation Note,Pre-Phase / General,
+19,0,0,Tries to tap the play button on voice and asks if he can preview the voice,Speaker 1,Observation Note,Onboarding,Partner
+19,0,0,"Seems to confuse the tutor mode and text input, uses the text input to ask questions",Speaker 1,Observation Note,Warmup,
+19,0,0,Also asked me if he can see the translation of a word by hovering over it,Speaker 1,Observation Note,Warmup,
+19,0,0,Is confused that the task changed (because he completed the task),Speaker 1,Observation Note,Warmup,Partner references German
+19,0,0,Has reconnection issues,Speaker 1,Observation Note,Warmup,Partner references German
+19,0,0,Retrospective TA:,Speaker 1,Observation Note,Warmup,Partner references German
+19,0,0,Noticed that its was confusing to have the tutor chat and partner chat in the same window a bit confusing because he was not sure if he is in the same conversation (QUOTE),Speaker 1,Observation Note,Warmup was clear,
+19,0,0,Text- and audio-input worked good,Speaker 1,Observation Note,Warmup was clear,
+19,0,0,From the UI  It was not clear where he can see all his tasks (QUOTE),Speaker 1,Observation Note,Warmup was clear,
+19,0,0,Also would like to see the translations for single words,Speaker 1,Observation Note,Warmup was clear,
+19,0,0,Reconnection issues,Speaker 1,Observation Note,Chat 1,
+19,0,0,Says that he wants to make no mistakes (QUOTE),Speaker 1,Observation Note,Chat 1,
+19,0,0,Would like to have the tutor parallel to the partner chat,Speaker 1,Observation Note,Chat 1,
+19,0,0,Flow: Asks tutor  Repeats to partner,Speaker 1,Observation Note,Chat 1,
+19,0,0,Tutor responded with the solution in German not Spanish,Speaker 1,Observation Note,Chat 1,
+19,0,0,Mentions that the ai did not recognize that he did the task,Speaker 1,Observation Note,Chat 1,
+19,0,0,Says it would be nice to see the chat history (QUOTE),Speaker 1,Observation Note,Chat 1,
+19,0,0,"User did not complete all tasks along the structure, then copes with it by asking the remaining questions after the conversation logic finished already",Speaker 1,Observation Note,Chat 1,
+19,0,0,Now notices that there are multiple tabs,Speaker 1,Observation Note,Chat 1,Summary
+19,0,0,Asks if he can save the vocabulary (QUOTE),Speaker 1,Observation Note,Chat 1,Summary
+19,0,0,Also here confusions about the questions or that people rate it more negative but mean it differently,Speaker 1,Observation Note,Chat 1,Questionnaire
+19,0,0,Says it was not so motivating that the partner mentions that the user did the mistake before (QUOTE),Speaker 1,Observation Note,Chat 1,Questionnaire
+19,0,0,"In general like many other users, there is confusion in the CAP questionnaire",Speaker 1,Observation Note,Chat 1,Questionnaire
+19,0,0,"Slightly confused about a text highlight, why the AI identified it as a mistake",Speaker 1,Observation Note,Chat 2,
+19,0,0,At the last task he is stuck and does not understand why  But then asks the tutor,Speaker 1,Observation Note,Chat 2,
+19,0,0,Mentions that he found it less exciting because it was easier for him,Speaker 1,Observation Note,Chat 2,Questionnaire
+19,0,0,Mentions that he finds some question items not suitable,Speaker 1,Observation Note,Chat 2,Questionnaire
+20,0,0,Parter: Confused why she has to pick a skin color,Speaker 1,Observation Note,Onboarding,
+20,0,0,Likes that she can create a partner,Speaker 1,Observation Note,Onboarding,
+20,0,0,But felt a bit overwhelmed because she did not expect it,Speaker 1,Observation Note,Onboarding,
+20,0,0,Is overwehlmed in the beginning and start the tutor directly,Speaker 1,Observation Note,Warmup,
+20,0,0,Likes that she can just ask the tutor,Speaker 1,Observation Note,Warmup,
+20,0,0,Tries to check off the task by herself,Speaker 1,Observation Note,Warmup,
+20,0,0,Seems to not find the exit,Speaker 1,Observation Note,Warmup,
+20,0,0,Confused tutor mode with text input,Speaker 1,Observation Note,Warmup,
+20,0,0,But partner gave a great tutor style response,Speaker 1,Observation Note,Warmup,
+20,0,0,Seems to have fun,Speaker 1,Observation Note,Warmup,
+20,0,0,Asks if partner can translate to german but partner says he wants to stay in spanish,Speaker 1,Observation Note,Warmup,
+20,0,0,Finds it hard that he only answers in spanish: Pressures her. When she asks him he answers but its still pressure for he she would like to speak in german and integrate spanish,Speaker 1,Observation Note,Warmup,
+20,0,0,Likes the summary quote,Speaker 1,Observation Note,Warmup,
+20,0,0,Really likes that the stt is very good it understand everything even when her pronunciation is not so good,Speaker 1,Observation Note,Chat 1,
+20,0,0,Frustration because the ai did not check off the task that she did,Speaker 1,Observation Note,Chat 1,
+20,0,0,Was so frustrated that she gave up its makes her really angry,Speaker 1,Observation Note,Chat 1,
+20,0,0,Checks hint then repeats the phrase in her head,Speaker 1,Observation Note,Chat 2,
+20,0,0,Recognizes that he knows her name,Speaker 1,Observation Note,Chat 2,
+20,0,0,Mentions how great the experience was compared to the Chat 1,Speaker 1,Observation Note,Chat 2,
+20,0,0,Seems very excited,Speaker 1,Observation Note,Chat 2,
+20,0,0,Ideas: Adapt the learning plan based on linguistic data,Speaker 1,Observation Note,Chat 2,

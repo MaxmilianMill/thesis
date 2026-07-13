@@ -1,5 +1,11 @@
 node_modules
-check.md 
+.env
+**/.env
+!**/.env.example
+!**/.example.env
+check.md
 deployment.md
 data.json
 prompt.md
+websocket_arch.md
+uid_merge.ipynb
